@@ -7,14 +7,16 @@
   <style>
     /* Galleria */
     .gallery {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 5px;
+      padding: 10px;
     }
 
     .image-container {
-      width: 30%;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
     }
 
     .thumbnail {
@@ -25,7 +27,7 @@
     }
 
     .thumbnail:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
     }
 
     /* Stili per la modale */
@@ -33,7 +35,6 @@
       display: none;
       position: fixed;
       z-index: 1;
-      padding-top: 60px;
       left: 0;
       top: 0;
       width: 100%;
@@ -41,11 +42,12 @@
       background-color: rgba(0, 0, 0, 0.8);
       justify-content: center;
       align-items: center;
-      text-align: center;
     }
 
     .modal-content {
-      width: 80%;
+      max-width: 90%;
+      max-height: 90%;
+      width: auto;
       height: auto;
     }
 
@@ -59,15 +61,16 @@
       cursor: pointer;
     }
 
+    /* Media queries per dispositivi mobili */
     @media (max-width: 768px) {
-      .image-container {
-        width: 45%; /* Ridurre la larghezza delle immagini per dispositivi mobili */
+      .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Minore larghezza per le miniature */
       }
     }
 
     @media (max-width: 480px) {
-      .image-container {
-        width: 100%; /* Una sola colonna per dispositivi più piccoli */
+      .gallery {
+        grid-template-columns: 1fr; /* Una sola colonna su schermi piccoli */
       }
     }
   </style>
@@ -75,8 +78,7 @@
 <body>
 
   <div class="gallery">
-    <div class="image-container">
-    <img src="https://www.dropbox.com/scl/fi/qk81lufy1vpifg7g2cv8v/20250110_112833.jpg?rlkey=iyztqx493rvgnaxhzy2uchfxw&st=vf7z9l9f&raw=1" alt="Foto 1" class="thumbnail" onclick="openModal(this)">
+  <img src="https://www.dropbox.com/scl/fi/qk81lufy1vpifg7g2cv8v/20250110_112833.jpg?rlkey=iyztqx493rvgnaxhzy2uchfxw&st=vf7z9l9f&raw=1" alt="Foto 1" class="thumbnail" onclick="openModal(this)">
         <img src="https://www.dropbox.com/scl/fi/yodihpsbn7rd0vu2uwjw1/20250110_113757.jpg?rlkey=yo8lshpva9zaqkrs6ho1w5ex4&st=cdyjoabj&raw=1" alt="Foto 2" class="thumbnail" onclick="openModal(this)">
         <img src="https://www.dropbox.com/scl/fi/frkc5vxs940q29y8dtt3u/20250110_114038.jpg?rlkey=tvnle6xqmoo0xfhz2oy6q2d5u&st=8xx7u8t8&raw=1" alt="Foto 3" class="thumbnail" onclick="openModal(this)">
         <img src="https://www.dropbox.com/scl/fi/4pgs7s6pvfrbxk576ww0v/20250110_114152.jpg?rlkey=v3dnjxbzt8h3x5sd272gr1cm0&st=e8q1xakq&raw=1" alt="Foto 4" class="thumbnail" onclick="openModal(this)">

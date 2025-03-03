@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posizione Via Nazionale</title>
+</head>
+<body>
+    <header>
+        <h1>Posizione - Via Nazionale</h1>
+    </header>
+
+    <section>
+        <div id="map" style="height: 400px; width: 100%;"></div>
+    </section>
+
+    <footer>
+        <a href="index.html">Torna alla Home</a>
+    </footer>
+
+    <script>
+        function initMap() {
+            const location = { lat: 41.9028, lng: 12.4964 }; // Cambia le coordinate con la tua posizione
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: location,
+            });
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: "Via Nazionale"
+            });
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+</body>
+</html>

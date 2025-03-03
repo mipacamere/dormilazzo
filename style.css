@@ -1,123 +1,57 @@
-/* Reset dei margini e padding predefiniti */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Impostazioni di base */
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
-    padding: 0 20px;
+  font-family: Arial, sans-serif;
 }
 
-header {
-    background-color: #6200ea;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-h1 {
-    font-size: 2.5rem;
-}
-
-nav {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-a {
-    text-decoration: none;
-    color: #6200ea;
-    font-weight: bold;
-}
-
-/* Stile per il link "Torna alla Home" */
-.back-home {
-    display: inline-block;
-    margin-bottom: 20px;
-    background-color: #6200ea;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 30px;
-    text-transform: uppercase;
-}
-
-/* Sezione galleria */
-.gallery-section {
-    text-align: center;
-}
-
-h2 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-/* Layout della galleria */
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-/* Stile per le immagini */
-.gallery-item {
-    display: block;
-    position: relative;
-    overflow: hidden;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
+.thumbnail {
+  width: 100px; /* Dimensioni delle anteprime */
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 8px;
 }
 
-.gallery-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-    transition: transform 0.3s ease-in-out;
+.thumbnail:hover {
+  opacity: 0.7;
 }
 
-/* Effetto hover sulle immagini */
-.gallery-item:hover img {
-    transform: scale(1.1);
+/* Modale per l'immagine grande */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-footer {
-    background-color: #6200ea;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    border-radius: 8px;
-    margin-top: 30px;
-    font-size: 1rem;
+.modal img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 10px;
 }
 
-/* Stile responsive per dispositivi mobili */
+/* Media query per schermi più piccoli */
 @media (max-width: 600px) {
-    header {
-        padding: 15px;
-    }
-
-    h1 {
-        font-size: 2rem;
-    }
-
-    .back-home {
-        padding: 8px 15px;
-    }
-
-    .gallery {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    }
-
-    h2 {
-        font-size: 1.5rem;
-    }
+  .thumbnail {
+    width: 80px;
+    height: 80px;
+  }
 }

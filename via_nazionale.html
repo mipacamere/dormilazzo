@@ -5,6 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Via Nazionale - Galleria Foto</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Stili per la galleria */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .gallery-item {
+            display: block;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .gallery-item img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Stile per l'ingrandimento (lightbox) */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+
+        /* Stile per chiudere il lightbox */
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .close-lightbox:hover {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -16,26 +77,48 @@
     </nav>
 
     <section class="gallery-section">
-        <h2>Seleziona una pagina per le foto:</h2>
+        <h2>Seleziona una foto per ingrandirla:</h2>
         <div class="gallery">
-            <a href="via_nazionale_foto_1.html" class="gallery-item">
-                <img src="https://www.dropbox.com/scl/fi/abz7giwtut00jwt3cvx13/20250110_112619.jpg?rlkey=9a6n04g7cr0vjzd125w9fbbii&st=iydjz5vn&raw=1" alt="Foto 1" />
-            </a>
-            <a href="via_nazionale_foto_2.html" class="gallery-item">
-                <img src="https://www.dropbox.com/scl/fi/oiptdyweiyzbs6fbpua4k/20250110_112718.jpg?rlkey=k1f9oz9o8gehz2y2t1gib2rku&st=cjlvuhoo&raw=1" alt="Foto 2" />
-            </a>
-            <a href="via_nazionale_foto_3.html" class="gallery-item">
-                <img src="https://www.dropbox.com/scl/fi/z7t0o8l74atp7c72inws4/20250110_112722.jpg?rlkey=4srhaox3tep1um1v8sgsmz40w&st=cwqwqs6q&raw=1" alt="Foto 3" />
-            </a>
-            <a href="via_nazionale_foto_3.html" class="gallery-item">
-                <img src="https://www.dropbox.com/scl/fi/l8cacl4twh0je01uk7cwq/20250110_112728.jpg?rlkey=bgot9exoaev1inftmauf459oy&st=ush5b7o9&raw=1" alt="Foto 3" />
-            </a>
-            <!-- Aggiungi ulteriori link per le foto -->
+            <div class="gallery-item">
+                <img src="https://www.dropbox.com/scl/fi/abz7giwtut00jwt3cvx13/20250110_112619.jpg?rlkey=9a6n04g7cr0vjzd125w9fbbii&st=iydjz5vn&raw=1" alt="Foto 1" onclick="openLightbox(this)">
+            </div>
+            <div class="gallery-item">
+                <img src="https://www.dropbox.com/scl/fi/oiptdyweiyzbs6fbpua4k/20250110_112718.jpg?rlkey=k1f9oz9o8gehz2y2t1gib2rku&st=cjlvuhoo&raw=1" alt="Foto 2" onclick="openLightbox(this)">
+            </div>
+            <div class="gallery-item">
+                <img src="https://www.dropbox.com/scl/fi/z7t0o8l74atp7c72inws4/20250110_112722.jpg?rlkey=4srhaox3tep1um1v8sgsmz40w&st=cwqwqs6q&raw=1" alt="Foto 3" onclick="openLightbox(this)">
+            </div>
+            <div class="gallery-item">
+                <img src="https://www.dropbox.com/scl/fi/l8cacl4twh0je01uk7cwq/20250110_112728.jpg?rlkey=bgot9exoaev1inftmauf459oy&st=ush5b7o9&raw=1" alt="Foto 4" onclick="openLightbox(this)">
+            </div>
+            <!-- Aggiungi ulteriori foto qui -->
         </div>
     </section>
+
+    <!-- Lightbox (area per visualizzare l'immagine ingrandita) -->
+    <div id="lightbox" class="lightbox">
+        <button class="close-lightbox" onclick="closeLightbox()">×</button>
+        <img id="lightbox-img" src="" alt="Immagine ingrandita">
+    </div>
 
     <footer>
         <p>Visita la nostra struttura e scopri le bellezze di Via Nazionale!</p>
     </footer>
+
+    <script>
+        // Funzione per aprire il lightbox e visualizzare l'immagine ingrandita
+        function openLightbox(imgElement) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightbox.style.display = 'flex';
+            lightboxImg.src = imgElement.src;
+        }
+
+        // Funzione per chiudere il lightbox
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.style.display = 'none';
+        }
+    </script>
 </body>
 </html>

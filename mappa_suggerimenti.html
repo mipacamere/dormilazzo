@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mappa dei Suggerimenti</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Mappa dei Suggerimenti</h1>
+    </header>
+
+    <nav>
+        <a href="index.html">Torna alla Home</a>
+    </nav>
+
+    <section>
+        <h2>Scopri i suggerimenti turistici nelle vicinanze</h2>
+        <div id="map" style="height: 400px;"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Tutti i diritti riservati.</p>
+    </footer>
+
+    <script>
+        function initMap() {
+            const location = { lat: 41.9028, lng: 12.4964 }; // Centra la mappa su una posizione centrale (ad esempio Roma)
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 14,
+                center: location,
+            });
+
+            // Aggiungi marker per i punti suggeriti
+            const points = [
+                { lat: 41.9028, lng: 12.4964, title: "Colosseo" },
+                { lat: 41.8902, lng: 12.4924, title: "Foro Romano" },
+                // Aggiungi altri punti di interesse qui
+            ];
+
+            points.forEach(function(point) {
+                new google.maps.Marker({
+                    position: point,
+                    map: map,
+                    title: point.title
+                });
+            });
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+</body>
+</html>

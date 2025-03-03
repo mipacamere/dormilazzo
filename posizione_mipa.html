@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posizione MiPA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Posizione - MiPA</h1>
+    </header>
+
+    <nav>
+        <a href="index.html">Torna alla Home</a>
+    </nav>
+
+    <section>
+        <h2>Scopri la posizione della struttura MiPA</h2>
+        <div id="map" style="height: 400px;"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Tutti i diritti riservati.</p>
+    </footer>
+
+    <script>
+        function initMap() {
+            const location = { lat: 41.9027, lng: 12.4934 }; // Cambia con le coordinate di MiPA
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: location,
+            });
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: "MiPA"
+            });
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+</body>
+</html>

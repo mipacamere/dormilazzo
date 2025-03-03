@@ -153,33 +153,29 @@
 <div class="gallery-item"> <img src="https://www.dropbox.com/scl/fi/4t0s7k8lkmfa58q86bbgx/20250110_152617.jpg?rlkey=6oczxg9vusn5aol9d0bjkfl6y&st=h625gtbx&raw=1" alt="Foto 73" onclick="openLightbox(this)"> </div>
 <div class="gallery-item"> <img src="https://www.dropbox.com/scl/fi/rloyjhzi58x0wr09007zn/20250110_152634.jpg?rlkey=5uv3fdv8fx3uto5uwwo3r8h6d&st=t5dtt6vi&raw=1" alt="Foto 74" onclick="openLightbox(this)"> </div>
 <div class="gallery-item"> <img src="https://www.dropbox.com/scl/fi/4b9nxwdx1rhl1k2gq8ofn/20250110_152643.jpg?rlkey=nf3xv2d4fnl0790ymzoipx9s4&st=9zj3tcdt&raw=1" alt="Foto 75" onclick="openLightbox(this)"> </div>
-            <!-- Aggiungi ulteriori foto qui -->
+            <!-- Add more gallery items here as needed -->
         </div>
     </section>
 
-    <!-- Lightbox (area per visualizzare l'immagine ingrandita) -->
-    <div id="lightbox" class="lightbox">
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
         <button class="close-lightbox" onclick="closeLightbox()">×</button>
-        <img id="lightbox-img" src="" alt="Immagine ingrandita">
+        <img id="lightbox-image" src="" alt="Foto ingrandita">
     </div>
 
-    <footer>
-        <p>Visita la nostra struttura e scopri le bellezze di Via Nazionale!</p>
-    </footer>
-
     <script>
-        // Funzione per aprire il lightbox e visualizzare l'immagine ingrandita
-        function openLightbox(imgElement) {
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImg = document.getElementById('lightbox-img');
-            lightbox.style.display = 'flex';
-            lightboxImg.src = imgElement.src;
+        // Funzione per aprire il lightbox
+        function openLightbox(img) {
+            var lightbox = document.getElementById("lightbox");
+            var lightboxImage = document.getElementById("lightbox-image");
+            lightboxImage.src = img.src;  // Imposta l'immagine del lightbox
+            lightbox.style.display = "flex";  // Mostra il lightbox
         }
 
         // Funzione per chiudere il lightbox
         function closeLightbox() {
-            const lightbox = document.getElementById('lightbox');
-            lightbox.style.display = 'none';
+            var lightbox = document.getElementById("lightbox");
+            lightbox.style.display = "none";  // Nasconde il lightbox
         }
     </script>
 </body>

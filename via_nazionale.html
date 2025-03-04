@@ -14,18 +14,19 @@
 
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: #f5f5f5;
+      background-color: #121212; /* Dark mode background */
+      color: #e0e0e0; /* Testo chiaro */
       display: flex;
       justify-content: center;
-      align-items: flex-start; /* Cambiato da center a flex-start per evitare che il contenuto rimanga centrato verticalmente */
+      align-items: flex-start;
       min-height: 100vh;
       margin: 0;
-      overflow-y: auto; /* Aggiunto per permettere lo scorrimento verticale */
+      overflow-y: auto;
     }
 
     h1 {
       font-size: 28px;
-      color: #333;
+      color: #fff; /* Testo dell'intestazione bianco */
       text-align: center;
       margin: 20px;
       font-weight: 500;
@@ -46,7 +47,7 @@
       position: relative;
       overflow: hidden;
       border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2); /* Ombra chiara per dark mode */
       cursor: pointer;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
@@ -61,7 +62,7 @@
 
     .image-container:hover {
       transform: scale(1.05);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 16px rgba(255, 255, 255, 0.4); /* Ombra più marcata al passaggio del mouse */
     }
 
     .image-container:hover .thumbnail {
@@ -390,7 +391,7 @@
     <div class="image-container" onclick="openModal(this)">
         <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_153111.jpg" alt="Foto 90">
     </div>
-      
+    
     <!-- Modal per immagine ingrandita -->
     <div id="imageModal" class="modal" onclick="closeModal()">
       <span class="close">&times;</span>
@@ -403,12 +404,13 @@
       var modal = document.getElementById("imageModal");
       var modalImage = document.getElementById("modalImage");
       var gallery = document.querySelector('.gallery');
+      var imageSrc = imageElement.querySelector('img').getAttribute('data-src');  // Otteniamo il src ad alta risoluzione
 
       // Aggiungi il blur alla galleria
       gallery.classList.add('blur');
 
       modal.style.display = "flex";
-      modalImage.src = imageElement.querySelector('img').src;
+      modalImage.src = imageSrc;  // Impostiamo l'immagine ad alta risoluzione nel modal
     }
 
     function closeModal() {

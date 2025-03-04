@@ -5,57 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Galleria Immagini</title>
   <style>
-    /* Generali */
-    body {
-      font-family: 'Roboto', sans-serif; /* Font tipico delle app Android */
+    /* Reset e stili generali */
+    * {
       margin: 0;
       padding: 0;
-      background-color: #f4f4f4; /* Colore di sfondo chiaro */
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f5f5f5;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
+      overflow: hidden;
     }
 
     h1 {
-      font-size: 24px;
+      font-size: 28px;
       color: #333;
       text-align: center;
-      margin: 20px 0;
+      margin: 20px;
+      font-weight: 500;
     }
 
-    /* Galleria */
+    /* Galleria delle immagini */
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 12px;
       padding: 10px;
-      max-width: 1000px;
+      max-width: 1200px;
       width: 100%;
-      margin: 0 auto;
     }
 
     .image-container {
       position: relative;
       overflow: hidden;
-      border-radius: 12px; /* Bordi arrotondati */
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombra leggera */
-    }
-
-    .thumbnail {
-      width: 100%;
-      height: auto;
-      border-radius: 8px; /* Angoli arrotondati per le immagini */
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       cursor: pointer;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .thumbnail:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Ombra più intensa al passaggio del mouse */
+    .thumbnail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      transition: transform 0.3s ease, filter 0.3s ease;
     }
 
-    /* Stili per la modale */
+    .image-container:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .image-container:hover .thumbnail {
+      filter: brightness(0.85);
+    }
+
+    /* Modal per l'immagine ingrandita */
     .modal {
       display: none;
       position: fixed;
@@ -68,15 +80,15 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      transition: opacity 0.3s ease;
     }
 
     .modal-content {
       max-width: 90%;
       max-height: 90%;
-      width: auto;
-      height: auto;
+      object-fit: contain;
       border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Ombra intorno all'immagine */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
     .close {
@@ -92,7 +104,7 @@
     /* Media queries per dispositivi mobili */
     @media (max-width: 768px) {
       .gallery {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       }
     }
 
@@ -108,26 +120,57 @@
   <div>
     <h1>Galleria Immagini</h1>
     <div class="gallery">
-       <img src="Foto strutture/Via Nazionale/Camere/101/20250110_112619.jpg" alt="Camera 101 - 112619">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_112718.jpg" alt="Camera 101 - 112718">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_112722.jpg" alt="Camera 101 - 112722">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_112728.jpg" alt="Camera 101 - 112728">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_112756.jpg" alt="Camera 101 - 112756">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_112833.jpg" alt="Camera 101 - 112833">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_113757.jpg" alt="Camera 101 - 113757">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_114038.jpg" alt="Camera 101 - 114038">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_114152.jpg" alt="Camera 101 - 114152">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_114210.jpg" alt="Camera 101 - 114210">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_114228.jpg" alt="Camera 101 - 114228">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_114246.jpg" alt="Camera 101 - 114246">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_114302.jpg" alt="Camera 101 - 114302">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_114315.jpg" alt="Camera 101 - 114315">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_114352.jpg" alt="Camera 101 - 114352">
-<img src="Foto strutture/Via Nazionale/Camere/101/20250110_114410.jpg" alt="Camera 101 - 114410">
-    <!-- Aggiungi altre immagini qui se necessario -->
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_112619.jpg" alt="Camera 101 - 112619">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_112718.jpg" alt="Camera 101 - 112718">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_112722.jpg" alt="Camera 101 - 112722">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_112728.jpg" alt="Camera 101 - 112728">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_112756.jpg" alt="Camera 101 - 112756">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_112833.jpg" alt="Camera 101 - 112833">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_113757.jpg" alt="Camera 101 - 113757">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114038.jpg" alt="Camera 101 - 114038">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114152.jpg" alt="Camera 101 - 114152">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114210.jpg" alt="Camera 101 - 114210">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114228.jpg" alt="Camera 101 - 114228">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114246.jpg" alt="Camera 101 - 114246">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114302.jpg" alt="Camera 101 - 114302">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114315.jpg" alt="Camera 101 - 114315">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114352.jpg" alt="Camera 101 - 114352">
+      </div>
+      <div class="image-container" onclick="openModal(this)">
+        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114410.jpg" alt="Camera 101 - 114410">
+      </div>
     </div>
 
-    <!-- Modale per immagine ingrandita -->
+    <!-- Modal per immagine ingrandita -->
     <div id="imageModal" class="modal" onclick="closeModal()">
       <span class="close">&times;</span>
       <img class="modal-content" id="modalImage">
@@ -140,7 +183,7 @@
       var modalImage = document.getElementById("modalImage");
 
       modal.style.display = "flex";
-      modalImage.src = imageElement.src;
+      modalImage.src = imageElement.querySelector('img').src;
     }
 
     function closeModal() {

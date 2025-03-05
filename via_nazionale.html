@@ -14,8 +14,8 @@
 
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: #121212; /* Dark mode background */
-      color: #e0e0e0; /* Testo chiaro */
+      background-color: #121212;
+      color: #e0e0e0;
       display: flex;
       justify-content: center;
       align-items: flex-start;
@@ -26,7 +26,7 @@
 
     h1 {
       font-size: 28px;
-      color: #fff; /* Testo dell'intestazione bianco */
+      color: #fff;
       text-align: center;
       margin: 20px;
       font-weight: 500;
@@ -47,9 +47,10 @@
       position: relative;
       overflow: hidden;
       border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2); /* Ombra chiara per dark mode */
+      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
       cursor: pointer;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 200px; /* Fixed height for consistency */
     }
 
     .thumbnail {
@@ -58,15 +59,26 @@
       object-fit: cover;
       border-radius: 12px;
       transition: transform 0.3s ease, filter 0.3s ease;
+      background-color: #2a2a2a; /* Placeholder color */
     }
 
     .image-container:hover {
       transform: scale(1.05);
-      box-shadow: 0 8px 16px rgba(255, 255, 255, 0.4); /* Ombra più marcata al passaggio del mouse */
+      box-shadow: 0 8px 16px rgba(255, 255, 255, 0.4);
     }
 
     .image-container:hover .thumbnail {
       filter: brightness(0.85);
+    }
+
+    /* Loading indicator */
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 14px;
     }
 
     /* Modal per l'immagine ingrandita */
@@ -103,6 +115,16 @@
       cursor: pointer;
     }
 
+    /* Loading indicator for modal image */
+    .modal-loading {
+      color: white;
+      font-size: 18px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
     /* Media queries per dispositivi mobili */
     @media (max-width: 768px) {
       .gallery {
@@ -126,302 +148,238 @@
 
   <div>
     <h1>Galleria Immagini</h1>
-    <div class="gallery">
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_112718.jpg" alt="Foto 1">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_112722.jpg" alt="Foto 2">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_112728.jpg" alt="Foto 3">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_112756.jpg" alt="Foto 4">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_112833.jpg" alt="Foto 5">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_113757.jpg" alt="Foto 6">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114038.jpg" alt="Foto 7">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114152.jpg" alt="Foto 8">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114210.jpg" alt="Foto 9">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114228.jpg" alt="Foto 10">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114246.jpg" alt="Foto 11">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114302.jpg" alt="Foto 12">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114315.jpg" alt="Foto 13">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114352.jpg" alt="Foto 14">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/101/20250110_114410.jpg" alt="Foto 15">
-      </div>
-      <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_120910.jpg" alt="Foto 18">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_120926.jpg" alt="Foto 19">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_120959.jpg" alt="Foto 20">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_121055.jpg" alt="Foto 21">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_121101.jpg" alt="Foto 22">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_121251.jpg" alt="Foto 23">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_121342.jpg" alt="Foto 24">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_121403.jpg" alt="Foto 25">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_121456.jpg" alt="Foto 26">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_121536.jpg" alt="Foto 27">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_121610.jpg" alt="Foto 28">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_121616(0).jpg" alt="Foto 29">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_121629.jpg" alt="Foto 30">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/102/20250110_121812.jpg" alt="Foto 31">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125216.jpg" alt="Foto 32">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125254.jpg" alt="Foto 33">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125331.jpg" alt="Foto 34">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125353.jpg" alt="Foto 35">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125500.jpg" alt="Foto 36">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125515.jpg" alt="Foto 37">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125526.jpg" alt="Foto 38">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125550.jpg" alt="Foto 39">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125602.jpg" alt="Foto 40">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125616.jpg" alt="Foto 41">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125633.jpg" alt="Foto 42">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125730.jpg" alt="Foto 43">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125753.jpg" alt="Foto 44">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125804.jpg" alt="Foto 45">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/103/20250110_125824.jpg" alt="Foto 46">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_142942.jpg" alt="Foto 47">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_142958.jpg" alt="Foto 48">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143034.jpg" alt="Foto 49">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143109.jpg" alt="Foto 50">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143120.jpg" alt="Foto 51">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143132.jpg" alt="Foto 52">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143143.jpg" alt="Foto 53">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143202.jpg" alt="Foto 54">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143216.jpg" alt="Foto 55">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143235.jpg" alt="Foto 56">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143257.jpg" alt="Foto 57">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143319.jpg" alt="Foto 58">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143327.jpg" alt="Foto 59">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143333.jpg" alt="Foto 60">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143348.jpg" alt="Foto 61">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143434.jpg" alt="Foto 62">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143523.jpg" alt="Foto 63">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143611.jpg" alt="Foto 64">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/104/20250110_143634.jpg" alt="Foto 65">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/105/20250110_151157.jpg" alt="Foto 66">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/105/20250110_151206.jpg" alt="Foto 67">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/105/20250110_151231.jpg" alt="Foto 68">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/105/20250110_151256.jpg" alt="Foto 69">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/105/20250110_151309.jpg" alt="Foto 70">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/105/20250110_151404.jpg" alt="Foto 71">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/105/20250110_151417.jpg" alt="Foto 72">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/105/20250110_151441.jpg" alt="Foto 73">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/105/20250110_151518.jpg" alt="Foto 74">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/105/20250110_151655.jpg" alt="Foto 75">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/105/20250110_151725.jpg" alt="Foto 76">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_152549.jpg" alt="Foto 77">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_152604.jpg" alt="Foto 78">
-    </div>
-       <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_152617.jpg" alt="Foto 79">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_152634.jpg" alt="Foto 80">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_152643.jpg" alt="Foto 81">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_152658.jpg" alt="Foto 82">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_152711.jpg" alt="Foto 83">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_152731.jpg" alt="Foto 84">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_152805.jpg" alt="Foto 85">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_152816.jpg" alt="Foto 86">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_152858.jpg" alt="Foto 87">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_152925.jpg" alt="Foto 88">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_153101.jpg" alt="Foto 89">
-    </div>
-    <div class="image-container" onclick="openModal(this)">
-        <img class="thumbnail" src="Foto strutture/Via Nazionale/Camere/breakfast/20250110_153111.jpg" alt="Foto 90">
+    <div class="gallery" id="imageGallery">
+      <!-- Images will be loaded dynamically -->
     </div>
     
     <!-- Modal per immagine ingrandita -->
     <div id="imageModal" class="modal" onclick="closeModal()">
       <span class="close">&times;</span>
-      <img class="modal-content" id="modalImage">
+      <div id="modalLoading" class="modal-loading">Caricamento...</div>
+      <img class="modal-content" id="modalImage" style="display: none;">
     </div>
   </div>
 
   <script>
-    function openModal(imageElement) {
-      var modal = document.getElementById("imageModal");
-      var modalImage = document.getElementById("modalImage");
-      var gallery = document.querySelector('.gallery');
-      var imageSrc = imageElement.querySelector('img').getAttribute('data-src');  // Otteniamo il src ad alta risoluzione
+    // Array of image paths
+    const imagePaths = [Here's each line with a quotation mark at the beginning and a quotation mark plus comma at the end:
 
-      // Aggiungi il blur alla galleria
-      gallery.classList.add('blur');
+```
+"Foto strutture/Via Nazionale/Camere/101/20250110_112619.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_112718.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_112722.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_112728.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_112756.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_112833.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_113757.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_114038.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_114152.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_114210.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_114228.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_114246.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_114302.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_114315.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_114352.jpg",
+"Foto strutture/Via Nazionale/Camere/101/20250110_114410.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_120910.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_120926.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_120959.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_121055.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_121101.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_121251.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_121342.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_121403.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_121456.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_121536.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_121610.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_121616(0).jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_121629.jpg",
+"Foto strutture/Via Nazionale/Camere/102/20250110_121812.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125216.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125254.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125331.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125353.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125500.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125515.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125526.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125550.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125602.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125616.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125633.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125730.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125753.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125804.jpg",
+"Foto strutture/Via Nazionale/Camere/103/20250110_125824.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_142942.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_142958.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143034.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143109.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143120.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143132.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143143.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143202.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143216.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143235.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143257.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143319.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143327.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143333.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143348.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143434.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143523.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143611.jpg",
+"Foto strutture/Via Nazionale/Camere/104/20250110_143634.jpg",
+"Foto strutture/Via Nazionale/Camere/105/20250110_151157.jpg",
+"Foto strutture/Via Nazionale/Camere/105/20250110_151206.jpg",
+"Foto strutture/Via Nazionale/Camere/105/20250110_151231.jpg",
+"Foto strutture/Via Nazionale/Camere/105/20250110_151256.jpg",
+"Foto strutture/Via Nazionale/Camere/105/20250110_151309.jpg",
+"Foto strutture/Via Nazionale/Camere/105/20250110_151404.jpg",
+"Foto strutture/Via Nazionale/Camere/105/20250110_151417.jpg",
+"Foto strutture/Via Nazionale/Camere/105/20250110_151441.jpg",
+"Foto strutture/Via Nazionale/Camere/105/20250110_151518.jpg",
+"Foto strutture/Via Nazionale/Camere/105/20250110_151655.jpg",
+"Foto strutture/Via Nazionale/Camere/105/20250110_151725.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_152549.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_152604.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_152617.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_152634.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_152643.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_152658.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_152711.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_152731.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_152805.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_152816.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_152858.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_152925.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_153101.jpg",
+"Foto strutture/Via Nazionale/Camere/breakfast/20250110_153111.jpg",
+    ];
 
-      modal.style.display = "flex";
-      modalImage.src = imageSrc;  // Impostiamo l'immagine ad alta risoluzione nel modal
+    // Function to create image elements
+    function createImageElements() {
+      const gallery = document.getElementById('imageGallery');
+      
+      imagePaths.forEach((path, index) => {
+        const container = document.createElement('div');
+        container.className = 'image-container';
+        container.setAttribute('data-index', index);
+        container.onclick = function() { openModal(this); };
+        
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'loading';
+        loadingDiv.textContent = 'Caricamento...';
+        
+        const img = document.createElement('img');
+        img.className = 'thumbnail';
+        img.alt = `Foto ${index + 1}`;
+        img.setAttribute('data-src', path); // Store the full path
+        img.setAttribute('loading', 'lazy'); // Enable native lazy loading
+        
+        container.appendChild(loadingDiv);
+        container.appendChild(img);
+        gallery.appendChild(container);
+      });
+      
+      // Start loading visible thumbnails
+      observeImages();
     }
 
-    function closeModal() {
-      var modal = document.getElementById("imageModal");
-      var gallery = document.querySelector('.gallery');
+    // Use IntersectionObserver to load images only when they become visible
+    function observeImages() {
+      const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+      
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const container = entry.target;
+            const img = container.querySelector('img');
+            const src = img.getAttribute('data-src');
+            
+            if (src && !img.src) {
+              // Create a smaller version for thumbnail (could be a server-side operation in a real app)
+              img.src = src;
+              
+              img.onload = function() {
+                container.querySelector('.loading').style.display = 'none';
+              };
+              
+              img.onerror = function() {
+                container.querySelector('.loading').textContent = 'Errore';
+              };
+            }
+            
+            observer.unobserve(container);
+          }
+        });
+      }, options);
+      
+      document.querySelectorAll('.image-container').forEach(container => {
+        observer.observe(container);
+      });
+    }
 
-      // Rimuovi il blur dalla galleria
+    // Open modal with full-size image
+    function openModal(imageElement) {
+      const modal = document.getElementById("imageModal");
+      const modalImage = document.getElementById("modalImage");
+      const modalLoading = document.getElementById("modalLoading");
+      const gallery = document.querySelector('.gallery');
+      
+      // Get the original image path
+      const imageSrc = imageElement.querySelector('img').getAttribute('data-src');
+      
+      // Show loading indicator
+      modalLoading.style.display = "block";
+      modalImage.style.display = "none";
+      
+      // Add blur to gallery
+      gallery.classList.add('blur');
+      
+      // Display the modal
+      modal.style.display = "flex";
+      
+      // Load the full-size image
+      modalImage.onload = function() {
+        modalLoading.style.display = "none";
+        modalImage.style.display = "block";
+      };
+      
+      modalImage.onerror = function() {
+        modalLoading.textContent = "Errore nel caricamento dell'immagine";
+      };
+      
+      modalImage.src = imageSrc;
+    }
+
+    // Close the modal
+    function closeModal(event) {
+      if (event && event.target === document.getElementById("modalImage")) {
+        return; // Prevent closing when clicking on the image itself
+      }
+      
+      const modal = document.getElementById("imageModal");
+      const gallery = document.querySelector('.gallery');
+      
+      // Remove blur from gallery
       gallery.classList.remove('blur');
       
       modal.style.display = "none";
     }
+
+    // Initialize the gallery
+    document.addEventListener('DOMContentLoaded', function() {
+      createImageElements();
+      
+      // Prevent modal from closing when clicking on the image
+      document.getElementById("modalImage").addEventListener('click', function(event) {
+        event.stopPropagation();
+      });
+    });
   </script>
 
 </body>

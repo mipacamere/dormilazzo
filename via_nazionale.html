@@ -24,6 +24,30 @@
       overflow-y: auto;
     }
 
+    /* Contenitore principale */
+    .main-container {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Stile per il logo */
+    .logo-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 20px 10px;
+    }
+
+    .logo {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      transition: all 0.3s ease;
+    }
+
     h1 {
       font-size: 28px;
       color: #fff;
@@ -130,11 +154,23 @@
       .gallery {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       }
+      
+      .logo {
+        max-width: 250px;
+      }
     }
 
     @media (max-width: 480px) {
       .gallery {
         grid-template-columns: 1fr;
+      }
+      
+      .logo {
+        max-width: 200px;
+      }
+      
+      h1 {
+        font-size: 22px;
       }
     }
 
@@ -146,7 +182,12 @@
 </head>
 <body>
 
-  <div>
+  <div class="main-container">
+    <!-- Logo container -->
+    <div class="logo-container">
+      <img src="https://www.dropbox.com/scl/fi/qf6rh5hu0qkqgsk90drl5/logo-scritta.png?rlkey=vrwptmixyur2z3by3d8ux5oox&st=uz3fnmf4&raw=1" alt="B&B Via Nazionale Logo" class="logo">
+    </div>
+    
     <h1>B&B Via Nazionale Foto Camere</h1>
     <div class="gallery" id="imageGallery">
       <!-- Images will be loaded dynamically -->

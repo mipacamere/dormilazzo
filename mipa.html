@@ -1,32 +1,407 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiPA - Galleria Foto</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MiPA Foto Camere</title>
+  <style>
+    /* Reset e stili generali */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      overflow-y: auto;
+    }
+
+    /* Contenitore principale */
+    .main-container {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Stile per il logo */
+    .logo-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 20px 10px;
+    }
+
+    .logo {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      transition: all 0.3s ease;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #fff;
+      text-align: center;
+      margin: 20px;
+      font-weight: 500;
+    }
+
+    /* Galleria delle immagini */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 12px;
+      padding: 10px;
+      max-width: 1200px;
+      width: 100%;
+      transition: filter 0.3s ease;
+    }
+
+    .image-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 200px; /* Fixed height for consistency */
+    }
+
+    .thumbnail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      background-color: #2a2a2a; /* Placeholder color */
+    }
+
+    .image-container:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(255, 255, 255, 0.4);
+    }
+
+    .image-container:hover .thumbnail {
+      filter: brightness(0.85);
+    }
+
+    /* Loading indicator */
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 14px;
+    }
+
+    /* Modal per l'immagine ingrandita */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-content {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Loading indicator for modal image */
+    .modal-loading {
+      color: white;
+      font-size: 18px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Media queries per dispositivi mobili */
+    @media (max-width: 768px) {
+      .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      }
+      
+      .logo {
+        max-width: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+      
+      .logo {
+        max-width: 200px;
+      }
+      
+      h1 {
+        font-size: 22px;
+      }
+    }
+
+    /* Effetto blur sullo sfondo quando il modal è aperto */
+    .gallery.blur {
+      filter: blur(5px);
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Galleria Foto - MiPA</h1>
-    </header>
 
-    <nav>
-        <a href="index.html">Torna alla Home</a>
-    </nav>
+  <div class="main-container">
+    <!-- Logo container -->
+    <div class="logo-container">
+      <img src="https://www.dropbox.com/scl/fi/twyc4rahl03g0u8v1dyqa/logosample3.png?rlkey=tna8wqno4asvowhzla0oaklon&st=6zpq9nc3&raw=1" alt="MiPA Logo" class="logo">
+    </div>
+    
+    <h1>MiPA Foto Camere</h1>
+    <div class="gallery" id="imageGallery">
+      <!-- Images will be loaded dynamically -->
+    </div>
+    
+    <!-- Modal per immagine ingrandita -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+      <span class="close">&times;</span>
+      <div id="modalLoading" class="modal-loading">Caricamento...</div>
+      <img class="modal-content" id="modalImage" style="display: none;">
+    </div>
+  </div>
 
-    <section>
-        <h2>Seleziona una pagina per le foto:</h2>
-        <ul>
-            <li><a href="mipa_foto_1.html">Foto 1</a></li>
-            <li><a href="mipa_foto_2.html">Foto 2</a></li>
-            <li><a href="mipa_foto_3.html">Foto 3</a></li>
-            <!-- Aggiungi ulteriori link per le foto -->
-        </ul>
-    </section>
+  <script>
+    // Array of image paths
+    const imagePaths = [
+"Foto strutture/MiPA/MiPA1/20250111_142153_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_142537_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_142554_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_142557_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_142640_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_142748_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_142759_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_142815_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_142829_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_142905_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_142937_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_143031_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_143039_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_143112_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_143127_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_143137_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_143217_result.jpg",
+"Foto strutture/MiPA/MiPA1/20250111_143306_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151612_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151622_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151630_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151643_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151659_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151706_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151737_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151803_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151842_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151852(0)_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151918_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151924(0)_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151928_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_151950_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_152007_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_152020_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_152024_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_152043_result.jpg",
+"Foto strutture/MiPA/MiPA2/20250111_152106_result.jpg",
+"Foto strutture/MiPA/MiPA2/photo_2023-09-10_18-10-25.jpg",
+"Foto strutture/MiPA/MiPA2/photo_2023-09-10_18-15-14.jpg",
+"Foto strutture/MiPA/MiPA2/photo_2023-09-10_18-25-44.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_144901_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_144916_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_144927_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_144942_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_144948_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145014_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145025_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145032_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145051_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145101_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145115_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145122_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145132_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145203_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145209_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145219_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145226_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145236_result.jpg",
+"Foto strutture/MiPA/MiPA3/20250111_145254_result.jpg",
+"Foto strutture/MiPA/MiPA4/photo_2024-07-15_07-07-12.jpg",
+"Foto strutture/MiPA/MiPA4/photo_2024-07-15_07-07-12 (2).jpg",
+"Foto strutture/MiPA/MiPA4/photo_2024-07-15_07-07-12 (3).jpg",
+"Foto strutture/MiPA/MiPA4/photo_2024-07-15_07-07-12 (4).jpg",
+"Foto strutture/MiPA/MiPA4/photo_2024-07-15_07-07-12 (5).jpg",
+"Foto strutture/MiPA/MiPA4/photo_2024-07-15_07-07-13.jpg",
+"Foto strutture/MiPA/MiPA4/photo_2024-07-15_07-07-13 (2).jpg",
+"Foto strutture/MiPA/MiPA4/photo_2024-07-15_07-07-13 (3).jpg",
+"Foto strutture/MiPA/MiPA4/photo_2024-07-15_07-07-13 (4).jpg",
+"Foto strutture/MiPA/MiPA4/photo_2024-07-15_07-07-13 (5).jpg",
+"Foto strutture/MiPA/MiPA4/photo_2024-07-15_07-07-13 (6).jpg",
+"Foto strutture/MiPA/MiPA4/photo_2024-07-15_07-17-22.jpg",
+    ];
 
-    <footer>
-        <p>Scopri MiPA e le sue caratteristiche uniche!</p>
-    </footer>
+    // Function to create image elements
+    function createImageElements() {
+      const gallery = document.getElementById('imageGallery');
+      
+      imagePaths.forEach((path, index) => {
+        const container = document.createElement('div');
+        container.className = 'image-container';
+        container.setAttribute('data-index', index);
+        container.onclick = function() { openModal(this); };
+        
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'loading';
+        loadingDiv.textContent = 'Caricamento...';
+        
+        const img = document.createElement('img');
+        img.className = 'thumbnail';
+        img.alt = `Foto ${index + 1}`;
+        img.setAttribute('data-src', path); // Store the full path
+        img.setAttribute('loading', 'lazy'); // Enable native lazy loading
+        
+        container.appendChild(loadingDiv);
+        container.appendChild(img);
+        gallery.appendChild(container);
+      });
+      
+      // Start loading visible thumbnails
+      observeImages();
+    }
+
+    // Use IntersectionObserver to load images only when they become visible
+    function observeImages() {
+      const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+      
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const container = entry.target;
+            const img = container.querySelector('img');
+            const src = img.getAttribute('data-src');
+            
+            if (src && !img.src) {
+              // Create a smaller version for thumbnail (could be a server-side operation in a real app)
+              img.src = src;
+              
+              img.onload = function() {
+                container.querySelector('.loading').style.display = 'none';
+              };
+              
+              img.onerror = function() {
+                container.querySelector('.loading').textContent = 'Errore';
+              };
+            }
+            
+            observer.unobserve(container);
+          }
+        });
+      }, options);
+      
+      document.querySelectorAll('.image-container').forEach(container => {
+        observer.observe(container);
+      });
+    }
+
+    // Open modal with full-size image
+    function openModal(imageElement) {
+      const modal = document.getElementById("imageModal");
+      const modalImage = document.getElementById("modalImage");
+      const modalLoading = document.getElementById("modalLoading");
+      const gallery = document.querySelector('.gallery');
+      
+      // Get the original image path
+      const imageSrc = imageElement.querySelector('img').getAttribute('data-src');
+      
+      // Show loading indicator
+      modalLoading.style.display = "block";
+      modalImage.style.display = "none";
+      
+      // Add blur to gallery
+      gallery.classList.add('blur');
+      
+      // Display the modal
+      modal.style.display = "flex";
+      
+      // Load the full-size image
+      modalImage.onload = function() {
+        modalLoading.style.display = "none";
+        modalImage.style.display = "block";
+      };
+      
+      modalImage.onerror = function() {
+        modalLoading.textContent = "Errore nel caricamento dell'immagine";
+      };
+      
+      modalImage.src = imageSrc;
+    }
+
+    // Close the modal
+    function closeModal(event) {
+      if (event && event.target === document.getElementById("modalImage")) {
+        return; // Prevent closing when clicking on the image itself
+      }
+      
+      const modal = document.getElementById("imageModal");
+      const gallery = document.querySelector('.gallery');
+      
+      // Remove blur from gallery
+      gallery.classList.remove('blur');
+      
+      modal.style.display = "none";
+    }
+
+    // Initialize the gallery
+    document.addEventListener('DOMContentLoaded', function() {
+      createImageElements();
+      
+      // Prevent modal from closing when clicking on the image
+      document.getElementById("modalImage").addEventListener('click', function(event) {
+        event.stopPropagation();
+      });
+    });
+  </script>
+
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Galleria foto</title>
+  <title>Galleria foto - B&B Via Nazionale</title>
   <style>
     /* Reset e stili generali */
     * {
@@ -54,6 +54,36 @@
       text-align: center;
       margin: 20px;
       font-weight: 500;
+    }
+
+    /* Filtri per le categorie */
+    .filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 0 15px;
+    }
+
+    .filter-btn {
+      background-color: #2a2a2a;
+      color: #e0e0e0;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+
+    .filter-btn:hover {
+      background-color: #444;
+    }
+
+    .filter-btn.active {
+      background-color: #4a90e2;
+      color: white;
     }
 
     /* Galleria delle immagini */
@@ -149,6 +179,50 @@
       transform: translate(-50%, -50%);
     }
 
+    /* Navigation buttons for the modal */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .prev-btn {
+      left: 20px;
+    }
+
+    .next-btn {
+      right: 20px;
+    }
+
+    /* Image counter in modal */
+    .image-counter {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 5px 15px;
+      border-radius: 15px;
+      font-size: 14px;
+    }
+
     /* Media queries per dispositivi mobili */
     @media (max-width: 768px) {
       .gallery {
@@ -158,11 +232,27 @@
       .logo {
         max-width: 250px;
       }
+      
+      .filter-container {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 10px;
+      }
+      
+      .filter-btn {
+        flex-shrink: 0;
+      }
+      
+      .nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+      }
     }
 
     @media (max-width: 480px) {
       .gallery {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       }
       
       .logo {
@@ -171,6 +261,12 @@
       
       h1 {
         font-size: 22px;
+      }
+      
+      .nav-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
       }
     }
 
@@ -189,64 +285,94 @@
     </div>
     
     <h1>Galleria foto</h1>
+    
+    <!-- Filtri per categorie -->
+    <div class="filter-container">
+      <button class="filter-btn active" data-filter="all">Tutte le foto</button>
+      <button class="filter-btn" data-filter="201">Camera 201</button>
+      <button class="filter-btn" data-filter="202">Camera 202</button>
+      <button class="filter-btn" data-filter="203">Camera 203</button>
+    </div>
+    
     <div class="gallery" id="imageGallery">
       <!-- Images will be loaded dynamically -->
     </div>
     
     <!-- Modal per immagine ingrandita -->
-    <div id="imageModal" class="modal" onclick="closeModal()">
+    <div id="imageModal" class="modal" onclick="closeModal(event)">
       <span class="close">&times;</span>
       <div id="modalLoading" class="modal-loading">Caricamento...</div>
       <img class="modal-content" id="modalImage" style="display: none;">
+      
+      <!-- Navigation buttons -->
+      <div class="nav-btn prev-btn" onclick="navigateImages(-1); event.stopPropagation();">&lt;</div>
+      <div class="nav-btn next-btn" onclick="navigateImages(1); event.stopPropagation();">&gt;</div>
+      
+      <!-- Image counter -->
+      <div class="image-counter" id="imageCounter">1/33</div>
     </div>
   </div>
 
   <script>
-    // Array of image paths
-    const imagePaths = [
-"Foto strutture/Via Nazionale/Camere/201/_MG_0067.jpg",
-"Foto strutture/Via Nazionale/Camere/201/_MG_0073.jpg",
-"Foto strutture/Via Nazionale/Camere/201/_MG_0074.jpg",
-"Foto strutture/Via Nazionale/Camere/201/_MG_0076.jpg",
-"Foto strutture/Via Nazionale/Camere/201/_MG_0078.jpg",
-"Foto strutture/Via Nazionale/Camere/201/_MG_0079.jpg",
-"Foto strutture/Via Nazionale/Camere/201/_MG_0082.jpg",
-"Foto strutture/Via Nazionale/Camere/201/_MG_0083.jpg",
-"Foto strutture/Via Nazionale/Camere/201/_MG_0089.jpg",
-"Foto strutture/Via Nazionale/Camere/201/_MG_0098.jpg",
-"Foto strutture/Via Nazionale/Camere/201/_MG_0099.jpg",
-"Foto strutture/Via Nazionale/Camere/201/_MG_0102.jpg",
-"Foto strutture/Via Nazionale/Camere/201/_MG_0105.jpg",
-"Foto strutture/Via Nazionale/Camere/202/_MG_0107.jpg",
-"Foto strutture/Via Nazionale/Camere/202/_MG_0109.jpg",
-"Foto strutture/Via Nazionale/Camere/202/_MG_0115.jpg",
-"Foto strutture/Via Nazionale/Camere/202/_MG_0119.jpg",
-"Foto strutture/Via Nazionale/Camere/202/_MG_0121.jpg",
-"Foto strutture/Via Nazionale/Camere/202/_MG_0124.jpg",
-"Foto strutture/Via Nazionale/Camere/202/_MG_0129.jpg",
-"Foto strutture/Via Nazionale/Camere/202/_MG_0138.jpg",
-"Foto strutture/Via Nazionale/Camere/202/_MG_0141.jpg",
-"Foto strutture/Via Nazionale/Camere/202/_MG_0144.jpg",
-"Foto strutture/Via Nazionale/Camere/203/_MG_0146.jpg",
-"Foto strutture/Via Nazionale/Camere/203/_MG_0149.jpg",
-"Foto strutture/Via Nazionale/Camere/203/_MG_0153.jpg",
-"Foto strutture/Via Nazionale/Camere/203/_MG_0157.jpg",
-"Foto strutture/Via Nazionale/Camere/203/_MG_0159.jpg",
-"Foto strutture/Via Nazionale/Camere/203/_MG_0163.jpg",
-"Foto strutture/Via Nazionale/Camere/203/_MG_0173.jpg",
-"Foto strutture/Via Nazionale/Camere/203/_MG_0191.jpg",
-"Foto strutture/Via Nazionale/Camere/203/_MG_0197.jpg",
-"Foto strutture/Via Nazionale/Camere/203/_MG_0198.jpg",
+    // Array of image paths with category information
+    const imageData = [
+      // Camera 201
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0067.jpg", category: "201" },
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0073.jpg", category: "201" },
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0074.jpg", category: "201" },
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0076.jpg", category: "201" },
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0078.jpg", category: "201" },
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0079.jpg", category: "201" },
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0082.jpg", category: "201" },
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0083.jpg", category: "201" },
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0089.jpg", category: "201" },
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0098.jpg", category: "201" },
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0099.jpg", category: "201" },
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0102.jpg", category: "201" },
+      { path: "Foto strutture/Via Nazionale/Camere/201/_MG_0105.jpg", category: "201" },
+      
+      // Camera 202
+      { path: "Foto strutture/Via Nazionale/Camere/202/_MG_0107.jpg", category: "202" },
+      { path: "Foto strutture/Via Nazionale/Camere/202/_MG_0109.jpg", category: "202" },
+      { path: "Foto strutture/Via Nazionale/Camere/202/_MG_0115.jpg", category: "202" },
+      { path: "Foto strutture/Via Nazionale/Camere/202/_MG_0119.jpg", category: "202" },
+      { path: "Foto strutture/Via Nazionale/Camere/202/_MG_0121.jpg", category: "202" },
+      { path: "Foto strutture/Via Nazionale/Camere/202/_MG_0124.jpg", category: "202" },
+      { path: "Foto strutture/Via Nazionale/Camere/202/_MG_0129.jpg", category: "202" },
+      { path: "Foto strutture/Via Nazionale/Camere/202/_MG_0138.jpg", category: "202" },
+      { path: "Foto strutture/Via Nazionale/Camere/202/_MG_0141.jpg", category: "202" },
+      { path: "Foto strutture/Via Nazionale/Camere/202/_MG_0144.jpg", category: "202" },
+      
+      // Camera 203
+      { path: "Foto strutture/Via Nazionale/Camere/203/_MG_0146.jpg", category: "203" },
+      { path: "Foto strutture/Via Nazionale/Camere/203/_MG_0149.jpg", category: "203" },
+      { path: "Foto strutture/Via Nazionale/Camere/203/_MG_0153.jpg", category: "203" },
+      { path: "Foto strutture/Via Nazionale/Camere/203/_MG_0157.jpg", category: "203" },
+      { path: "Foto strutture/Via Nazionale/Camere/203/_MG_0159.jpg", category: "203" },
+      { path: "Foto strutture/Via Nazionale/Camere/203/_MG_0163.jpg", category: "203" },
+      { path: "Foto strutture/Via Nazionale/Camere/203/_MG_0173.jpg", category: "203" },
+      { path: "Foto strutture/Via Nazionale/Camere/203/_MG_0191.jpg", category: "203" },
+      { path: "Foto strutture/Via Nazionale/Camere/203/_MG_0197.jpg", category: "203" },
+      { path: "Foto strutture/Via Nazionale/Camere/203/_MG_0198.jpg", category: "203" },
     ];
+
+    // Variables for modal navigation
+    let currentImageIndex = 0;
+    let visibleImages = [];
 
     // Function to create image elements
     function createImageElements() {
       const gallery = document.getElementById('imageGallery');
+      gallery.innerHTML = ''; // Clear gallery
       
-      imagePaths.forEach((path, index) => {
+      // Update visible images array based on current filter
+      updateVisibleImages();
+      
+      visibleImages.forEach((imageInfo, index) => {
         const container = document.createElement('div');
         container.className = 'image-container';
         container.setAttribute('data-index', index);
+        container.setAttribute('data-category', imageInfo.category);
         container.onclick = function() { openModal(this); };
         
         const loadingDiv = document.createElement('div');
@@ -255,9 +381,9 @@
         
         const img = document.createElement('img');
         img.className = 'thumbnail';
-        img.alt = `Foto ${index + 1}`;
-        img.setAttribute('data-src', path); // Store the full path
-        img.setAttribute('loading', 'lazy'); // Enable native lazy loading
+        img.alt = `Camera ${imageInfo.category} - Foto ${index + 1}`;
+        img.setAttribute('data-src', imageInfo.path);
+        img.setAttribute('loading', 'lazy');
         
         container.appendChild(loadingDiv);
         container.appendChild(img);
@@ -268,11 +394,22 @@
       observeImages();
     }
 
+    // Update visible images array based on current filter
+    function updateVisibleImages() {
+      const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+      
+      if (activeFilter === 'all') {
+        visibleImages = imageData;
+      } else {
+        visibleImages = imageData.filter(img => img.category === activeFilter);
+      }
+    }
+
     // Use IntersectionObserver to load images only when they become visible
     function observeImages() {
       const options = {
         root: null,
-        rootMargin: '0px',
+        rootMargin: '50px',
         threshold: 0.1
       };
       
@@ -284,7 +421,7 @@
             const src = img.getAttribute('data-src');
             
             if (src && !img.src) {
-              // Create a smaller version for thumbnail (could be a server-side operation in a real app)
+              // Load the image
               img.src = src;
               
               img.onload = function() {
@@ -312,6 +449,10 @@
       const modalImage = document.getElementById("modalImage");
       const modalLoading = document.getElementById("modalLoading");
       const gallery = document.querySelector('.gallery');
+      const imageCounter = document.getElementById("imageCounter");
+      
+      // Get the clicked image index
+      currentImageIndex = parseInt(imageElement.getAttribute('data-index'));
       
       // Get the original image path
       const imageSrc = imageElement.querySelector('img').getAttribute('data-src');
@@ -322,6 +463,9 @@
       
       // Add blur to gallery
       gallery.classList.add('blur');
+      
+      // Update counter
+      imageCounter.textContent = `${currentImageIndex + 1}/${visibleImages.length}`;
       
       // Display the modal
       modal.style.display = "flex";
@@ -339,6 +483,31 @@
       modalImage.src = imageSrc;
     }
 
+    // Navigate between images in the modal
+    function navigateImages(direction) {
+      // Calculate new index with wrap-around
+      currentImageIndex = (currentImageIndex + direction + visibleImages.length) % visibleImages.length;
+      
+      const modalImage = document.getElementById("modalImage");
+      const modalLoading = document.getElementById("modalLoading");
+      const imageCounter = document.getElementById("imageCounter");
+      
+      // Show loading indicator
+      modalLoading.style.display = "block";
+      modalImage.style.display = "none";
+      
+      // Update image counter
+      imageCounter.textContent = `${currentImageIndex + 1}/${visibleImages.length}`;
+      
+      // Load the new image
+      modalImage.onload = function() {
+        modalLoading.style.display = "none";
+        modalImage.style.display = "block";
+      };
+      
+      modalImage.src = visibleImages[currentImageIndex].path;
+    }
+
     // Close the modal
     function closeModal(event) {
       if (event && event.target === document.getElementById("modalImage")) {
@@ -354,9 +523,46 @@
       modal.style.display = "none";
     }
 
+    // Handle filter clicks
+    function setupFilters() {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Remove active class from all buttons
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          // Rebuild gallery with filtered images
+          createImageElements();
+        });
+      });
+    }
+
+    // Handle keyboard navigation
+    function setupKeyboardNavigation() {
+      document.addEventListener('keydown', function(event) {
+        const modal = document.getElementById("imageModal");
+        
+        if (modal.style.display === "flex") {
+          if (event.key === "ArrowLeft") {
+            navigateImages(-1);
+          } else if (event.key === "ArrowRight") {
+            navigateImages(1);
+          } else if (event.key === "Escape") {
+            closeModal();
+          }
+        }
+      });
+    }
+
     // Initialize the gallery
     document.addEventListener('DOMContentLoaded', function() {
       createImageElements();
+      setupFilters();
+      setupKeyboardNavigation();
       
       // Prevent modal from closing when clicking on the image
       document.getElementById("modalImage").addEventListener('click', function(event) {

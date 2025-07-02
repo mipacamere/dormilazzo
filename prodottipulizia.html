@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prodotti Pulizia B&B</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .product-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 2px solid #f1f5f9;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #3b82f6;
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            border-color: #3b82f6;
+        }
+        
+        .product-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        
+        .product-description {
+            color: #64748b;
+            font-size: 0.9em;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .quantity-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .quantity-btn:hover {
+            background: #2563eb;
+            transform: scale(1.05);
+        }
+        
+        .quantity-display {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 600;
+            color: #1e293b;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .shopping-list {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 2px solid #f1f5f9;
+        }
+        
+        .shopping-list h2 {
+            color: #1e293b;
+            margin-bottom: 24px;
+            font-size: 1.8em;
+            font-weight: 700;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 12px;
+        }
+        
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-name {
+            font-weight: 500;
+            color: #1e293b;
+        }
+        
+        .item-quantity {
+            background: #3b82f6;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        .export-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .export-btn {
+            background: #1e293b;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .export-btn:hover {
+            background: #334155;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(30, 41, 59, 0.3);
+        }
+        
+        .whatsapp-btn {
+            background: #10b981;
+        }
+        
+        .whatsapp-btn:hover {
+            background: #059669;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+        
+        #exportCanvas {
+            display: none;
+        }
+        
+        .empty-list {
+            text-align: center;
+            color: #64748b;
+            font-style: italic;
+            padding: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .export-buttons {
+                flex-direction: column;
+            }
+            
+            .export-btn {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏨 Prodotti Pulizia B&B</h1>
+        
+        <div class="products-grid" id="productsGrid">
+            <!-- I prodotti verranno generati dinamicamente -->
+        </div>
+        
+        <div class="shopping-list">
+            <h2>📋 Lista della Spesa</h2>
+            <div id="shoppingList">
+                <div class="empty-list">Aggiungi prodotti per creare la lista della spesa</div>
+            </div>
+            <div class="export-buttons">
+                <button class="export-btn" onclick="exportAsPDF()">📄 Esporta PDF</button>
+                <button class="export-btn" onclick="exportAsImage()">🖼️ Esporta Immagine</button>
+                <button class="export-btn whatsapp-btn" onclick="sendToWhatsApp()">📱 Invia su WhatsApp</button>
+            </div>
+        </div>
+    </div>
+    
+    <canvas id="exportCanvas"></canvas>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: "Candeggina Spray",
+                description: "Candeggina spray per disinfezione rapida di superfici"
+            },
+            {
+                id: 2,
+                name: "Detergente Vetri",
+                description: "Detergente specifico per vetri e specchi"
+            },
+            {
+                id: 3,
+                name: "Anticalcare",
+                description: "Anticalcare per bagni e rubinetteria"
+            },
+            {
+                id: 4,
+                name: "Sgrassatore Superfici",
+                description: "Sgrassatore per cucine e superfici unte"
+            },
+            {
+                id: 5,
+                name: "Candeggina Liquida",
+                description: "Candeggina liquida per disinfezione e sbiancamento"
+            },
+            {
+                id: 6,
+                name: "Deodorante Ambienti",
+                description: "Deodorante spray per ambienti e tessuti"
+            },
+            {
+                id: 7,
+                name: "Spray Sgrassatore Acciaio",
+                description: "Sgrassatore specifico per superfici in acciaio"
+            },
+            {
+                id: 8,
+                name: "Sapone Liquido Mani",
+                description: "Sapone liquido delicato per l'igiene delle mani"
+            },
+            {
+                id: 9,
+                name: "Bagno Schiuma Liquido",
+                description: "Bagno schiuma liquido per gli ospiti"
+            },
+            {
+                id: 10,
+                name: "Detergente Piatti",
+                description: "Detergente concentrato per stoviglie"
+            }
+        ];
+        
+        let quantities = {};
+        
+        function initializeProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+            
+            products.forEach(product => {
+                quantities[product.id] = 0;
+                
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-description">${product.description}</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity(${product.id})">-</button>
+                        <div class="quantity-display" id="qty-${product.id}">0</div>
+                        <button class="quantity-btn" onclick="increaseQuantity(${product.id})">+</button>
+                    </div>
+                `;
+                grid.appendChild(productCard);
+            });
+        }
+        
+        function increaseQuantity(productId) {
+            quantities[productId]++;
+            updateQuantityDisplay(productId);
+            updateShoppingList();
+        }
+        
+        function decreaseQuantity(productId) {
+            if (quantities[productId] > 0) {
+                quantities[productId]--;
+                updateQuantityDisplay(productId);
+                updateShoppingList();
+            }
+        }
+        
+        function updateQuantityDisplay(productId) {
+            document.getElementById(`qty-${productId}`).textContent = quantities[productId];
+        }
+        
+        function updateShoppingList() {
+            const listContainer = document.getElementById('shoppingList');
+            const itemsWithQuantity = products.filter(product => quantities[product.id] > 0);
+            
+            if (itemsWithQuantity.length === 0) {
+                listContainer.innerHTML = '<div class="empty-list">Aggiungi prodotti per creare la lista della spesa</div>';
+                return;
+            }
+            
+            listContainer.innerHTML = itemsWithQuantity.map(product => `
+                <div class="list-item">
+                    <span class="item-name">${product.name}</span>
+                    <span class="item-quantity">${quantities[product.id]}</span>
+                </div>
+            `).join('');
+        }
+        
+        function generateListText() {
+            const itemsWithQuantity = products.filter(product => quantities[product.id] > 0);
+            if (itemsWithQuantity.length === 0) return "Lista della spesa vuota";
+            
+            let text = "🏨 LISTA DELLA SPESA - PRODOTTI PULIZIA B&B\n";
+            text += "=" .repeat(50) + "\n\n";
+            
+            itemsWithQuantity.forEach(product => {
+                text += `• ${product.name} - Quantità: ${quantities[product.id]}\n`;
+            });
+            
+            text += "\n" + "=" .repeat(50);
+            text += `\nGenerato il: ${new Date().toLocaleDateString('it-IT')}`;
+            
+            return text;
+        }
+        
+        function exportAsPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Titolo
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('🏨 LISTA DELLA SPESA', 20, 20);
+            doc.text('PRODOTTI PULIZIA B&B', 20, 30);
+            
+            // Linea separatrice
+            doc.setLineWidth(0.5);
+            doc.line(20, 35, 190, 35);
+            
+            // Contenuto
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'normal');
+            
+            const itemsWithQuantity = products.filter(product => quantities[product.id] > 0);
+            
+            if (itemsWithQuantity.length === 0) {
+                doc.text('Lista della spesa vuota', 20, 50);
+            } else {
+                let yPosition = 50;
+                itemsWithQuantity.forEach(product => {
+                    doc.text(`• ${product.name}`, 20, yPosition);
+                    doc.text(`Quantità: ${quantities[product.id]}`, 140, yPosition);
+                    yPosition += 10;
+                });
+            }
+            
+            // Data
+            doc.setFontSize(10);
+            doc.text(`Generato il: ${new Date().toLocaleDateString('it-IT')}`, 20, 280);
+            
+            doc.save('lista-spesa-bb.pdf');
+        }
+        
+        function exportAsImage() {
+            const canvas = document.getElementById('exportCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 600;
+            canvas.height = 800;
+            
+            // Sfondo
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Titolo
+            ctx.fillStyle = '#333333';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🏨 LISTA DELLA SPESA', canvas.width / 2, 40);
+            ctx.fillText('PRODOTTI PULIZIA B&B', canvas.width / 2, 70);
+            
+            // Linea separatrice
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, 90);
+            ctx.lineTo(550, 90);
+            ctx.stroke();
+            
+            // Contenuto
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'left';
+            
+            const itemsWithQuantity = products.filter(product => quantities[product.id] > 0);
+            
+            if (itemsWithQuantity.length === 0) {
+                ctx.fillText('Lista della spesa vuota', 50, 130);
+            } else {
+                let yPosition = 130;
+                itemsWithQuantity.forEach(product => {
+                    ctx.fillText(`• ${product.name}`, 50, yPosition);
+                    ctx.fillText(`Quantità: ${quantities[product.id]}`, 400, yPosition);
+                    yPosition += 30;
+                });
+            }
+            
+            // Data
+            ctx.font = '12px Arial';
+            ctx.fillText(`Generato il: ${new Date().toLocaleDateString('it-IT')}`, 50, 750);
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = 'lista-spesa-bb.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function sendToWhatsApp() {
+            const listText = generateListText();
+            const phoneNumber = '39654125874'; // Rimosso il prefixo +39 per il formato WhatsApp
+            const encodedText = encodeURIComponent(listText);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedText}`;
+            
+            window.open(whatsappUrl, '_blank');
+        }
+        
+        // Inizializza i prodotti al caricamento della pagina
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProducts();
+        });
+    </script>
+</body>
+</html>

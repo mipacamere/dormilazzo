@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist Pulizie Hotel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .date-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .date-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1em;
+        }
+
+        .date-input input {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f1f3f4;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            background: #f1f3f4;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-right: 1px solid #ddd;
+        }
+
+        .tab:last-child {
+            border-right: none;
+        }
+
+        .tab.active {
+            background: white;
+            color: #3498db;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .tab:hover:not(.active) {
+            background: #e8f4f8;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 15px 25px;
+            font-size: 1.3em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-content {
+            padding: 25px;
+            background: #f8f9fa;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #dee2e6;
+            transition: background-color 0.3s ease;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-item:hover {
+            background: rgba(52, 152, 219, 0.05);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #28a745;
+        }
+
+        .checklist-item label {
+            font-size: 1.1em;
+            cursor: pointer;
+            flex: 1;
+            transition: color 0.3s ease;
+        }
+
+        .checklist-item input[type="checkbox"]:checked + label {
+            color: #28a745;
+            text-decoration: line-through;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            color: #495057;
+            margin-top: 10px;
+        }
+
+        .camera-header {
+            background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+            color: white;
+            padding: 20px 25px;
+            font-size: 1.4em;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            margin: 20px 0;
+            transition: transform 0.2s ease;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1 0 50%;
+                min-width: 120px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .container {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏨 Checklist Pulizie Hotel</h1>
+            <p>Sistema di controllo qualità per il personale addetto alle pulizie</p>
+        </div>
+
+        <div class="date-section">
+            <div class="date-input">
+                <label for="cleaning-date"><strong>📅 Data pulizie:</strong></label>
+                <input type="date" id="cleaning-date">
+                <label for="cleaner-name"><strong>👤 Nome addetto:</strong></label>
+                <input type="text" id="cleaner-name" placeholder="Inserisci nome">
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('riassunto')">📋 Riassunto Generale</button>
+            <button class="tab" onclick="showTab('aree-comuni')">🏢 Aree Comuni</button>
+            <button class="tab" onclick="showTab('camera101')">🛏️ Camera 101</button>
+            <button class="tab" onclick="showTab('camera102')">🛏️ Camera 102</button>
+            <button class="tab" onclick="showTab('camera103')">🛏️ Camera 103</button>
+            <button class="tab" onclick="showTab('camera104')">🛏️ Camera 104</button>
+            <button class="tab" onclick="showTab('camera105')">🛏️ Camera 105</button>
+        </div>
+
+        <!-- Tab Riassunto Generale -->
+        <div id="riassunto" class="tab-content active">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-riassunto"></div>
+            </div>
+            <div class="progress-text" id="progress-text-riassunto">0% completato</div>
+            
+            <div class="section">
+                <div class="section-header">🏛️ Aree Comuni</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="reception-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="reception-riassunto">Pulizia e disinfezione reception e bancone</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="pavimenti-lobby-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="pavimenti-lobby-riassunto">Aspirazione e lavaggio pavimenti lobby</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="vetri-ingresso-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="vetri-ingresso-riassunto">Pulizia vetri ingresso principale</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cestini-comuni-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="cestini-comuni-riassunto">Svuotamento cestini aree comuni</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dispenser-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="dispenser-riassunto">Controllo e rifornimento dispenser igienizzanti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="ascensori-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="ascensori-riassunto">Pulizia ascensori (pavimenti, pareti, pulsanti)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="scale-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="scale-riassunto">Pulizia scale e corrimano</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="illuminazione-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="illuminazione-riassunto">Controllo illuminazione aree comuni</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="moquette-corridoi-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="moquette-corridoi-riassunto">Aspirazione moquette corridoi</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="applique-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="applique-riassunto">Pulizia applique e interruttori</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cartellonistica-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="cartellonistica-riassunto">Controllo cartellonistica</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="vetri-corridoio-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="vetri-corridoio-riassunto">Pulizia vetri finestre corridoio</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">🛏️ Camera 101</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="letti-101-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="letti-101-riassunto">Rifare letti con biancheria pulita</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="aspirare-101-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="aspirare-101-riassunto">Aspirare tappeti e mocio pavimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="specchi-101-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="specchi-101-riassunto">Pulire specchi e superfici</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cestini-101-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="cestini-101-riassunto">Svuotare cestini</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="finestre-101-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="finestre-101-riassunto">Pulizia finestre interne</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="bagno-101-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="bagno-101-riassunto">Pulire e disinfettare bagno completo</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="asciugamani-101-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="asciugamani-101-riassunto">Controllo asciugamani e set cortesia</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="minibar-101-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="minibar-101-riassunto">Controllare minibar e rifornimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="tv-101-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="tv-101-riassunto">Verificare funzionamento TV e aria condizionata</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cassaforte-101-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="cassaforte-101-riassunto">Controllo cassaforte e telecomando</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">🛏️ Camera 102</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="letti-102-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="letti-102-riassunto">Rifare letti con biancheria pulita</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="aspirare-102-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="aspirare-102-riassunto">Aspirare tappeti e mocio pavimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="specchi-102-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="specchi-102-riassunto">Pulire specchi e superfici</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cestini-102-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="cestini-102-riassunto">Svuotare cestini</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="finestre-102-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="finestre-102-riassunto">Pulizia finestre interne</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="bagno-102-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="bagno-102-riassunto">Pulire e disinfettare bagno completo</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="asciugamani-102-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="asciugamani-102-riassunto">Controllo asciugamani e set cortesia</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="minibar-102-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="minibar-102-riassunto">Controllare minibar e rifornimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="tv-102-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="tv-102-riassunto">Verificare funzionamento TV e aria condizionata</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cassaforte-102-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="cassaforte-102-riassunto">Controllo cassaforte e telecomando</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">🛏️ Camera 103</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="letti-103-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="letti-103-riassunto">Rifare letti con biancheria pulita</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="aspirare-103-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="aspirare-103-riassunto">Aspirare tappeti e mocio pavimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="specchi-103-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="specchi-103-riassunto">Pulire specchi e superfici</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cestini-103-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="cestini-103-riassunto">Svuotare cestini</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="finestre-103-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="finestre-103-riassunto">Pulizia finestre interne</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="bagno-103-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="bagno-103-riassunto">Pulire e disinfettare bagno completo</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="asciugamani-103-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="asciugamani-103-riassunto">Controllo asciugamani e set cortesia</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="minibar-103-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="minibar-103-riassunto">Controllare minibar e rifornimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="tv-103-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="tv-103-riassunto">Verificare funzionamento TV e aria condizionata</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cassaforte-103-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="cassaforte-103-riassunto">Controllo cassaforte e telecomando</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">🛏️ Camera 104</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="letti-104-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="letti-104-riassunto">Rifare letti con biancheria pulita</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="aspirare-104-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="aspirare-104-riassunto">Aspirare tappeti e mocio pavimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="specchi-104-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="specchi-104-riassunto">Pulire specchi e superfici</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cestini-104-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="cestini-104-riassunto">Svuotare cestini</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="finestre-104-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="finestre-104-riassunto">Pulizia finestre interne</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="bagno-104-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="bagno-104-riassunto">Pulire e disinfettare bagno completo</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="asciugamani-104-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="asciugamani-104-riassunto">Controllo asciugamani e set cortesia</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="minibar-104-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="minibar-104-riassunto">Controllare minibar e rifornimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="tv-104-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="tv-104-riassunto">Verificare funzionamento TV e aria condizionata</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cassaforte-104-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="cassaforte-104-riassunto">Controllo cassaforte e telecomando</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">🛏️ Camera 105</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="letti-105-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="letti-105-riassunto">Rifare letti con biancheria pulita</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="aspirare-105-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="aspirare-105-riassunto">Aspirare tappeti e mocio pavimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="specchi-105-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="specchi-105-riassunto">Pulire specchi e superfici</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cestini-105-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="cestini-105-riassunto">Svuotare cestini</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="finestre-105-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="finestre-105-riassunto">Pulizia finestre interne</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="bagno-105-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="bagno-105-riassunto">Pulire e disinfettare bagno completo</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="asciugamani-105-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="asciugamani-105-riassunto">Controllo asciugamani e set cortesia</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="minibar-105-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="minibar-105-riassunto">Controllare minibar e rifornimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="tv-105-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="tv-105-riassunto">Verificare funzionamento TV e aria condizionata</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cassaforte-105-riassunto" onchange="updateProgress('riassunto')">
+                        <label for="cassaforte-105-riassunto">Controllo cassaforte e telecomando</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="resetSection('riassunto')">🔄 Reset Riassunto Generale</button>
+        </div>
+
+        <!-- Tab Aree Comuni -->
+        <div id="aree-comuni" class="tab-content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-aree-comuni"></div>
+            </div>
+            <div class="progress-text" id="progress-text-aree-comuni">0% completato</div>
+            
+            <div class="section">
+                <div class="section-header">🏛️ Aree Comuni</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="reception-aree" onchange="updateProgress('aree-comuni')">
+                        <label for="reception-aree">Pulizia e disinfezione reception e bancone</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="p p
+                        avimenti-lobby-aree" onchange="updateProgress('aree-comuni')">
+                        <label for="pavimenti-lobby-aree">Aspirazione e lavaggio pavimenti lobby</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="vetri-ingresso-aree" onchange="updateProgress('aree-comuni')">
+                        <label for="vetri-ingresso-aree">Pulizia vetri ingresso principale</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cestini-comuni-aree" onchange="updateProgress('aree-comuni')">
+                        <label for="cestini-comuni-aree">Svuotamento cestini aree comuni</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dispenser-aree" onchange="updateProgress('aree-comuni')">
+                        <label for="dispenser-aree">Controllo e rifornimento dispenser igienizzanti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="ascensori-aree" onchange="updateProgress('aree-comuni')">
+                        <label for="ascensori-aree">Pulizia ascensori (pavimenti, pareti, pulsanti)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="scale-aree" onchange="updateProgress('aree-comuni')">
+                        <label for="scale-aree">Pulizia scale e corrimano</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="illuminazione-aree" onchange="updateProgress('aree-comuni')">
+                        <label for="illuminazione-aree">Controllo illuminazione aree comuni</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">🚪 Corridoi</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="moquette-corridoi-aree" onchange="updateProgress('aree-comuni')">
+                        <label for="moquette-corridoi-aree">Aspirazione moquette corridoi</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="applique-aree" onchange="updateProgress('aree-comuni')">
+                        <label for="applique-aree">Pulizia applique e interruttori</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cartellonistica-aree" onchange="updateProgress('aree-comuni')">
+                        <label for="cartellonistica-aree">Controllo cartellonistica</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="vetri-corridoio-aree" onchange="updateProgress('aree-comuni')">
+                        <label for="vetri-corridoio-aree">Pulizia vetri finestre corridoio</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="resetSection('aree-comuni')">🔄 Reset Aree Comuni</button>
+        </div>
+
+        <!-- Camere -->
+        <div id="camera101" class="tab-content">
+            <div class="camera-header">Camera 101</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-camera101"></div>
+            </div>
+            <div class="progress-text" id="progress-text-camera101">0% completato</div>
+            
+            <div class="section">
+                <div class="section-header">🛏️ Camera e Biancheria</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="letti-101" onchange="updateProgress('camera101')">
+                        <label for="letti-101">Rifare letti con biancheria pulita</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="aspirare-101" onchange="updateProgress('camera101')">
+                        <label for="aspirare-101">Aspirare tappeti e mocio pavimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="specchi-101" onchange="updateProgress('camera101')">
+                        <label for="specchi-101">Pulire specchi e superfici</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cestini-101" onchange="updateProgress('camera101')">
+                        <label for="cestini-101">Svuotare cestini</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="finestre-101" onchange="updateProgress('camera101')">
+                        <label for="finestre-101">Pulizia finestre interne</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">🚿 Bagno</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="bagno-101" onchange="updateProgress('camera101')">
+                        <label for="bagno-101">Pulire e disinfettare bagno completo</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="asciugamani-101" onchange="updateProgress('camera101')">
+                        <label for="asciugamani-101">Controllo asciugamani e set cortesia</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">📱 Servizi e Tecnologia</div>
+                <div dedicato alla sezione Servizi e Tecnologia della camera 101">
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="minibar-101" onchange="updateProgress('camera101')">
+                        <label for="minibar-101">Controllare minibar e rifornimenti</label>
+                    </div>
+                    <div class personality-item">
+                        <input type="checkbox" id="tv-101" onchange="updateProgress('camera101')">
+                        <label for="tv-101">Verificare funzionamento TV e aria condizionata</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cassaforte-101" onchange="updateProgress('camera101')">
+                        <label for="cassaforte-101">Controllo cassaforte e telecomando</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="resetSection('camera101')">🔄 Reset Camera 101</button>
+        </div>
+
+        <div id="camera102" class="tab-content">
+            <div class="camera-header">Camera 102</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-camera102"></div>
+            </div>
+            <div class="progress-text" id="progress-text-camera102">0% completato</div>
+            
+            Georgina <div class="section">
+                <div class="section-header">ilibre>🛏️ Camera e Biancheria</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="letti-102" onchange="updateProgress('camera102')">
+                        <label for="letti-102">Rifare letti con biancheria pulita</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="aspirare-102" onchange="updateProgress('camera102')">
+                        <label for="aspirare-102">Aspirare tappeti e mocio pavimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="specchi-102" onchange="updateProgress('camera102')">
+                        <label for="specchi-102">Pulire specchi e superfici</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cestini-102" onchange="updateProgress('camera102')">
+                        <label for="cestini-102">Svuotare cestini</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="finestre-102" onchange="updateProgress('camera102')">
+                        <label for="finestre-102">Pulizia finestre interne</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">🚿 Bagno</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="bagno-102" onchange="updateProgress('camera102')">
+                        <label for="bagno-102">Pulire e disinfettare bagno completo</label>
+                    </div>
+                    <div classසdiv class="checklist-item">
+                        <input type="checkbox" id="asciugamani-102" onchange="updateProgress('camera102')">
+                        <label for="asciugamani-102">Controllo asciugamani e set cortesia</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">📱 Servizi e Tecnologia</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="minibar-102" onchange="updateProgress('camera102')">
+                        <label for="minibar-102">Controllare minibar e rifornimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="tv-102" onchange="updateProgress('camera102')">
+                        <label for="tv-102">Verificare funzionamento TV e aria condizionata</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cassaforte-102" onchange="updateProgress('camera102')">
+                        <label for="cassaforte-102">Controllo cassaforte e telecomando</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="resetSection('camera102')">🔄 Reset Camera 102</button>
+        </div>
+
+        <div id="camera103" class="tab-content">
+            <div class="camera-header">Camera 103</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-camera103"></div>
+            </div>
+            <div class="progress-text" id="progress-text-camera103">0% completato</div>
+            
+            <div class="section">
+                <div class="section-header">🛏️ Camera e Biancheria</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="letti-103" onchange="updateProgress('camera103')">
+                        <label for="letti-103">Rifare letti con biancheria pulita</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="aspirare-103" onchange="updateProgress('camera103')">
+                        <label for="aspirare-103">Aspirare tappeti e mocio pavimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="specchi-103" onchange="updateProgress('camera103')">
+                        <label for="specchi-103">Pulire specchi e superfici</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cestini-103" onchange="updateProgress('camera103')">
+                        <label for="cestini-103">Svuotare cestini</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="finestre-103" onchange="updateProgress('camera103')">
+                        <label for="finestre-103">Pulizia finestre interne</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">🚿 Bagno</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="bagno-103" onchange="updateProgress('camera103')">
+                        <label for="bagno-103">Pulire e disinfettare bagno completo</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="asciugamani-103" onchange="updateProgress('camera103')">
+                        <label for="asciugamani-103">Controllo asciugamani e set cortesia</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">📱 Servizi e Tecnologia</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="minibar-103" onchange="updateProgress('camera103')">
+                        <label for="minibar-103">Controllare minibar e rifornimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="tv-103" onchange="updateProgress('camera103')">
+                        <label for="tv-103">Verificare funzionamento TV e aria condizionata</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cassaforte-103" onchange="updateProgress('camera103')">
+                        <label for="cassaforte-103">Controllo cassaforte e telecomando</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="resetSection('camera103')">🔄 Reset Camera 103</button>
+        </div>
+
+        <div id="camera104" class="tab-content">
+            <div class="camera-header">Camera 104</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-camera104"></div>
+            </div>
+            <div class="progress-text" id="progress-text-camera104">0% completato</div>
+            
+            <div class="section">
+                <div class="section-header">🛏️ Camera e Biancheria</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="letti-104" onchange="updateProgress('camera104')">
+                        <label for="letti-104">Rifare letti con biancheria pulita</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="aspirare-104" onchange="updateProgress('camera104')">
+                        <label for="aspirare-104">Aspirare tappeti e mocio pavimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="specchi-104" onchange="updateProgress('camera104')">
+                        <label for="specchi-104">Pulire specchi e superfici</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cestini-104" onchange="updateProgress('camera104')">
+                        <label for="cestini-104">Svuotare cestini</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="finestre-104" onchange="updateProgress('camera104')">
+                        <label for="finestre-104">Pulizia finestre interne</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">🚿 Bagno</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="bagno-104" onchange="updateProgress('camera104')">
+                        <label for="bagno-104">Pulire e disinfettare bagno completo</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="asciugamani-104" onchange="updateProgress('camera104')">
+                        <label for="asciugamani-104">Controllo asciugamani e set cortesia</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">📱 Servizi e Tecnologia</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="minibar-104" onchange="updateProgress('camera104')">
+                        <label for="minibar-104">Controllare minibar e rifornimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="tv-104" onchange="updateProgress('camera104')">
+                        <label for="tv-104">Verificare funzionamento TV e aria condizionata</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cassaforte-104" onchange="updateProgress('camera104')">
+                        <label for="cassaforte-104">Controllo cassaforte e telecomando</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="resetSection('camera104')">🔄 Reset Camera 104</button>
+        </div>
+
+        <div id="camera105" class="tab-content">
+            <div class="camera-header">Camera 105</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-camera105"></div>
+            </div>
+            <div class="progress-text" id="progress-text-camera105">0% completato</div>
+            
+            <div class="section">
+                <div class="section-header">🛏️ Camera e Biancheria</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="letti-105" onchange="updateProgress('camera105')">
+                        <label for="letti-105">Rifare letti con biancheria pulita</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="aspirare-105" onchange="updateProgress('camera105')">
+                        <label for="aspirare-105">Aspirare tappeti e mocio pavimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="specchi-105" onchange="updateProgress('camera105')">
+                        <label for="specchi-105">Pulire specchi e superfici</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cestini-105" onchange="updateProgress('camera105')">
+                        <label for="cestini-105">Svuotare cestini</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="finestre-105" onchange="updateProgress('camera105')">
+                        <label for="finestre-105">Pulizia finestre interne</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">🚿 Bagno</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="bagno-105" onchange="updateProgress('camera105')">
+                        <label for="bagno-105">Pulire e disinfettare bagno completo</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="asciugamani-105" onchange="updateProgress('camera105')">
+                        <label for="asciugamani-105">Controllo asciugamani e set cortesia</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">📱 Servizi e Tecnologia</div>
+                <div class="section-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="minibar-105" onchange="updateProgress('camera105')">
+                        <label for="minibar-105">Controllare minibar e rifornimenti</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="tv-105" onchange="updateProgress('camera105')">
+                        <label for="tv-105">Verificare funzionamento TV e aria condizionata</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cassaforte-105" onchange="updateProgress('camera105')">
+                        <label for="cassaforte-105">Controllo cassaforte e telecomando</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="resetSection('camera105')">🔄 Reset Camera 105</button>
+        </div>
+    </div>
+
+    <script>
+        // Imposta la data di oggi
+        document.getElementById('cleaning-date').value = new Date().toISOString().split('T')[0];
+
+        function showTab(tabName) {
+            // Nascondi tutte le tab
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const tabButtons = document.querySelectorAll('.tab');
+            tabButtons.forEach(button => button.classList.remove('active'));
+            
+            // Mostra la tab selezionata
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function updateProgress(section) {
+            const checkboxes = document.querySelectorAll(`#${section} input[type="checkbox"]`);
+            const checkedBoxes = document.querySelectorAll(`#${section} input[type="checkbox"]:checked`);
+            
+            const percentage = Math.round((checkedBoxes.length / checkboxes.length) * 100);
+            
+            document.getElementById(`progress-${section}`).style.width = percentage + '%';
+            document.getElementById(`progress-text-${section}`).textContent = percentage + '% completato';
+        }
+
+        function resetSection(section) {
+            if (confirm(`Sei sicuro di voler resettare tutte le spunte per ${section}?`)) {
+                const checkboxes = document.querySelectorAll(`#${section} input[type="checkbox"]`);
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                updateProgress(section);
+            }
+        }
+
+        // Inizializza i progressi
+        updateProgress('riassunto'); // Corretto da 'generale' a 'riassunto'
+        updateProgress('aree-comuni');
+        updateProgress('camera101');
+        updateProgress('camera102');
+        updateProgress('camera103');
+        updateProgress('camera104');
+        updateProgress('camera105');
+    </script>
+</body>
+</html>

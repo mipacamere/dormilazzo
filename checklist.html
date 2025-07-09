@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista di Controllo Pulizia Camere Hotel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .info-section {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .info-field {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-field label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .info-field input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .checklist-container {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .checklist-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .checklist-table th {
+            background-color: #34495e;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .checklist-table th:first-child {
+            text-align: left;
+            width: 40%;
+        }
+        
+        .checklist-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        
+        .checklist-table td:first-child {
+            font-weight: 500;
+            background-color: #f8f9fa;
+            border-right: 2px solid #dee2e6;
+        }
+        
+        .checklist-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .category-header {
+            background-color: #3498db !important;
+            color: white !important;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .category-header td {
+            padding: 15px !important;
+        }
+        
+        .checkbox-cell {
+            text-align: center;
+            padding: 8px;
+        }
+        
+        .checkbox-cell input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .progress-bar {
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+            height: 20px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #27ae60;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            width: 0%;
+        }
+        
+        .room-progress {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .room-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .room-card h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        
+        .summary-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .summary-section h3 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+        }
+        
+        .print-button, .reset-button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 10px 0 0;
+        }
+        
+        .print-button:hover, .reset-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .reset-button {
+            background-color: #e74c3c;
+        }
+        
+        .reset-button:hover {
+            background-color: #c0392b;
+        }
+        
+        @media (max-width: 768px) {
+            .checklist-table th:first-child {
+                width: 50%;
+            }
+            
+            .checklist-table th:not(:first-child) {
+                font-size: 12px;
+                padding: 8px 4px;
+            }
+            
+            .checkbox-cell {
+                padding: 4px;
+            }
+        }
+        
+        @media print {
+            .print-button, .reset-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Lista di Controllo Pulizia Camere Hotel</h1>
+        <p>Verifica pulizia completa per tutte le 8 camere</p>
+    </div>
+    
+    <div class="info-section">
+        <div class="info-field">
+            <label for="date">Data:</label>
+            <input type="date" id="date" name="date">
+        </div>
+        <div class="info-field">
+            <label for="cleaner">Nome Addetto Pulizie:</label>
+            <input type="text" id="cleaner" name="cleaner" placeholder="Inserisci nome addetto">
+        </div>
+        <div class="info-field">
+            <label for="shift">Turno:</label>
+            <input type="text" id="shift" name="shift" placeholder="Mattina/Sera">
+        </div>
+    </div>
+    
+    <div class="checklist-container">
+        <table class="checklist-table">
+            <thead>
+                <tr>
+                    <th>Operazione di Pulizia</th>
+                    <th>Camera 101</th>
+                    <th>Camera 102</th>
+                    <th>Camera 103</th>
+                    <th>Camera 104</th>
+                    <th>Camera 105</th>
+                    <th>Camera 106</th>
+                    <th>Camera 107</th>
+                    <th>Camera 108</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="category-header">
+                    <td colspan="9">AREA INGRESSO</td>
+                </tr>
+                <tr>
+                    <td>Porta e telaio puliti</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="porta-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="porta-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="porta-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="porta-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="porta-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="porta-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="porta-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="porta-108"></td>
+                </tr>
+                <tr>
+                    <td>Maniglie e serrature disinfettate</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="maniglie-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="maniglie-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="maniglie-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="maniglie-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="maniglie-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="maniglie-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="maniglie-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="maniglie-108"></td>
+                </tr>
+                <tr>
+                    <td>Luce ingresso funzionante</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="luce-ingresso-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="luce-ingresso-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="luce-ingresso-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="luce-ingresso-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="luce-ingresso-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="luce-ingresso-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="luce-ingresso-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="luce-ingresso-108"></td>
+                </tr>
+                <tr>
+                    <td>Armadio pulito e organizzato</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="armadio-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="armadio-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="armadio-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="armadio-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="armadio-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="armadio-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="armadio-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="armadio-108"></td>
+                </tr>
+                
+                <tr class="category-header">
+                    <td colspan="9">CAMERA DA LETTO</td>
+                </tr>
+                <tr>
+                    <td>Letto sfatto e rifatto con biancheria pulita</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="letto-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="letto-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="letto-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="letto-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="letto-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="letto-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="letto-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="letto-108"></td>
+                </tr>
+                <tr>
+                    <td>Cuscini sprimacciati e posizionati correttamente</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="cuscini-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="cuscini-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="cuscini-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="cuscini-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="cuscini-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="cuscini-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="cuscini-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="cuscini-108"></td>
+                </tr>
+                <tr>
+                    <td>Comodini spolverati e disinfettati</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="comodini-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="comodini-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="comodini-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="comodini-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="comodini-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="comodini-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="comodini-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="comodini-108"></td>
+                </tr>
+                <tr>
+                    <td>Tutte le luci funzionanti (comodino, soffitto)</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="luci-camera-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="luci-camera-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="luci-camera-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="luci-camera-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="luci-camera-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="luci-camera-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="luci-camera-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="luci-camera-108"></td>
+                </tr>
+                <tr>
+                    <td>Cassettiera/mobili puliti e organizzati</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="cassettiera-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="cassettiera-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="cassettiera-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="cassettiera-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="cassettiera-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="cassettiera-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="cassettiera-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="cassettiera-108"></td>
+                </tr>
+                <tr>
+                    <td>Specchio pulito e senza aloni</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="specchio-camera-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="specchio-camera-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="specchio-camera-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="specchio-camera-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="specchio-camera-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="specchio-camera-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="specchio-camera-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="specchio-camera-108"></td>
+                </tr>
+                <tr>
+                    <td>Moquette/pavimento aspirato/lavato</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="pavimento-camera-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="pavimento-camera-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="pavimento-camera-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="pavimento-camera-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="pavimento-camera-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="pavimento-camera-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="pavimento-camera-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="pavimento-camera-108"></td>
+                </tr>
+                <tr>
+                    <td>Telecomando TV pulito e funzionante</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="telecomando-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="telecomando-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="telecomando-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="telecomando-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="telecomando-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="telecomando-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="telecomando-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="telecomando-108"></td>
+                </tr>
+                <tr>
+                    <td>Aria condizionata/riscaldamento funzionante</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="clima-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="clima-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="clima-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="clima-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="clima-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="clima-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="clima-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="clima-108"></td>
+                </tr>
+                <tr>
+                    <td>Tende/persiane pulite e funzionanti</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="tende-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="tende-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="tende-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="tende-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="tende-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="tende-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="tende-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="tende-108"></td>
+                </tr>
+                <tr>
+                    <td>Finestre pulite (interno)</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="finestre-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="finestre-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="finestre-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="finestre-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="finestre-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="finestre-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="finestre-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="finestre-108"></td>
+                </tr>
+                
+                <tr class="category-header">
+                    <td colspan="9">BAGNO</td>
+                </tr>
+                <tr>
+                    <td>WC pulito, disinfettato e controllato</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="wc-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="wc-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="wc-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="wc-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="wc-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="wc-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="wc-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="wc-108"></td>
+                </tr>
+                <tr>
+                    <td>Carta igienica rifornita (minimo 2 rotoli)</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="carta-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="carta-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="carta-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="carta-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="carta-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="carta-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="carta-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="carta-108"></td>
+                </tr>
+                <tr>
+                    <td>Lavandino e rubinetto puliti e disinfettati</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="lavandino-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="lavandino-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="lavandino-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="lavandino-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="lavandino-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="lavandino-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="lavandino-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="lavandino-108"></td>
+                </tr>
+                <tr>
+                    <td>Doccia/vasca pulita e disinfettata</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="doccia-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="doccia-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="doccia-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="doccia-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="doccia-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="doccia-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="doccia-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="doccia-108"></td>
+                </tr>
+                <tr>
+                    <td>Specchio bagno pulito e senza aloni</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="specchio-bagno-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="specchio-bagno-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="specchio-bagno-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="specchio-bagno-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="specchio-bagno-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="specchio-bagno-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="specchio-bagno-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="specchio-bagno-108"></td>
+                </tr>
+                <tr>
+                    <td>Pavimento bagno lavato e asciugato</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="pavimento-bagno-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="pavimento-bagno-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="pavimento-bagno-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="pavimento-bagno-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="pavimento-bagno-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="pavimento-bagno-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="pavimento-bagno-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="pavimento-bagno-108"></td>
+                </tr>
+                <tr>
+                    <td>Asciugamani sostituiti con quelli puliti</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="asciugamani-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="asciugamani-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="asciugamani-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="asciugamani-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="asciugamani-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="asciugamani-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="asciugamani-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="asciugamani-108"></td>
+                </tr>
+                <tr>
+                    <td>Amenità ricaricate (sapone, shampoo, ecc.)</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="amenita-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="amenita-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="amenita-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="amenita-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="amenita-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="amenita-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="amenita-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="amenita-108"></td>
+                </tr>
+                <tr>
+                    <td>Cestino svuotato e rivestimento sostituito</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="cestino-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="cestino-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="cestino-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="cestino-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="cestino-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="cestino-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="cestino-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="cestino-108"></td>
+                </tr>
+                
+                <tr class="category-header">
+                    <td colspan="9">CONTROLLI FINALI</td>
+                </tr>
+                <tr>
+                    <td>Tutte le luci spente (eccetto luci di benvenuto)</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="luci-spente-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="luci-spente-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="luci-spente-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="luci-spente-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="luci-spente-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="luci-spente-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="luci-spente-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="luci-spente-108"></td>
+                </tr>
+                <tr>
+                    <td>Temperatura impostata a livello confortevole</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="temperatura-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="temperatura-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="temperatura-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="temperatura-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="temperatura-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="temperatura-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="temperatura-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="temperatura-108"></td>
+                </tr>
+                <tr>
+                    <td>Tessera camera programmata e funzionante</td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="101" id="tessera-101"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="102" id="tessera-102"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="103" id="tessera-103"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="104" id="tessera-104"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="105" id="tessera-105"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="106" id="tessera-106"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="107" id="tessera-107"></td>
+                    <td class="checkbox-cell"><input type="checkbox" data-room="108" id="tessera-108"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="summary-section">
+        <h3>Riepilogo Progresso Camere</h3>
+        <div class="room-progress">
+            <div class="room-card" id="progress-101">
+                <h4>Camera 101</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill-101">0%</div>
+                </div>
+            </div>
+            <div class="room-card" id="progress-102">
+                <h4>Camera 102</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill-102">0%</div>
+                </div>
+            </div>
+            <div class="room-card" id="progress-103">
+                <h4>Camera 103</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill-103">0%</div>
+                </div>
+            </div>
+            <div class="room-card" id="progress-104">
+                <h4>Camera 104</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill-104">0%</div>
+                </div>
+            </div>
+            <div class="room-card" id="progress-105">
+                <h4>Camera 105</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill-105">0%</div>
+                </div>
+            </div>
+            <div class="room-card" id="progress-106">
+                <h4>Camera 106</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill-106">0%</div>
+                </div>
+            </div>
+            <div class="room-card" id="progress-107">
+                <h4>Camera 107</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill-107">0%</div>
+                </div>
+            </div>
+            <div class="room-card" id="progress-108">
+                <h4>Camera 108</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill-108">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <button class="print-button" onclick="printChecklist()">Stampa Checklist</button>
+        <button class="reset-button" onclick="resetChecklist()">Reset Checklist</button>
+    </div>
+
+    <script>
+        // Imposta la data di oggi
+        document.getElementById('date').value = new Date().toISOString().split('T')[0];
+
+        // Inizializza il progresso delle camere
+        function updateProgress() {
+            const rooms = ['101', '102', '103', '104', '105', '106', '107', '108'];
+            rooms.forEach(room => {
+                const checkboxes = document.querySelectorAll(`input[data-room="${room}"]`);
+                const checked = document.querySelectorAll(`input[data-room="${room}"]:checked`);
+                const percentage = Math.round((checked.length / checkboxes.length) * 100);
+                const progressFill = document.getElementById(`progress-fill-${room}`);
+                progressFill.style.width = `${percentage}%`;
+                progressFill.textContent = `${percentage}%`;
+            });
+        }
+
+        // Salva lo stato dei checkbox
+        function saveState() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const state = {};
+            checkboxes.forEach(checkbox => {
+                state[checkbox.id] = checkbox.checked;
+            });
+            localStorage.setItem('checklistState', JSON.stringify(state));
+        }
+
+        // Carica lo stato dei checkbox
+        function loadState() {
+            const state = JSON.parse(localStorage.getItem('checklistState'));
+            if (state) {
+                for (const id in state) {
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) {
+                        checkbox.checked = state[id];
+                    }
+                }
+                updateProgress();
+            }
+        }
+
+        // Aggiungi event listener per salvare lo stato e aggiornare il progresso
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                updateProgress();
+                saveState();
+            });
+        });
+
+        // Funzione per stampare la checklist
+        function printChecklist() {
+            window.print();
+        }
+
+        // Funzione per resettare la checklist
+        function resetChecklist() {
+            if (confirm('Sei sicuro di voler resettare tutta la checklist?')) {
+                document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                updateProgress();
+                localStorage.removeItem('checklistState');
+                alert('Checklist resettata con successo!');
+            }
+        }
+
+        // Carica lo stato all'avvio
+        window.addEventListener('load', loadState);
+    </script>
+</body>
+</html>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Camere Hotel</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -46,11 +47,11 @@
         }
 
         .archi h2 {
-            border-color: #e53e3e; /* Rosso per Archi */
+            border-color: #e53e3e;
         }
 
         .milazzo h2 {
-            border-color: #2b6b74; /* Petrolio più chiaro per Milazzo */
+            border-color: #2b6b74;
         }
 
         .room-row {
@@ -65,11 +66,11 @@
         }
 
         .room-row.archi {
-            border-left: 4px solid #e53e3e; /* Accento rosso per Archi */
+            border-left: 4px solid #e53e3e;
         }
 
         .room-row.milazzo {
-            border-left: 4px solid #2b6b74; /* Accento petrolio più chiaro per Milazzo */
+            border-left: 4px solid #2b6b74;
         }
 
         .room-row:hover {
@@ -103,21 +104,36 @@
         .buttons {
             text-align: center;
             margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
         }
 
         button {
-            background: linear-gradient(90deg, #2b6cb0, #2c5282);
-            color: #fff;
             padding: 12px 24px;
             border: none;
             border-radius: 6px;
             font-size: 16px;
             cursor: pointer;
             transition: all 0.2s ease;
+            color: #fff;
         }
 
-        button:hover {
+        button.pdf-btn {
+            background: linear-gradient(90deg, #2b6cb0, #2c5282);
+        }
+
+        button.pdf-btn:hover {
             background: linear-gradient(90deg, #2c5282, #2b6cb0);
+            transform: translateY(-1px);
+        }
+
+        button.image-btn {
+            background: linear-gradient(90deg, #38a169, #2f855a);
+        }
+
+        button.image-btn:hover {
+            background: linear-gradient(90deg, #2f855a, #38a169);
             transform: translateY(-1px);
         }
 
@@ -160,6 +176,11 @@
             select {
                 width: 100%;
             }
+
+            .buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -181,7 +202,13 @@
                     <option value="pulizia-completa">Pulizia Completa</option>
                     <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
                 </select>
-                    </div>
+                <select id="extra-beds-101" onchange="updateData()">
+                    <option value="">Letti aggiuntivi...</option>
+                    <option value="1">1 Letto</option>
+                    <option value="2">2 Letti</option>
+                    <option value="3">3 Letti</option>
+                </select>
+            </div>
 
             <div class="room-row archi">
                 <div class="room-name">Camera 102</div>
@@ -195,7 +222,13 @@
                     <option value="pulizia-completa">Pulizia Completa</option>
                     <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
                 </select>
-                    </div>
+                <select id="extra-beds-102" onchange="updateData()">
+                    <option value="">Letti aggiuntivi...</option>
+                    <option value="1">1 Letto</option>
+                    <option value="2">2 Letti</option>
+                    <option value="3">3 Letti</option>
+                </select>
+            </div>
 
             <div class="room-row archi">
                 <div class="room-name">Camera 103</div>
@@ -212,10 +245,12 @@
                 <select id="extra-beds-103" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
                     <option value="1">1 Letto</option>
+                    <option value="2">2 Letti</option>
+                    <option value="3">3 Letti</option>
                 </select>
             </div>
 
- <div class="room-row archi">
+            <div class="room-row archi">
                 <div class="room-name">Camera 104</div>
                 <select id="config-104" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
@@ -227,9 +262,15 @@
                     <option value="pulizia-completa">Pulizia Completa</option>
                     <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
                 </select>
+                <select id="extra-beds-104" onchange="updateData()">
+                    <option value="">Letti aggiuntivi...</option>
+                    <option value="1">1 Letto</option>
+                    <option value="2">2 Letti</option>
+                    <option value="3">3 Letti</option>
+                </select>
             </div>
 
- <div class="room-row archi">
+            <div class="room-row archi">
                 <div class="room-name">Camera 105</div>
                 <select id="config-105" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
@@ -245,10 +286,11 @@
                     <option value="">Letti aggiuntivi...</option>
                     <option value="1">1 Letto</option>
                     <option value="2">2 Letti</option>
+                    <option value="3">3 Letti</option>
                 </select>
             </div>
-        </div>
-<div class="room-row archi">
+
+            <div class="room-row archi">
                 <div class="room-name">Camera 201</div>
                 <select id="config-201" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
@@ -263,11 +305,12 @@
                 <select id="extra-beds-201" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
                     <option value="1">1 Letto</option>
+                    <option value="2">2 Letti</option>
+                    <option value="3">3 Letti</option>
                 </select>
             </div>
-        </div>
 
-<div class="room-row archi">
+            <div class="room-row archi">
                 <div class="room-name">Camera 202</div>
                 <select id="config-202" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
@@ -286,9 +329,8 @@
                     <option value="3">3 Letti</option>
                 </select>
             </div>
-        </div>
 
-<div class="room-row archi">
+            <div class="room-row archi">
                 <div class="room-name">Camera 203</div>
                 <select id="config-203" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
@@ -304,6 +346,7 @@
                     <option value="">Letti aggiuntivi...</option>
                     <option value="1">1 Letto</option>
                     <option value="2">2 Letti</option>
+                    <option value="3">3 Letti</option>
                 </select>
             </div>
         </div>
@@ -325,7 +368,9 @@
                 <select id="extra-beds-1" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
                     <option value="1">1 Letto</option>
-                  </select>
+                    <option value="2">2 Letti</option>
+                    <option value="3">3 Letti</option>
+                </select>
             </div>
 
             <div class="room-row milazzo">
@@ -343,11 +388,12 @@
                 <select id="extra-beds-2" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
                     <option value="1">1 Letto</option>
+                    <option value="2">2 Letti</option>
+                    <option value="3">3 Letti</option>
                 </select>
             </div>
-        </div>
 
-<div class="room-row milazzo">
+            <div class="room-row milazzo">
                 <div class="room-name">Camera 3</div>
                 <select id="config-3" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
@@ -362,11 +408,12 @@
                 <select id="extra-beds-3" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
                     <option value="1">1 Letto</option>
+                    <option value="2">2 Letti</option>
+                    <option value="3">3 Letti</option>
                 </select>
             </div>
-        </div>
 
-<div class="room-row milazzo">
+            <div class="room-row milazzo">
                 <div class="room-name">Camera 4</div>
                 <select id="config-4" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
@@ -381,13 +428,15 @@
                 <select id="extra-beds-4" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
                     <option value="1">1 Letto</option>
-                    <option value="2">2 Letto</option>
+                    <option value="2">2 Letti</option>
+                    <option value="3">3 Letti</option>
                 </select>
             </div>
         </div>
 
         <div class="buttons">
-            <button onclick="generatePDF()">Genera Lista PDF</button>
+            <button class="pdf-btn" onclick="generatePDF()">Genera Lista PDF</button>
+            <button class="image-btn" onclick="generateImage()">Genera Immagine PNG</button>
         </div>
 
         <div class="status" id="statusMessage"></div>
@@ -405,8 +454,8 @@
             '202': { config: '', operation: '', extraBeds: '', section: 'Archi' },
             '203': { config: '', operation: '', extraBeds: '', section: 'Archi' },
             '1': { config: '', operation: '', extraBeds: '', section: 'Milazzo' },
-            '2': { config: '', operation: '', extraBeds: '', section: 'Milazzo' }
-            '3': { config: '', operation: '', extraBeds: '', section: 'Milazzo' }
+            '2': { config: '', operation: '', extraBeds: '', section: 'Milazzo' },
+            '3': { config: '', operation: '', extraBeds: '', section: 'Milazzo' },
             '4': { config: '', operation: '', extraBeds: '', section: 'Milazzo' }
         };
 
@@ -414,7 +463,8 @@
             for (let room in roomData) {
                 roomData[room].config = document.getElementById(`config-${room}`).value;
                 roomData[room].operation = document.getElementById(`operation-${room}`).value;
-                roomData[room].extraBeds = document.getElementById(`extra-beds-${room}`).value;
+                const extraBedsElement = document.getElementById(`extra-beds-${room}`);
+                roomData[room].extraBeds = extraBedsElement ? extraBedsElement.value : '';
             }
         }
 
@@ -448,18 +498,26 @@
             const fileName = `lista-attivita-${dateStr.replace(/\//g, '-')}.pdf`;
 
             const doc = new jsPDF();
-            doc.setFont("Inter", "normal", 700); // Usa Inter se disponibile, fallback su Helvetica
-            doc.setFontSize(16);
-            doc.setTextColor(26, 32, 44); // #1a202c
-            doc.text("ELENCO COSE DA FARE", 20, 20);
-            doc.setFontSize(12);
-            doc.setTextColor(45, 55, 72); // #2d3748
-            doc.text(`Generato il ${dateStr} alle ${timeStr}`, 20, 30);
-            doc.setLineWidth(0.5);
-            doc.setDrawColor(226, 232, 240); // #e2e8f0
-            doc.line(20, 35, 190, 35); // Linea decorativa
+            const pageHeight = doc.internal.pageSize.height;
+            const margin = 20;
+            let yPosition = margin;
 
-            let yPosition = 45;
+            doc.setFont("Inter", "normal", 700);
+            doc.setFontSize(16);
+            doc.setTextColor(26, 32, 44);
+            doc.text("ELENCO COSE DA FARE", margin, yPosition);
+            yPosition += 10;
+
+            doc.setFontSize(12);
+            doc.setTextColor(45, 55, 72);
+            doc.text(`Generato il ${dateStr} alle ${timeStr}`, margin, yPosition);
+            yPosition += 10;
+
+            doc.setLineWidth(0.5);
+            doc.setDrawColor(226, 232, 240);
+            doc.line(margin, yPosition, 190, yPosition);
+            yPosition += 10;
+
             const sections = { 'Archi': [], 'Milazzo': [] };
             selectedRooms.forEach(room => {
                 sections[room.section].push(room);
@@ -467,43 +525,90 @@
 
             for (let section in sections) {
                 if (sections[section].length > 0) {
+                    if (yPosition > pageHeight - 30) {
+                        doc.addPage();
+                        yPosition = margin;
+                    }
+
                     doc.setFontSize(14);
                     doc.setFont("Inter", "normal", 600);
                     doc.setTextColor(section === 'Archi' ? '#e53e3e' : '#2b6b74');
-                    doc.text(section, 20, yPosition);
+                    doc.text(section, margin, yPosition);
                     doc.setDrawColor(section === 'Archi' ? '#e53e3e' : '#2b6b74');
-                    doc.line(15, yPosition - 2, 15, yPosition + 2); // Bordo verticale come nella pagina
+                    doc.line(margin - 5, yPosition - 2, margin - 5, yPosition + 2);
                     yPosition += 10;
 
                     sections[section].forEach((room, index) => {
+                        if (yPosition > pageHeight - 30) {
+                            doc.addPage();
+                            yPosition = margin;
+                        }
+
                         const configText = room.config === 'matrimoniale' ? 'Matrimoniale' : 'Due Lettini';
                         const operationText = room.operation === 'pulizia-completa' ? 'Pulizia Completa' : 'Cambio Spugne e Bagni';
                         const extraBedsText = room.extraBeds ? `${room.extraBeds} Letto/i Aggiuntivo/i` : '';
                         const text = `${index + 1}. Camera ${room.room}: ${configText}, ${operationText}${extraBedsText ? `, ${extraBedsText}` : ''}`;
                         doc.setFontSize(12);
                         doc.setFont("Inter", "normal", 400);
-                        doc.setTextColor(45, 55, 72); // #2d3748
-                        doc.text(text, 20, yPosition);
+                        doc.setTextColor(45, 55, 72);
+                        doc.text(text, margin, yPosition);
                         doc.setDrawColor(section === 'Archi' ? '#e53e3e' : '#2b6b74');
-                        doc.line(15, yPosition - 4, 15, yPosition + 2); // Bordo accento per riga
+                        doc.line(margin - 5, yPosition - 4, margin - 5, yPosition + 2);
                         yPosition += 10;
                     });
                     yPosition += 5;
                 }
             }
 
+            if (yPosition > pageHeight - 30) {
+                doc.addPage();
+                yPosition = margin;
+            }
+
             doc.setLineWidth(0.5);
-            doc.setDrawColor(226, 232, 240); // #e2e8f0
-            doc.line(20, yPosition, 190, yPosition);
+            doc.setDrawColor(226, 232, 240);
+            doc.line(margin, yPosition, 190, yPosition);
+            yPosition += 10;
+
             doc.setFontSize(12);
-            doc.setTextColor(45, 55, 72); // #2d3748
-            doc.text(`Totale camere da gestire: ${selectedRooms.length}`, 20, yPosition + 10);
+            doc.setTextColor(45, 55, 72);
+            doc.text(`Totale camere da gestire: ${selectedRooms.length}`, margin, yPosition);
+            yPosition += 10;
+
             doc.setFontSize(10);
             doc.setTextColor(100, 100, 100);
-            doc.text(`Hotel Management System - Lista Attività`, 20, yPosition + 20);
+            doc.text(`Hotel Management System - Lista Attività`, margin, yPosition);
 
             doc.save(fileName);
             showStatus(`Lista attività (PDF) generata con ${selectedRooms.length} camera/e!`, 'success');
+        }
+
+        function generateImage() {
+            const container = document.querySelector('.container');
+            const selectedRooms = getSelectedRooms();
+
+            if (selectedRooms.length === 0) {
+                showStatus('Seleziona almeno una camera con configurazione e operazione', 'error');
+                return;
+            }
+
+            html2canvas(container, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: null
+            }).then(canvas => {
+                const image = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('it-IT').replace(/\//g, '-');
+                link.href = image;
+                link.download = `lista-attivita-${dateStr}.png`;
+                link.click();
+                showStatus(`Immagine PNG generata con ${selectedRooms.length} camera/e!`, 'success');
+            }).catch(error => {
+                console.error('Errore durante la generazione dell\'immagine:', error);
+                showStatus('Errore durante la generazione dell\'immagine', 'error');
+            });
         }
 
         function showStatus(message, type) {

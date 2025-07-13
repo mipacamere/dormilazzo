@@ -158,6 +158,15 @@
             border: 1px solid #feb2b2;
         }
 
+        .temp-container {
+            position: absolute;
+            left: -9999px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -401,6 +410,7 @@
                     <option value="lettini">Due Lettini</option>
                 </select>
                 <select id="operation-3" onchange="updateData()">
+ Fifteen thousand one hundred sixty-six
                     <option value="">Seleziona operazione...</option>
                     <option value="pulizia-completa">Pulizia Completa</option>
                     <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
@@ -584,7 +594,6 @@
         }
 
         function generateImage() {
-            const container = document.querySelector('.container');
             const selectedRooms = getSelectedRooms();
 
             if (selectedRooms.length === 0) {
@@ -592,7 +601,63 @@
                 return;
             }
 
-            html2canvas(container, {
+            // Crea un contenitore temporaneo
+            const tempContainer = document.createElement('div');
+            tempContainer.className = 'temp-container';
+            document.body.appendChild(tempContainer);
+
+            // Raggruppa le camere per sezione
+            const sections = { 'Archi': [], 'Milazzo': [] };
+            selectedRooms.forEach(room => {
+                sections[room.section].push(room);
+            });
+
+            // Aggiungi le sezioni e le righe selezionate
+            for (let section in sections) {
+                if (sections[section].length > 0) {
+                    // Aggiungi il titolo della sezione
+                    const sectionHeader = document.createElement('h2');
+                    sectionHeader.className = section.toLowerCase();
+                    sectionHeader.textContent = section;
+                    tempContainer.appendChild(sectionHeader);
+
+                    // Aggiungi le righe delle camere
+                    sections[section].forEach(room => {
+                        const roomRow = document.createElement('div');
+                        roomRow.className = `room-row ${section.toLowerCase()}`;
+
+                        const roomName = document.createElement('div');
+                        roomName.className = 'room-name';
+                        roomName.textContent = `Camera ${room.room}`;
+                        roomRow.appendChild(roomName);
+
+                        const configText = document.createElement('div');
+                        configText.textContent = room.config === 'matrimoniale' ? 'Matrimoniale' : 'Due Lettini';
+                        configText.style.padding = '10px 15px';
+                        configText.style.flex = '1';
+                        roomRow.appendChild(configText);
+
+                        const operationText = document.createElement('div');
+                        operationText.textContent = room.operation === 'pulizia-completa' ? 'Pulizia Completa' : 'Cambio Spugne e Bagni';
+                        operationText.style.padding = '10px 15px';
+                        operationText.style.flex = '1';
+                        roomRow.appendChild(operationText);
+
+                        if (room.extraBeds) {
+                            const extraBedsText = document.createElement('div');
+                            extraBedsText.textContent = `${room.extraBeds} Letto/i Aggiuntivo/i`;
+                            extraBedsText.style.padding = '10px 15px';
+                            extraBedsText.style.flex = '1';
+                            roomRow.appendChild(extraBedsText);
+                        }
+
+                        tempContainer.appendChild(roomRow);
+                    });
+                }
+            }
+
+            // Genera l'immagine con html2canvas
+            html2canvas(tempContainer, {
                 scale: 2,
                 useCORS: true,
                 backgroundColor: null
@@ -608,6 +673,9 @@
             }).catch(error => {
                 console.error('Errore durante la generazione dell\'immagine:', error);
                 showStatus('Errore durante la generazione dell\'immagine', 'error');
+            }).finally(() => {
+                // Rimuovi il contenitore temporaneo
+                document.body.removeChild(tempContainer);
             });
         }
 

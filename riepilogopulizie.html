@@ -6,6 +6,7 @@
     <title>Gestione Camere Hotel</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         * {
             margin: 0;
@@ -101,6 +102,20 @@
             box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
         }
 
+        /* Stile per le icone nei menu a tendina */
+        select option[data-icon]::before {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            content: attr(data-icon);
+            margin-right: 8px;
+        }
+
+        select option {
+            display: flex;
+            align-items: center;
+            padding-left: 25px;
+        }
+
         .buttons {
             text-align: center;
             margin-top: 40px;
@@ -167,6 +182,15 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
 
+        /* Stile per le icone nel PNG */
+        .icon {
+            margin-right: 8px;
+            font-size: 14px;
+            display: inline-block;
+            width: 20px;
+            text-align: center;
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -203,13 +227,19 @@
                 <div class="room-name">Camera 101</div>
                 <select id="config-101" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
-                    <option value="matrimoniale">Matrimoniale</option>
-                    <option value="lettini">Due Lettini</option>
+                    <option value="matrimoniale" data-icon="">Matrimoniale</option>
+                    <option value="lettini" data-icon=" ">Due Lettini</option>
+                    <option value="matrimoniale-singola" data-icon="">Matrimoniale Uso Singola</option>
                 </select>
                 <select id="operation-101" onchange="updateData()">
                     <option value="">Seleziona operazione...</option>
-                    <option value="pulizia-completa">Pulizia Completa</option>
-                    <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
+                    <option value="pulizia-completa" data-icon="🧹">Pulizia Completa</option>
+                    <option value="cambio-spugne-bagno" data-icon="🧼">Cambio Spugne e Bagni</option>
+                    <option value="cambio-lenzuola-spugne-pulizia" data-icon="🛏️">Cambio Lenzuola, Spugne e Pulizia</option>
+                </select>
+                <select id="extra-beds-101" onchange="updateData()">
+                    <option value="">Letti aggiuntivi...</option>
+                    <option value="1" data-icon="">1 Letto</option>
                 </select>
             </div>
 
@@ -217,13 +247,19 @@
                 <div class="room-name">Camera 102</div>
                 <select id="config-102" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
-                    <option value="matrimoniale">Matrimoniale</option>
-                    <option value="lettini">Due Lettini</option>
+                    <option value="matrimoniale" data-icon="">Matrimoniale</option>
+                    <option value="lettini" data-icon=" ">Due Lettini</option>
+                    <option value="matrimoniale-singola" data-icon="">Matrimoniale Uso Singola</option>
                 </select>
                 <select id="operation-102" onchange="updateData()">
                     <option value="">Seleziona operazione...</option>
-                    <option value="pulizia-completa">Pulizia Completa</option>
-                    <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
+                    <option value="pulizia-completa" data-icon="🧹">Pulizia Completa</option>
+                    <option value="cambio-spugne-bagno" data-icon="🧼">Cambio Spugne e Bagni</option>
+                    <option value="cambio-lenzuola-spugne-pulizia" data-icon="🛏️">Cambio Lenzuola, Spugne e Pulizia</option>
+                </select>
+                <select id="extra-beds-102" onchange="updateData()">
+                    <option value="">Letti aggiuntivi...</option>
+                    <option value="1" data-icon="">1 Letto</option>
                 </select>
             </div>
 
@@ -231,17 +267,19 @@
                 <div class="room-name">Camera 103</div>
                 <select id="config-103" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
-                    <option value="matrimoniale">Matrimoniale</option>
-                    <option value="lettini">Due Lettini</option>
+                    <option value="matrimoniale" data-icon="">Matrimoniale</option>
+                    <option value="lettini" data-icon=" ">Due Lettini</option>
+                    <option value="matrimoniale-singola" data-icon="">Matrimoniale Uso Singola</option>
                 </select>
                 <select id="operation-103" onchange="updateData()">
                     <option value="">Seleziona operazione...</option>
-                    <option value="pulizia-completa">Pulizia Completa</option>
-                    <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
+                    <option value="pulizia-completa" data-icon="🧹">Pulizia Completa</option>
+                    <option value="cambio-spugne-bagno" data-icon="🧼">Cambio Spugne e Bagni</option>
+                    <option value="cambio-lenzuola-spugne-pulizia" data-icon="🛏️">Cambio Lenzuola, Spugne e Pulizia</option>
                 </select>
                 <select id="extra-beds-103" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
-                    <option value="1">1 Letto</option>                  
+                    <option value="1" data-icon="">1 Letto</option>
                 </select>
             </div>
 
@@ -249,13 +287,19 @@
                 <div class="room-name">Camera 104</div>
                 <select id="config-104" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
-                    <option value="matrimoniale">Matrimoniale</option>
-                    <option value="lettini">Due Lettini</option>
+                    <option value="matrimoniale" data-icon="">Matrimoniale</option>
+                    <option value="lettini" data-icon=" ">Due Lettini</option>
+                    <option value="matrimoniale-singola" data-icon="">Matrimoniale Uso Singola</option>
                 </select>
                 <select id="operation-104" onchange="updateData()">
                     <option value="">Seleziona operazione...</option>
-                    <option value="pulizia-completa">Pulizia Completa</option>
-                    <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
+                    <option value="pulizia-completa" data-icon="🧹">Pulizia Completa</option>
+                    <option value="cambio-spugne-bagno" data-icon="🧼">Cambio Spugne e Bagni</option>
+                    <option value="cambio-lenzuola-spugne-pulizia" data-icon="🛏️">Cambio Lenzuola, Spugne e Pulizia</option>
+                </select>
+                <select id="extra-beds-104" onchange="updateData()">
+                    <option value="">Letti aggiuntivi...</option>
+                    <option value="1" data-icon="">1 Letto</option>
                 </select>
             </div>
 
@@ -263,18 +307,20 @@
                 <div class="room-name">Camera 105</div>
                 <select id="config-105" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
-                    <option value="matrimoniale">Matrimoniale</option>
-                    <option value="lettini">Due Lettini</option>
+                    <option value="matrimoniale" data-icon="">Matrimoniale</option>
+                    <option value="lettini" data-icon=" ">Due Lettini</option>
+                    <option value="matrimoniale-singola" data-icon="">Matrimoniale Uso Singola</option>
                 </select>
                 <select id="operation-105" onchange="updateData()">
                     <option value="">Seleziona operazione...</option>
-                    <option value="pulizia-completa">Pulizia Completa</option>
-                    <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
+                    <option value="pulizia-completa" data-icon="🧹">Pulizia Completa</option>
+                    <option value="cambio-spugne-bagno" data-icon="🧼">Cambio Spugne e Bagni</option>
+                    <option value="cambio-lenzuola-spugne-pulizia" data-icon="🛏️">Cambio Lenzuola, Spugne e Pulizia</option>
                 </select>
                 <select id="extra-beds-105" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
-                    <option value="1">1 Letto</option>
-                    <option value="2">2 Letti</option>
+                    <option value="1" data-icon="">1 Letto</option>
+                    <option value="2" data-icon=" ">2 Letti</option>
                 </select>
             </div>
 
@@ -282,17 +328,19 @@
                 <div class="room-name">Camera 201</div>
                 <select id="config-201" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
-                    <option value="matrimoniale">Matrimoniale</option>
-                    <option value="lettini">Due Lettini</option>
+                    <option value="matrimoniale" data-icon="">Matrimoniale</option>
+                    <option value="lettini" data-icon=" ">Due Lettini</option>
+                    <option value="matrimoniale-singola" data-icon="">Matrimoniale Uso Singola</option>
                 </select>
                 <select id="operation-201" onchange="updateData()">
                     <option value="">Seleziona operazione...</option>
-                    <option value="pulizia-completa">Pulizia Completa</option>
-                    <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
+                    <option value="pulizia-completa" data-icon="🧹">Pulizia Completa</option>
+                    <option value="cambio-spugne-bagno" data-icon="🧼">Cambio Spugne e Bagni</option>
+                    <option value="cambio-lenzuola-spugne-pulizia" data-icon="🛏️">Cambio Lenzuola, Spugne e Pulizia</option>
                 </select>
                 <select id="extra-beds-201" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
-                    <option value="1">1 Letto</option>
+                    <option value="1" data-icon="">1 Letto</option>
                 </select>
             </div>
 
@@ -300,19 +348,21 @@
                 <div class="room-name">Camera 202</div>
                 <select id="config-202" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
-                    <option value="matrimoniale">Matrimoniale</option>
-                    <option value="lettini">Due Lettini</option>
+                    <option value="matrimoniale" data-icon="">Matrimoniale</option>
+                    <option value="lettini" data-icon=" ">Due Lettini</option>
+                    <option value="matrimoniale-singola" data-icon="">Matrimoniale Uso Singola</option>
                 </select>
                 <select id="operation-202" onchange="updateData()">
                     <option value="">Seleziona operazione...</option>
-                    <option value="pulizia-completa">Pulizia Completa</option>
-                    <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
+                    <option value="pulizia-completa" data-icon="🧹">Pulizia Completa</option>
+                    <option value="cambio-spugne-bagno" data-icon="🧼">Cambio Spugne e Bagni</option>
+                    <option value="cambio-lenzuola-spugne-pulizia" data-icon="🛏️">Cambio Lenzuola, Spugne e Pulizia</option>
                 </select>
                 <select id="extra-beds-202" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
-                    <option value="1">1 Letto</option>
-                    <option value="2">2 Letti</option>
-                    <option value="3">3 Letti</option>
+                    <option value="1" data-icon="">1 Letto</option>
+                    <option value="2" data-icon=" ">2 Letti</option>
+                    <option value="3" data-icon="  ">3 Letti</option>
                 </select>
             </div>
 
@@ -320,18 +370,20 @@
                 <div class="room-name">Camera 203</div>
                 <select id="config-203" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
-                    <option value="matrimoniale">Matrimoniale</option>
-                    <option value="lettini">Due Lettini</option>
+                    <option value="matrimoniale" data-icon="">Matrimoniale</option>
+                    <option value="lettini" data-icon=" ">Due Lettini</option>
+                    <option value="matrimoniale-singola" data-icon="">Matrimoniale Uso Singola</option>
                 </select>
                 <select id="operation-203" onchange="updateData()">
                     <option value="">Seleziona operazione...</option>
-                    <option value="pulizia-completa">Pulizia Completa</option>
-                    <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
+                    <option value="pulizia-completa" data-icon="🧹">Pulizia Completa</option>
+                    <option value="cambio-spugne-bagno" data-icon="🧼">Cambio Spugne e Bagni</option>
+                    <option value="cambio-lenzuola-spugne-pulizia" data-icon="🛏️">Cambio Lenzuola, Spugne e Pulizia</option>
                 </select>
                 <select id="extra-beds-203" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
-                    <option value="1">1 Letto</option>
-                    <option value="2">2 Letti</option>
+                    <option value="1" data-icon="">1 Letto</option>
+                    <option value="2" data-icon=" ">2 Letti</option>
                 </select>
             </div>
         </div>
@@ -342,17 +394,19 @@
                 <div class="room-name">Camera 1</div>
                 <select id="config-1" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
-                    <option value="matrimoniale">Matrimoniale</option>
-                    <option value="lettini">Due Lettini</option>
+                    <option value="matrimoniale" data-icon="">Matrimoniale</option>
+                    <option value="lettini" data-icon=" ">Due Lettini</option>
+                    <option value="matrimoniale-singola" data-icon="">Matrimoniale Uso Singola</option>
                 </select>
                 <select id="operation-1" onchange="updateData()">
                     <option value="">Seleziona operazione...</option>
-                    <option value="pulizia-completa">Pulizia Completa</option>
-                    <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
+                    <option value="pulizia-completa" data-icon="🧹">Pulizia Completa</option>
+                    <option value="cambio-spugne-bagno" data-icon="🧼">Cambio Spugne e Bagni</option>
+                    <option value="cambio-lenzuola-spugne-pulizia" data-icon="🛏️">Cambio Lenzuola, Spugne e Pulizia</option>
                 </select>
                 <select id="extra-beds-1" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
-                    <option value="1">1 Letto</option>
+                    <option value="1" data-icon="">1 Letto</option>
                 </select>
             </div>
 
@@ -360,17 +414,19 @@
                 <div class="room-name">Camera 2</div>
                 <select id="config-2" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
-                    <option value="matrimoniale">Matrimoniale</option>
-                    <option value="lettini">Due Lettini</option>
+                    <option value="matrimoniale" data-icon="">Matrimoniale</option>
+                    <option value="lettini" data-icon=" ">Due Lettini</option>
+                    <option value="matrimoniale-singola" data-icon="">Matrimoniale Uso Singola</option>
                 </select>
                 <select id="operation-2" onchange="updateData()">
                     <option value="">Seleziona operazione...</option>
-                    <option value="pulizia-completa">Pulizia Completa</option>
-                    <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
+                    <option value="pulizia-completa" data-icon="🧹">Pulizia Completa</option>
+                    <option value="cambio-spugne-bagno" data-icon="🧼">Cambio Spugne e Bagni</option>
+                    <option value="cambio-lenzuola-spugne-pulizia" data-icon="🛏️">Cambio Lenzuola, Spugne e Pulizia</option>
                 </select>
                 <select id="extra-beds-2" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
-                    <option value="1">1 Letto</option>
+                    <option value="1" data-icon="">1 Letto</option>
                 </select>
             </div>
 
@@ -378,18 +434,19 @@
                 <div class="room-name">Camera 3</div>
                 <select id="config-3" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
-                    <option value="matrimoniale">Matrimoniale</option>
-                    <option value="lettini">Due Lettini</option>
+                    <option value="matrimoniale" data-icon="">Matrimoniale</option>
+                    <option value="lettini" data-icon=" ">Due Lettini</option>
+                    <option value="matrimoniale-singola" data-icon="">Matrimoniale Uso Singola</option>
                 </select>
                 <select id="operation-3" onchange="updateData()">
- Fifteen thousand one hundred sixty-six
                     <option value="">Seleziona operazione...</option>
-                    <option value="pulizia-completa">Pulizia Completa</option>
-                    <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
+                    <option value="pulizia-completa" data-icon="🧹">Pulizia Completa</option>
+                    <option value="cambio-spugne-bagno" data-icon="🧼">Cambio Spugne e Bagni</option>
+                    <option value="cambio-lenzuola-spugne-pulizia" data-icon="🛏️">Cambio Lenzuola, Spugne e Pulizia</option>
                 </select>
                 <select id="extra-beds-3" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
-                    <option value="1">1 Letto</option>
+                    <option value="1" data-icon="">1 Letto</option>
                 </select>
             </div>
 
@@ -397,18 +454,20 @@
                 <div class="room-name">Camera 4</div>
                 <select id="config-4" onchange="updateData()">
                     <option value="">Seleziona configurazione...</option>
-                    <option value="matrimoniale">Matrimoniale</option>
-                    <option value="lettini">Due Lettini</option>
+                    <option value="matrimoniale" data-icon="">Matrimoniale</option>
+                    <option value="lettini" data-icon=" ">Due Lettini</option>
+                    <option value="matrimoniale-singola" data-icon="">Matrimoniale Uso Singola</option>
                 </select>
                 <select id="operation-4" onchange="updateData()">
                     <option value="">Seleziona operazione...</option>
-                    <option value="pulizia-completa">Pulizia Completa</option>
-                    <option value="cambio-spugne-bagno">Cambio Spugne e Bagni</option>
+                    <option value="pulizia-completa" data-icon="🧹">Pulizia Completa</option>
+                    <option value="cambio-spugne-bagno" data-icon="🧼">Cambio Spugne e Bagni</option>
+                    <option value="cambio-lenzuola-spugne-pulizia" data-icon="🛏️">Cambio Lenzuola, Spugne e Pulizia</option>
                 </select>
                 <select id="extra-beds-4" onchange="updateData()">
                     <option value="">Letti aggiuntivi...</option>
-                    <option value="1">1 Letto</option>
-                    <option value="2">2 Letti</option>
+                    <option value="1" data-icon="">1 Letto</option>
+                    <option value="2" data-icon=" ">2 Letti</option>
                 </select>
             </div>
         </div>
@@ -523,10 +582,18 @@
                             yPosition = margin;
                         }
 
-                        const configText = room.config === 'matrimoniale' ? 'Matrimoniale' : 'Due Lettini';
-                        const operationText = room.operation === 'pulizia-completa' ? 'Pulizia Completa' : 'Cambio Spugne e Bagni';
-                        const extraBedsText = room.extraBeds ? `${room.extraBeds} Letto/i Aggiuntivo/i` : '';
-                        const text = `${index + 1}. Camera ${room.room}: ${configText}, ${operationText}${extraBedsText ? `, ${extraBedsText}` : ''}`;
+                        const configMap = {
+                            'matrimoniale': '🛏️ Matrimoniale',
+                            'lettini': '🛏️🛏️ Due Lettini',
+                            'matrimoniale-singola': '👤 Matrimoniale Uso Singola'
+                        };
+                        const operationMap = {
+                            'pulizia-completa': '🧹 Pulizia Completa',
+                            'cambio-spugne-bagno': '🧼 Cambio Spugne e Bagni',
+                            'cambio-lenzuola-spugne-pulizia': '🛏️🧼 Cambio Lenzuola, Spugne e Pulizia'
+                        };
+                        const extraBedsText = room.extraBeds ? `🛏️ ${room.extraBeds} Letto/i Aggiuntivo/i` : '';
+                        const text = `${index + 1}. Camera ${room.room}: ${configMap[room.config] || room.config}, ${operationMap[room.operation] || room.operation}${extraBedsText ? `, ${extraBedsText}` : ''}`;
                         doc.setFontSize(12);
                         doc.setFont("Inter", "normal", 400);
                         doc.setTextColor(45, 55, 72);
@@ -570,27 +637,22 @@
                 return;
             }
 
-            // Crea un contenitore temporaneo
             const tempContainer = document.createElement('div');
             tempContainer.className = 'temp-container';
             document.body.appendChild(tempContainer);
 
-            // Raggruppa le camere per sezione
             const sections = { 'Archi': [], 'Milazzo': [] };
             selectedRooms.forEach(room => {
                 sections[room.section].push(room);
             });
 
-            // Aggiungi le sezioni e le righe selezionate
             for (let section in sections) {
                 if (sections[section].length > 0) {
-                    // Aggiungi il titolo della sezione
                     const sectionHeader = document.createElement('h2');
                     sectionHeader.className = section.toLowerCase();
                     sectionHeader.textContent = section;
                     tempContainer.appendChild(sectionHeader);
 
-                    // Aggiungi le righe delle camere
                     sections[section].forEach(room => {
                         const roomRow = document.createElement('div');
                         roomRow.className = `room-row ${section.toLowerCase()}`;
@@ -601,20 +663,31 @@
                         roomRow.appendChild(roomName);
 
                         const configText = document.createElement('div');
-                        configText.textContent = room.config === 'matrimoniale' ? 'Matrimoniale' : 'Due Lettini';
+                        const configMap = {
+                            'matrimoniale': '<i class="fas fa-bed icon"></i> Matrimoniale',
+                            'lettini': '<i class="fas fa-bed icon"></i><i class="fas fa-bed icon"></i> Due Lettini',
+                            'matrimoniale-singola': '<i class="fas fa-user icon"></i> Matrimoniale Uso Singola'
+                        };
+                        configText.innerHTML = configMap[room.config] || room.config;
                         configText.style.padding = '10px 15px';
                         configText.style.flex = '1';
                         roomRow.appendChild(configText);
 
                         const operationText = document.createElement('div');
-                        operationText.textContent = room.operation === 'pulizia-completa' ? 'Pulizia Completa' : 'Cambio Spugne e Bagni';
+                        const operationMap = {
+                            'pulizia-completa': '<i class="fas fa-broom icon"></i> Pulizia Completa',
+                            'cambio-spugne-bagno': '<i class="fas fa-soap icon"></i> Cambio Spugne e Bagni',
+                            'cambio-lenzuola-spugne-pulizia': '<i class="fas fa-bed icon"></i><i class="fas fa-soap icon"></i> Cambio Lenzuola, Spugne e Pulizia'
+                        };
+                        operationText.innerHTML = operationMap[room.operation] || room.operation;
                         operationText.style.padding = '10px 15px';
                         operationText.style.flex = '1';
                         roomRow.appendChild(operationText);
 
                         if (room.extraBeds) {
                             const extraBedsText = document.createElement('div');
-                            extraBedsText.textContent = `${room.extraBeds} Letto/i Aggiuntivo/i`;
+                            const bedIcons = Array(parseInt(room.extraBeds)).fill('<i class="fas fa-bed icon"></i>').join('');
+                            extraBedsText.innerHTML = `${bedIcons} ${room.extraBeds} Letto/i Aggiuntivo/i`;
                             extraBedsText.style.padding = '10px 15px';
                             extraBedsText.style.flex = '1';
                             roomRow.appendChild(extraBedsText);
@@ -625,7 +698,6 @@
                 }
             }
 
-            // Genera l'immagine con html2canvas
             html2canvas(tempContainer, {
                 scale: 2,
                 useCORS: true,
@@ -643,7 +715,6 @@
                 console.error('Errore durante la generazione dell\'immagine:', error);
                 showStatus('Errore durante la generazione dell\'immagine', 'error');
             }).finally(() => {
-                // Rimuovi il contenitore temporaneo
                 document.body.removeChild(tempContainer);
             });
         }

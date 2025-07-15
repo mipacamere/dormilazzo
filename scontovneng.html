@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate your discount</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #2d3748;
+        }
+
+        .container {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 550px;
+            width: 100%;
+            border: 1px solid #e2e8f0;
+        }
+
+        .logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 2.4em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .input-group {
+            margin-bottom: 35px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: #4a5568;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 18px 25px;
+            font-size: 1.4em;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: #f7fafc;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .discount-button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 20px 45px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            margin-bottom: 35px;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+        }
+
+        .discount-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+
+        .discount-button:active {
+            transform: translateY(-1px);
+        }
+
+        .discount-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .offer-display {
+            background: linear-gradient(135deg, #f8fafc, #edf2f7);
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 40px 30px;
+            margin: 30px 0;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .offer-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #2563eb;
+        }
+
+        .price-display {
+            font-size: 2.8em;
+            font-weight: 700;
+            color: #2d3748;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .spinning {
+            animation: gentleSpin 1.5s ease-in-out;
+        }
+
+        @keyframes gentleSpin {
+            0% { opacity: 0.7; transform: scale(0.95); }
+            50% { opacity: 0.9; transform: scale(1.02); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .final-price {
+            color: #48bb78;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+        }
+
+        .final-price:hover {
+            transform: scale(1.05);
+            color: #38a169;
+        }
+
+        .discount-info {
+            background: #16a34a;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .original-price {
+            color: #a0aec0;
+            text-decoration: line-through;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .contact-info {
+            background: rgba(37, 99, 235, 0.1);
+            border-left: 4px solid #2563eb;
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 20px;
+            font-size: 1em;
+            color: #2d3748;
+        }
+
+        .euro-symbol {
+            font-weight: 700;
+            color: #ed8936;
+        }
+
+        .savings-badge {
+            background: #e53e3e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        .contact-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            background: white;
+            color: #2d3748;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            min-width: 120px;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .contact-btn.whatsapp:hover {
+            background: #25d366;
+            color: white;
+            border-color: #25d366;
+        }
+
+        .contact-btn.phone:hover {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .contact-btn.email:hover {
+            background: #e53e3e;
+            color: white;
+            border-color: #e53e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">        
+        <img src="https://www.dropbox.com/scl/fi/twyc4rahl03g0u8v1dyqa/logosample3.png?rlkey=tna8wqno4asvowhzla0oaklon&st=2mf0clsl&raw=1" alt="Hotel Logo" class="logo">
+        <h1>Calculate your discount</h1>
+        <p class="subtitle">Enter the cost you would pay for your booking and see how much you can save</p>
+        
+        <div class="input-group">
+            <label for="originalPrice">Booking amount:</label>
+            <input type="number" id="originalPrice" placeholder="0" step="1" min="0">
+        </div>
+        
+        <button class="discount-button" onclick="revealOffer()">
+            Calculate my discount
+        </button>
+        
+        <div class="offer-display" id="offerDisplay">
+            <div class="original-price" id="originalPriceDisplay"></div>
+            <div class="price-display" id="priceDisplay">
+                <span class="euro-symbol">€</span> 0
+            </div>
+            <div class="savings-badge" id="savingsBadge">
+                You save <span class="euro-symbol">€</span><span id="savedAmount">0</span>
+            </div>
+        </div>
+        
+        <div class="discount-info" id="discountInfo" style="display: none;">
+            <strong>Special Offer Reserved for those who already have a valid booking at the property</strong><br>
+            (Price valid for direct bookings)
+        </div>
+        
+        <div class="contact-info" id="contactInfo" style="display: none;">
+            <strong>📞 Get your discount now - Choose how to contact us:</strong><br>
+            <div class="contact-options">
+                <a href="#" id="whatsappLink" class="contact-btn whatsapp">📱 WhatsApp</a>
+                <a href="#" id="phoneLink" class="contact-btn phone">📞 Call</a>
+                <a href="#" id="emailLink" class="contact-btn email">✉️ Email</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function revealOffer() {
+            const originalPrice = parseInt(document.getElementById('originalPrice').value);
+            
+            if (!originalPrice || originalPrice <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            const button = document.querySelector('.discount-button');
+            const offerDisplay = document.getElementById('offerDisplay');
+            const priceDisplay = document.getElementById('priceDisplay');
+            const discountInfo = document.getElementById('discountInfo');
+            const contactInfo = document.getElementById('contactInfo');
+            const originalPriceDisplay = document.getElementById('originalPriceDisplay');
+            const savedAmount = document.getElementById('savedAmount');
+            const savingsBadge = document.getElementById('savingsBadge');
+            
+            // Disable button during animation
+            button.disabled = true;
+            button.textContent = 'Processing...';
+            
+            // Show offer
+            offerDisplay.style.display = 'block';
+            
+            // Elegant animation
+            priceDisplay.classList.add('spinning');
+            
+            // Simulate processing
+            setTimeout(() => {
+                // Calculate final price with 16% discount rounded up
+                const discountedPrice = originalPrice * 0.84;
+                const finalPrice = Math.ceil(discountedPrice);
+                const savings = originalPrice - finalPrice;
+                
+                // Remove animation
+                priceDisplay.classList.remove('spinning');
+                
+                // Show prices
+                originalPriceDisplay.textContent = `Original price: €${originalPrice}`;
+                priceDisplay.innerHTML = `<span class="euro-symbol">€</span> ${finalPrice}`;
+                
+                savedAmount.textContent = savings;
+                
+                // Set contact links
+                const whatsappLink = document.getElementById('whatsappLink');
+                const phoneLink = document.getElementById('phoneLink');
+                const emailLink = document.getElementById('emailLink');
+                
+                whatsappLink.href = `https://wa.me/393339201524?text=Hello! I would like to get the best rate for my booking at MiPA, I calculated the discount and my special price is €${finalPrice}`;
+                phoneLink.href = `tel:+393339201524`;
+                emailLink.href = `mailto:info.vianazionale@gmail.com?subject=Special Offer Booking&body=Hello! I would like to get the best rate for my booking at MiPA, I calculated the discount and my special price is €${finalPrice}`;
+                
+                whatsappLink.target = '_blank';
+                emailLink.target = '_blank';
+                
+                // Show information
+                discountInfo.style.display = 'block';
+                contactInfo.style.display = 'block';
+                
+                // Re-enable button
+                button.disabled = false;
+                button.textContent = 'Calculate my discount';
+                
+            }, 1500);
+        }
+        
+        // Allow pressing Enter to trigger offer
+        document.getElementById('originalPrice').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                revealOffer();
+            }
+        });
+    </script>
+</body>
+</html>

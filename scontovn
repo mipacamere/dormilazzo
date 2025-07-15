@@ -291,8 +291,8 @@
         </div>
         
         <div class="discount-info" id="discountInfo" style="display: none;">
-            <strong>Offerta Speciale Riservata</strong><br>
-            Prezzo valido per prenotazioni immediate
+            <strong>Offerta Speciale Riservata a chi ha già una prenotazione valida presso la struttura</strong><br>
+            (Prezzo valido per prenotazioni dirette)
         </div>
         
         <div class="contact-info" id="contactInfo" style="display: none;">
@@ -354,9 +354,9 @@
                 const phoneLink = document.getElementById('phoneLink');
                 const emailLink = document.getElementById('emailLink');
                 
-                whatsappLink.href = `https://wa.me/393339201524?text=Ciao! Vorrei ottenere al Via Nazionale,per la mia attuale prenotazione il prezzo speciale di €${finalPrice}`;
-                phoneLink.href = `tel:+393339201524`;
-                emailLink.href = `mailto:info.vianazionale@gmail.com?subject=Prenotazione Offerta Speciale&body=Ciao! Vorrei ottenere al Via Nazionale,per la mia attuale prenotazione il prezzo speciale di €${finalPrice}`;
+                whatsappLink.href = `https://wa.me/393976896532?text=Ciao! Vorrei prenotare al prezzo speciale di €${finalPrice}`;
+                phoneLink.href = `tel:+393976896532`;
+                emailLink.href = `mailto:info.popi@kill.com?subject=Prenotazione Offerta Speciale&body=Ciao, vorrei prenotare al prezzo speciale di €${finalPrice}`;
                 
                 whatsappLink.target = '_blank';
                 emailLink.target = '_blank';

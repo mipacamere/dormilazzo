@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Via Nazionale Suites — Suite</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0d0b;
+      --surface2: #1e1c19;
+      --border: rgba(255,255,255,0.07);
+      --text: #e8e4dc;
+      --text-muted: #7a7568;
+      --accent: #c9a96e;
+      --radius: 4px;
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    .error-state {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+    .error-state p { color: var(--text-muted); font-size: 14px; letter-spacing: 0.04em; }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px,4vw,48px);
+      height: 72px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo img { height: 38px; width: auto; }
+
+    .suite-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .suite-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .suite-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: clamp(40px,6vw,72px) clamp(20px,4vw,48px) clamp(24px,4vw,48px);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px,5vw,56px);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 480px; }
+
+    /* ── META ── */
+    .gallery-meta { padding: 0 clamp(20px,4vw,48px) 20px; }
+    .count-badge { font-size: 12px; color: var(--text-muted); letter-spacing: 0.06em; }
+    .count-badge span { color: var(--accent); font-weight: 500; }
+
+    /* ── GALLERY ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 3px;
+      padding: 0 clamp(20px,4vw,48px) clamp(40px,6vw,80px);
+    }
+
+    .thumb-wrap {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--surface2);
+    }
+
+    .thumb-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), filter 0.4s ease;
+      filter: brightness(0.92) saturate(0.9);
+    }
+    .thumb-wrap:hover img {
+      transform: scale(1.06);
+      filter: brightness(1) saturate(1.05);
+    }
+
+    .thumb-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(14,13,11,0.55) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity var(--transition);
+      display: flex;
+      align-items: flex-end;
+      padding: 14px;
+    }
+    .thumb-wrap:hover .thumb-overlay { opacity: 1; }
+
+    .thumb-num { font-size: 11px; color: rgba(232,228,220,0.7); letter-spacing: 0.08em; }
+    .thumb-icon {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(201,169,110,0.2);
+      border: 1px solid rgba(201,169,110,0.4);
+      display: flex; align-items: center; justify-content: center;
+      margin-left: auto;
+    }
+    .thumb-icon svg { width: 14px; height: 14px; stroke: var(--accent); }
+
+    .thumb-wrap.loading { animation: shimmer 1.6s ease infinite; }
+    @keyframes shimmer {
+      0%,100% { background: var(--surface2); }
+      50% { background: #252320; }
+    }
+    .thumb-wrap.loading img { opacity: 0; }
+
+    /* ── MODAL ── */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(8,7,6,0.97);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.open { display: flex; }
+
+    .modal-img-wrap {
+      position: relative;
+      max-width: min(92vw,1200px);
+      max-height: 82vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #modal-img {
+      max-width: 100%;
+      max-height: 82vh;
+      object-fit: contain;
+      border-radius: var(--radius);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    #modal-img.loaded { opacity: 1; }
+
+    .modal-spinner {
+      position: absolute;
+      width: 32px; height: 32px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .modal-spinner.hidden { display: none; }
+
+    .modal-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: linear-gradient(to bottom, rgba(8,7,6,0.85), transparent);
+    }
+
+    .modal-counter { font-size: 13px; color: var(--text-muted); letter-spacing: 0.06em; }
+
+    .modal-close {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--transition);
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.1); }
+    .modal-close svg { width: 18px; height: 18px; stroke: var(--text); }
+
+    .modal-nav {
+      position: fixed;
+      top: 50%; transform: translateY(-50%);
+      display: flex;
+      width: 100%;
+      padding: 0 16px;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .nav-btn {
+      pointer-events: all;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(14,13,11,0.7);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .nav-btn:hover {
+      background: rgba(201,169,110,0.15);
+      border-color: rgba(201,169,110,0.3);
+    }
+    .nav-btn svg { width: 20px; height: 20px; stroke: var(--text); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px clamp(20px,4vw,48px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-text { font-size: 12px; color: var(--text-muted); letter-spacing: 0.06em; }
+
+    @media (max-width: 600px) {
+      .gallery { grid-template-columns: repeat(2,1fr); gap: 2px; padding: 0 12px 40px; }
+      header { padding: 0 16px; }
+      .hero { padding: 28px 16px 16px; }
+      footer { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-bar">
+    <span class="modal-counter" id="modal-counter">1 / 1</span>
+    <button class="modal-close" id="close-btn" aria-label="Chiudi">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="modal-img-wrap">
+    <div class="modal-spinner" id="spinner"></div>
+    <img id="modal-img" alt="Foto ingrandita">
+  </div>
+  <div class="modal-nav">
+    <button class="nav-btn" id="prev-btn" aria-label="Precedente">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+    </button>
+    <button class="nav-btn" id="next-btn" aria-label="Successiva">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  const THUMB = 'thumbnails/vianazionale_suites';
+  const FULL  = 'vianazionale_suites';
+
+  const SUITES = {
+    '201': {
+      label: 'Suite 201',
+      thumbFiles: [
+        '_MG_0073.jpg','_MG_0074.jpg','_MG_0076.jpg','_MG_0078.jpg',
+        '_MG_0079.jpg','_MG_0082.jpg','_MG_0083.jpg','_MG_0089.jpg',
+        '_MG_0098.jpg','_MG_0099.jpg','_MG_0102.jpg','_MG_0105.jpg'
+      ],
+      fullOnly: ['_MG_0067.jpg']
+    },
+    '202': {
+      label: 'Suite 202',
+      thumbFiles: [
+        '_MG_0109.jpg','_MG_0115.jpg','_MG_0119.jpg','_MG_0121.jpg',
+        '_MG_0124.jpg','_MG_0129.jpg','_MG_0138.jpg','_MG_0141.jpg',
+        '_MG_0144.jpg'
+      ],
+      fullOnly: ['_MG_0107.jpg']
+    },
+    '203': {
+      label: 'Suite 203',
+      thumbFiles: [
+        '_MG_0149.jpg','_MG_0153.jpg','_MG_0157.jpg','_MG_0159.jpg',
+        '_MG_0163.jpg','_MG_0173.jpg','_MG_0191.jpg','_MG_0197.jpg',
+        '_MG_0198.jpg'
+      ],
+      fullOnly: ['_MG_0146.jpg']
+    }
+  };
+
+  const params   = new URLSearchParams(window.location.search);
+  const suiteKey = params.get('suite');
+  const suite    = SUITES[suiteKey];
+  const app      = document.getElementById('app');
+
+  if (!suite) {
+    app.innerHTML = `<div class="error-state"><p>Nessuna galleria disponibile.</p></div>`;
+  } else {
+    document.title = `Via Nazionale Suites — ${suite.label}`;
+
+    // Build image list: thumbnailed first, then full-only
+    const images = [
+      ...suite.thumbFiles.map(f => ({
+        thumb: `${THUMB}/${suiteKey}/${f}`,
+        full:  `${FULL}/${suiteKey}/${f}`
+      })),
+      ...suite.fullOnly.map(f => ({
+        thumb: `${FULL}/${suiteKey}/${f}`,
+        full:  `${FULL}/${suiteKey}/${f}`
+      }))
+    ];
+
+    app.innerHTML = `
+      <header>
+        <div class="logo">
+          <img src="https://www.dropbox.com/scl/fi/twyc4rahl03g0u8v1dyqa/logosample3.png?rlkey=tna8wqno4asvowhzla0oaklon&st=6zpq9nc3&raw=1" alt="Logo">
+        </div>
+        <div class="suite-badge">
+          <div class="suite-dot"></div>
+          <span class="suite-name">Via Nazionale Suites</span>
+        </div>
+      </header>
+      <section class="hero">
+        <p class="hero-eyebrow">Galleria fotografica</p>
+        <h1>Suite <em>${suiteKey}</em></h1>
+        <p class="hero-desc">${suite.label} — galleria fotografica della suite.</p>
+      </section>
+      <div class="gallery-meta">
+        <p class="count-badge"><span>${images.length}</span> foto disponibili</p>
+      </div>
+      <div class="gallery" id="gallery"></div>
+      <footer>
+        <span class="footer-text">Via Nazionale Suites &mdash; ${suite.label}</span>
+        <span class="footer-text">© Dormilazzo</span>
+      </footer>`;
+
+    const gallery = document.getElementById('gallery');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const wrap = entry.target;
+        const img  = wrap.querySelector('img');
+        img.src = img.dataset.src;
+        img.onload  = () => wrap.classList.remove('loading');
+        img.onerror = () => wrap.classList.remove('loading');
+        observer.unobserve(wrap);
+      });
+    }, { rootMargin: '300px' });
+
+    images.forEach((item, idx) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'thumb-wrap loading';
+
+      const img = document.createElement('img');
+      img.dataset.src = item.thumb;
+      img.alt = `${suite.label} — foto ${idx + 1}`;
+
+      const overlay = document.createElement('div');
+      overlay.className = 'thumb-overlay';
+      overlay.innerHTML = `
+        <span class="thumb-num">${String(idx + 1).padStart(2,'0')}</span>
+        <div class="thumb-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803M10.5 7.5v6m3-3h-6"/>
+          </svg>
+        </div>`;
+
+      wrap.appendChild(img);
+      wrap.appendChild(overlay);
+      wrap.addEventListener('click', () => openModal(idx));
+      gallery.appendChild(wrap);
+      observer.observe(wrap);
+    });
+
+    const modal    = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    const spinner  = document.getElementById('spinner');
+    const counter  = document.getElementById('modal-counter');
+    let currentIdx = 0;
+
+    function openModal(idx) {
+      currentIdx = idx;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      loadImage(idx);
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      modalImg.classList.remove('loaded');
+    }
+
+    function loadImage(idx) {
+      modalImg.classList.remove('loaded');
+      spinner.classList.remove('hidden');
+      counter.textContent = `${idx + 1} / ${images.length}`;
+      modalImg.src = '';
+      modalImg.src = images[idx].full;
+      modalImg.onload  = () => { spinner.classList.add('hidden'); modalImg.classList.add('loaded'); };
+      modalImg.onerror = () => { spinner.classList.add('hidden'); };
+      [-1, 1].forEach(d => {
+        const ni = idx + d;
+        if (ni >= 0 && ni < images.length) { const p = new Image(); p.src = images[ni].full; }
+      });
+    }
+
+    function navigate(dir) {
+      currentIdx = (currentIdx + dir + images.length) % images.length;
+      loadImage(currentIdx);
+    }
+
+    document.getElementById('close-btn').addEventListener('click', closeModal);
+    document.getElementById('prev-btn').addEventListener('click', () => navigate(-1));
+    document.getElementById('next-btn').addEventListener('click', () => navigate(1));
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+    document.addEventListener('keydown', e => {
+      if (!modal.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeModal();
+      if (e.key === 'ArrowLeft')  navigate(-1);
+      if (e.key === 'ArrowRight') navigate(1);
+    });
+
+    let touchX = 0;
+    modal.addEventListener('touchstart', e => { touchX = e.changedTouches[0].screenX; }, { passive: true });
+    modal.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].screenX - touchX;
+      if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
+    });
+  }
+</script>
+</body>
+</html>

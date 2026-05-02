@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Via Nazionale — Camera</title>
+  <!-- No index, no follow — search engines won't crawl this page -->
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0d0b;
+      --surface: #161512;
+      --surface2: #1e1c19;
+      --border: rgba(255,255,255,0.07);
+      --text: #e8e4dc;
+      --text-muted: #7a7568;
+      --accent: #c9a96e;
+      --accent-dim: rgba(201,169,110,0.15);
+      --radius: 4px;
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    /* ── ERROR / EMPTY STATE ── */
+    .error-state {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+    }
+    .error-state p {
+      color: var(--text-muted);
+      font-size: 14px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 4vw, 48px);
+      height: 72px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo img {
+      height: 38px;
+      width: auto;
+    }
+
+    .room-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .room-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .room-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--text);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: clamp(40px,6vw,72px) clamp(20px,4vw,48px) clamp(24px,4vw,48px);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .hero h1 em { font-style: italic; color: var(--accent); }
+
+    .hero-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 480px;
+      line-height: 1.7;
+    }
+
+    /* ── GALLERY META ── */
+    .gallery-meta {
+      padding: 0 clamp(20px,4vw,48px) 20px;
+    }
+    .count-badge {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+    .count-badge span { color: var(--accent); font-weight: 500; }
+
+    /* ── GALLERY GRID ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 3px;
+      padding: 0 clamp(20px,4vw,48px) clamp(40px,6vw,80px);
+    }
+
+    .thumb-wrap {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--surface2);
+    }
+
+    .thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), filter 0.4s ease;
+      filter: brightness(0.92) saturate(0.9);
+    }
+
+    .thumb-wrap:hover img {
+      transform: scale(1.06);
+      filter: brightness(1) saturate(1.05);
+    }
+
+    .thumb-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(14,13,11,0.6) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity var(--transition);
+      display: flex;
+      align-items: flex-end;
+      padding: 14px;
+    }
+
+    .thumb-wrap:hover .thumb-overlay { opacity: 1; }
+
+    .thumb-index {
+      font-size: 11px;
+      color: rgba(232,228,220,0.7);
+      letter-spacing: 0.08em;
+    }
+
+    .thumb-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(201,169,110,0.2);
+      border: 1px solid rgba(201,169,110,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+    }
+    .thumb-icon svg { width: 14px; height: 14px; stroke: var(--accent); }
+
+    /* skeleton */
+    .thumb-wrap.loading { animation: shimmer 1.6s ease infinite; }
+    @keyframes shimmer {
+      0%,100% { background: var(--surface2); }
+      50% { background: #252320; }
+    }
+    .thumb-wrap.loading img { opacity: 0; }
+
+    /* ── MODAL ── */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(8,7,6,0.97);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.open { display: flex; }
+
+    .modal-img-wrap {
+      position: relative;
+      max-width: min(92vw, 1200px);
+      max-height: 82vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #modal-img {
+      max-width: 100%;
+      max-height: 82vh;
+      object-fit: contain;
+      border-radius: var(--radius);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    #modal-img.loaded { opacity: 1; }
+
+    .modal-spinner {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .modal-spinner.hidden { display: none; }
+
+    .modal-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: linear-gradient(to bottom, rgba(8,7,6,0.85), transparent);
+    }
+
+    .modal-counter {
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    .modal-close {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition);
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.1); }
+    .modal-close svg { width: 18px; height: 18px; stroke: var(--text); }
+
+    .modal-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      width: 100%;
+      padding: 0 16px;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .nav-btn {
+      pointer-events: all;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(14,13,11,0.7);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .nav-btn:hover {
+      background: rgba(201,169,110,0.15);
+      border-color: rgba(201,169,110,0.3);
+    }
+    .nav-btn svg { width: 20px; height: 20px; stroke: var(--text); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px clamp(20px,4vw,48px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-text { font-size: 12px; color: var(--text-muted); letter-spacing: 0.06em; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .gallery { grid-template-columns: repeat(2, 1fr); gap: 2px; padding: 0 12px 40px; }
+      header { padding: 0 16px; }
+      .hero { padding: 28px 16px 16px; }
+      .gallery-meta { padding: 0 16px 16px; }
+      footer { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Content injected by JS after reading URL param -->
+<div id="app"></div>
+
+<!-- MODAL -->
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-bar">
+    <span class="modal-counter" id="modal-counter">1 / 1</span>
+    <button class="modal-close" id="close-btn" aria-label="Chiudi">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="modal-img-wrap">
+    <div class="modal-spinner" id="spinner"></div>
+    <img id="modal-img" alt="Foto ingrandita">
+  </div>
+  <div class="modal-nav">
+    <button class="nav-btn" id="prev-btn" aria-label="Foto precedente">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+    </button>
+    <button class="nav-btn" id="next-btn" aria-label="Foto successiva">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  // ── DATA ──
+  const THUMB_BASE = 'thumbnails/vianazioanle_camere';
+  const FULL_BASE  = 'vianazionale_camere';
+
+  const ROOMS = {
+    '101': {
+      label: 'Camera 101',
+      desc: 'Galleria fotografica della camera 101.',
+      files: [
+        '20250110_112619.jpg','20250110_112718.jpg','20250110_112722.jpg','20250110_112728.jpg',
+        '20250110_112756.jpg','20250110_112833.jpg','20250110_113757.jpg','20250110_114038.jpg',
+        '20250110_114152.jpg','20250110_114210.jpg','20250110_114228.jpg','20250110_114246.jpg',
+        '20250110_114302.jpg','20250110_114315.jpg','20250110_114352.jpg','20250110_114410.jpg'
+      ]
+    },
+    '102': {
+      label: 'Camera 102',
+      desc: 'Galleria fotografica della camera 102.',
+      files: [
+        '20250110_120926.jpg','20250110_120959.jpg','20250110_121055.jpg','20250110_121101.jpg',
+        '20250110_121251.jpg','20250110_121342.jpg','20250110_121403.jpg','20250110_121456.jpg',
+        '20250110_121536.jpg','20250110_121610.jpg','20250110_121616(0).jpg','20250110_121629.jpg',
+        '20250110_121812.jpg'
+      ]
+    },
+    '103': {
+      label: 'Camera 103',
+      desc: 'Galleria fotografica della camera 103.',
+      files: [
+        '20250110_125254.jpg','20250110_125331.jpg','20250110_125353.jpg','20250110_125500.jpg',
+        '20250110_125515.jpg','20250110_125526.jpg','20250110_125550.jpg','20250110_125602.jpg',
+        '20250110_125616.jpg','20250110_125633.jpg','20250110_125730.jpg','20250110_125753.jpg',
+        '20250110_125804.jpg','20250110_125824.jpg'
+      ]
+    },
+    '104': {
+      label: 'Camera 104',
+      desc: 'Galleria fotografica della camera 104.',
+      files: [
+        '20250110_142958.jpg','20250110_143034.jpg','20250110_143109.jpg','20250110_143120.jpg',
+        '20250110_143132.jpg','20250110_143143.jpg','20250110_143202.jpg','20250110_143216.jpg',
+        '20250110_143235.jpg','20250110_143257.jpg','20250110_143319.jpg','20250110_143327.jpg',
+        '20250110_143333.jpg','20250110_143348.jpg','20250110_143434.jpg','20250110_143523.jpg'
+      ]
+    },
+    '105': {
+      label: 'Camera 105',
+      desc: 'Galleria fotografica della camera 105.',
+      files: [
+        '20250110_151206.jpg','20250110_151231.jpg','20250110_151256.jpg','20250110_151309.jpg',
+        '20250110_151404.jpg','20250110_151417.jpg','20250110_151441.jpg','20250110_151518.jpg',
+        '20250110_151655.jpg','20250110_151725.jpg'
+      ]
+    },
+    'breakfast': {
+      label: 'Sala colazione',
+      desc: 'Galleria fotografica della sala colazione.',
+      files: [
+        '20250110_152604.jpg','20250110_152617.jpg','20250110_152634.jpg','20250110_152643.jpg',
+        '20250110_152658.jpg','20250110_152711.jpg','20250110_152731.jpg','20250110_152805.jpg',
+        '20250110_152816.jpg','20250110_152858.jpg','20250110_152925.jpg','20250110_153101.jpg',
+        '20250110_153111.jpg'
+      ]
+    }
+  };
+
+  // ── READ URL PARAM ──
+  const params = new URLSearchParams(window.location.search);
+  const roomKey = params.get('camera');
+  const room = ROOMS[roomKey];
+
+  const app = document.getElementById('app');
+
+  if (!room) {
+    // No valid param — show empty/error state
+    document.title = 'Via Nazionale';
+    app.innerHTML = `
+      <div class="error-state">
+        <p>Nessuna galleria disponibile.</p>
+      </div>`;
+  } else {
+    // ── BUILD PAGE ──
+    document.title = `Via Nazionale — ${room.label}`;
+
+    const images = room.files.map(f => ({
+      thumb: `${THUMB_BASE}/${roomKey}/${f}`,
+      full:  `${FULL_BASE}/${roomKey}/${f}`
+    }));
+
+    app.innerHTML = `
+      <header>
+        <div class="logo">
+          <img src="https://www.dropbox.com/scl/fi/twyc4rahl03g0u8v1dyqa/logosample3.png?rlkey=tna8wqno4asvowhzla0oaklon&st=6zpq9nc3&raw=1" alt="Logo Via Nazionale">
+        </div>
+        <div class="room-badge">
+          <div class="room-dot"></div>
+          <span class="room-label">Via Nazionale</span>
+        </div>
+      </header>
+      <section class="hero">
+        <p class="hero-eyebrow">Galleria fotografica</p>
+        <h1>${room.label.includes('colazione')
+          ? 'Sala <em>colazione</em>'
+          : `Camera <em>${roomKey}</em>`}
+        </h1>
+        <p class="hero-desc">${room.desc}</p>
+      </section>
+      <div class="gallery-meta">
+        <p class="count-badge"><span>${images.length}</span> foto disponibili</p>
+      </div>
+      <div class="gallery" id="gallery"></div>
+      <footer>
+        <span class="footer-text">Via Nazionale &mdash; ${room.label}</span>
+        <span class="footer-text">© Dormilazzo</span>
+      </footer>`;
+
+    // ── BUILD GRID ──
+    const gallery = document.getElementById('gallery');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const wrap = entry.target;
+        const img  = wrap.querySelector('img');
+        img.src = img.dataset.src;
+        img.onload  = () => wrap.classList.remove('loading');
+        img.onerror = () => wrap.classList.remove('loading');
+        observer.unobserve(wrap);
+      });
+    }, { rootMargin: '300px' });
+
+    images.forEach((item, idx) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'thumb-wrap loading';
+
+      const img = document.createElement('img');
+      img.dataset.src = item.thumb;
+      img.alt = `${room.label} — foto ${idx + 1}`;
+
+      const overlay = document.createElement('div');
+      overlay.className = 'thumb-overlay';
+      overlay.innerHTML = `
+        <span class="thumb-index">${String(idx + 1).padStart(2,'0')}</span>
+        <div class="thumb-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803M10.5 7.5v6m3-3h-6"/>
+          </svg>
+        </div>`;
+
+      wrap.appendChild(img);
+      wrap.appendChild(overlay);
+      wrap.addEventListener('click', () => openModal(idx));
+      gallery.appendChild(wrap);
+      observer.observe(wrap);
+    });
+
+    // ── MODAL ──
+    const modal    = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    const spinner  = document.getElementById('spinner');
+    const counter  = document.getElementById('modal-counter');
+    let currentIdx = 0;
+
+    function openModal(idx) {
+      currentIdx = idx;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      loadImage(idx);
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      modalImg.classList.remove('loaded');
+    }
+
+    function loadImage(idx) {
+      modalImg.classList.remove('loaded');
+      spinner.classList.remove('hidden');
+      counter.textContent = `${idx + 1} / ${images.length}`;
+      modalImg.src = '';
+      modalImg.src = images[idx].full;
+      modalImg.onload  = () => { spinner.classList.add('hidden'); modalImg.classList.add('loaded'); };
+      modalImg.onerror = () => { spinner.classList.add('hidden'); };
+      [idx - 1, idx + 1].forEach(i => {
+        if (i >= 0 && i < images.length) { const p = new Image(); p.src = images[i].full; }
+      });
+    }
+
+    function navigate(dir) {
+      currentIdx = (currentIdx + dir + images.length) % images.length;
+      loadImage(currentIdx);
+    }
+
+    document.getElementById('close-btn').addEventListener('click', closeModal);
+    document.getElementById('prev-btn').addEventListener('click', () => navigate(-1));
+    document.getElementById('next-btn').addEventListener('click', () => navigate(1));
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+    document.addEventListener('keydown', e => {
+      if (!modal.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeModal();
+      if (e.key === 'ArrowLeft')  navigate(-1);
+      if (e.key === 'ArrowRight') navigate(1);
+    });
+
+    let touchX = 0;
+    modal.addEventListener('touchstart', e => { touchX = e.changedTouches[0].screenX; }, { passive: true });
+    modal.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].screenX - touchX;
+      if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
+    });
+  }
+</script>
+</body>
+</html>

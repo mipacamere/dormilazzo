@@ -1,164 +1,375 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Benvenuto nella pagina di gestione delle nostre stutture</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #121212; /* Dark background */
-            color: #e0e0e0; /* Light text color */
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dormilazzo — Gestione</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        header {
-            background-color: #333; /* Dark header */
-            color: white;
-            padding: 20px 0;
-        }
+    :root {
+      --bg: #0e0d0b;
+      --surface: #141210;
+      --surface2: #1a1815;
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(201,169,110,0.3);
+      --text: #e8e4dc;
+      --text-muted: #7a7568;
+      --text-dim: #3e3c38;
+      --accent: #c9a96e;
+      --accent-dim: rgba(201,169,110,0.08);
+      --radius: 6px;
+      --t: 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
 
-        h1 {
-            font-size: 28px;
-            margin: 0;
-        }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .container {
-            padding: 30px 0;
-        }
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px,4vw,56px);
+      height: 68px;
+      border-bottom: 1px solid var(--border);
+    }
 
-        .grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
+    .logo img { height: 34px; width: auto; opacity: 0.85; }
 
-        .item {
-            text-align: center;
-            flex: 1 1 calc(33.333% - 40px); /* Responsive grid for 3 items per row */
-            max-width: 200px;
-            min-width: 150px;
-            background-color: #1c1c1c; /* Dark background for items */
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #444; /* Darker border */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Darker shadow */
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        }
+    .header-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
 
-        .item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-        }
+    /* ── HERO ── */
+    .hero {
+      padding: clamp(48px,7vw,96px) clamp(20px,4vw,56px) clamp(32px,4vw,56px);
+    }
 
-        .icon {
-            width: 60px;
-            height: 60px;
-            margin-bottom: 10px;
-            filter: brightness(0) invert(1); /* Make icons white */
-        }
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.6;
+    }
 
-        .item p {
-            font-size: 14px;
-            font-weight: bold;
-            color: #e0e0e0; /* Light color for text */
-            margin: 0;
-        }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px,5vw,64px);
+      font-weight: 300;
+      line-height: 1.06;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
 
-        footer {
-            background-color: #333; /* Dark footer */
-            color: white;
-            padding: 15px 0;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-        }
+    /* ── CONTENT ── */
+    .content {
+      flex: 1;
+      padding: 0 clamp(20px,4vw,56px) clamp(56px,8vw,100px);
+      display: flex;
+      flex-direction: column;
+      gap: 52px;
+    }
 
-        /* Media queries for responsiveness */
-        @media (max-width: 768px) {
-            .item {
-                flex: 1 1 calc(50% - 40px); /* 2 items per row on smaller screens */
-            }
-        }
+    /* ── SECTION ── */
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
 
-        @media (max-width: 480px) {
-            .item {
-                flex: 1 1 calc(100% - 40px); /* 1 item per row on very small screens */
-            }
-        }
-    </style>
+    /* ── NAV GRID ── */
+    .nav-grid {
+      display: grid;
+      gap: 2px;
+    }
+
+    .nav-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .nav-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .nav-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+    /* ── NAV CARD ── */
+    .nav-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color var(--t), background var(--t), color var(--t);
+    }
+    .nav-card:hover {
+      border-color: var(--border-hover);
+      background: var(--surface2);
+    }
+    .nav-card:hover .card-icon { color: var(--accent); }
+    .nav-card:hover .card-arrow { opacity: 1; color: var(--accent); }
+
+    .card-icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      transition: color var(--t);
+    }
+    .card-icon svg { width: 20px; height: 20px; }
+
+    .card-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+      margin-top: 2px;
+    }
+
+    .card-arrow {
+      flex-shrink: 0;
+      opacity: 0;
+      color: var(--text-dim);
+      transition: opacity var(--t), color var(--t);
+    }
+    .card-arrow svg { width: 14px; height: 14px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px clamp(20px,4vw,56px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .footer-text { font-size: 11px; color: var(--text-dim); letter-spacing: 0.08em; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .nav-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+      .nav-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .nav-grid.cols-3,
+      .nav-grid.cols-2,
+      .nav-grid.cols-4 { grid-template-columns: 1fr; }
+      .hero { padding: 36px 16px 24px; }
+      .content { padding: 0 16px 56px; gap: 36px; }
+      header, footer { padding-left: 16px; padding-right: 16px; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Benvenuto nella pagina di gestione delle nostre stutture</h1>
-    </header>
 
-    <div class="container">
-        <div class="grid">
-            <!-- Via Nazionale Galleria Foto -->
-            <div class="item">
-                <a href="via_nazionale.html">
-                    <img src="https://img.icons8.com/ios/452/photo-gallery.png" alt="Galleria Foto" class="icon">
-                    <p>Via Nazionale - Galleria Foto</p>
-                </a>
-            </div>
-            
-            <!-- Via Nazionale Appartamenti Galleria Foto -->
-            <div class="item">
-                <a href="via_nazionale_appartamenti.html">
-                    <img src="https://img.icons8.com/ios/452/photo-gallery.png" alt="Appartamenti" class="icon">
-                    <p>Via Nazionale Appartamenti - Galleria Foto</p>
-                </a>
-            </div>
+<header>
+  <div class="logo">
+    <img src="https://www.dropbox.com/scl/fi/twyc4rahl03g0u8v1dyqa/logosample3.png?rlkey=tna8wqno4asvowhzla0oaklon&st=6zpq9nc3&raw=1" alt="Logo Dormilazzo">
+  </div>
+  <span class="header-label">Gestione strutture</span>
+</header>
 
-            <!-- MiPA Galleria Foto -->
-            <div class="item">
-                <a href="mipa.html">
-                    <img src="https://img.icons8.com/ios/452/photo-gallery.png" alt="MiPA Galleria" class="icon">
-                    <p>MiPA - Galleria Foto</p>
-                </a>
-            </div>
+<section class="hero">
+  <p class="hero-eyebrow">Pannello di controllo</p>
+  <h1>Benvenuto,<br><em>cosa vuoi fare?</em></h1>
+</section>
 
-            <!-- Posizione Via Nazionale -->
-            <div class="item">
-                <a href="posizione_via_nazionale.html">
-                    <img src="https://img.icons8.com/ios/452/marker.png" alt="Posizione Via Nazionale" class="icon">
-                    <p>Posizione Via Nazionale</p>
-                </a>
-            </div>
+<main class="content">
 
-            <!-- Posizione MiPA -->
-            <div class="item">
-                <a href="posizione_mipa.html">
-                    <img src="https://img.icons8.com/ios/452/marker.png" alt="Posizione MiPA" class="icon">
-                    <p>Posizione MiPA</p>
-                </a>
-            </div>
+  <!-- GALLERIE -->
+  <div>
+    <p class="section-label">Gallerie fotografiche</p>
+    <div class="nav-grid cols-3">
 
-            <!-- Mappa dei Suggerimenti -->
-            <div class="item">
-                <a href="mappa_suggerimenti.html">
-                    <img src="https://img.icons8.com/ios/452/worldwide-location.png" alt="Mappa Suggerimenti" class="icon">
-                    <p>Mappa dei Suggerimenti</p>
-                </a>
-            </div>
-
-            <!-- Itinerario Turistico -->
-            <div class="item">
-                <a href="itinerario_turistico.html">
-                    <img src="https://img.icons8.com/ios/452/tourism.png" alt="Itinerario Turistico" class="icon">
-                    <p>Itinerario Turistico</p>
-                </a>
-            </div>
+      <a href="via_nazionale.html" class="nav-card">
+        <div class="card-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg>
         </div>
-    </div>
+        <div class="card-body">
+          <p class="card-title">Via Nazionale</p>
+          <p class="card-sub">Galleria foto camere</p>
+        </div>
+        <div class="card-arrow"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div>
+      </a>
 
-    <footer>
-        <p>Grazie per aver visitato il nostro sito! Per maggiori informazioni, visita le varie sezioni.</p>
-    </footer>
+      <a href="via_nazionale_suites.html" class="nav-card">
+        <div class="card-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="card-title">Via Nazionale Suites</p>
+          <p class="card-sub">Galleria foto suites</p>
+        </div>
+        <div class="card-arrow"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div>
+      </a>
+
+      <a href="mipa.html" class="nav-card">
+        <div class="card-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="card-title">MiPA</p>
+          <p class="card-sub">Galleria foto appartamenti</p>
+        </div>
+        <div class="card-arrow"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- POSIZIONI -->
+  <div>
+    <p class="section-label">Posizioni &amp; itinerari</p>
+    <div class="nav-grid cols-3">
+
+      <a href="posizione_via_nazionale.html" class="nav-card">
+        <div class="card-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="card-title">Posizione Via Nazionale</p>
+          <p class="card-sub">Mappa e indicazioni</p>
+        </div>
+        <div class="card-arrow"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div>
+      </a>
+
+      <a href="posizione_mipa.html" class="nav-card">
+        <div class="card-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="card-title">Posizione MiPA</p>
+          <p class="card-sub">Mappa e indicazioni</p>
+        </div>
+        <div class="card-arrow"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div>
+      </a>
+
+      <a href="mappa_suggerimenti.html" class="nav-card">
+        <div class="card-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="card-title">Mappa suggerimenti</p>
+          <p class="card-sub">Luoghi consigliati</p>
+        </div>
+        <div class="card-arrow"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div>
+      </a>
+
+      <a href="https://esploramilazzo.netlify.app/" target="_blank" rel="noopener" class="nav-card">
+        <div class="card-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="card-title">Itinerario turistico</p>
+          <p class="card-sub">Esplora Milazzo ↗</p>
+        </div>
+        <div class="card-arrow"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg></div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- OPERATIVO -->
+  <div>
+    <p class="section-label">Gestione operativa</p>
+    <div class="nav-grid cols-4">
+
+      <a href="condividi_gallerie.html" class="nav-card">
+        <div class="card-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="card-title">Condividi gallerie</p>
+          <p class="card-sub">Link per gli ospiti</p>
+        </div>
+        <div class="card-arrow"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div>
+      </a>
+
+      <a href="checklist.html" class="nav-card">
+        <div class="card-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="card-title">Checklist pulizie</p>
+          <p class="card-sub">Lista controllo</p>
+        </div>
+        <div class="card-arrow"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div>
+      </a>
+
+      <a href="riepilogopulizie.html" class="nav-card">
+        <div class="card-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="card-title">Riepilogo pulizie</p>
+          <p class="card-sub">Resoconto interventi</p>
+        </div>
+        <div class="card-arrow"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div>
+      </a>
+
+      <a href="prodottipulizia.html" class="nav-card">
+        <div class="card-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 001.5 2.121m-1.5-2.121c.251.023.501.05.75.082M14.25 3.104c.251.023.501.05.75.082M19 14.5l-4.091-4.091A2.25 2.25 0 0114.25 8.82V3.104m0 0A24.301 24.301 0 009.75 3.104M5 14.5h14M5 14.5a2.25 2.25 0 000 4.5h14a2.25 2.25 0 000-4.5"/></svg>
+        </div>
+        <div class="card-body">
+          <p class="card-title">Prodotti pulizia</p>
+          <p class="card-sub">Lista materiali</p>
+        </div>
+        <div class="card-arrow"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div>
+      </a>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span class="footer-text">© Dormilazzo — Pannello di gestione</span>
+  <span class="footer-text">Uso interno</span>
+</footer>
+
 </body>
 </html>

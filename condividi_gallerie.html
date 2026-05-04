@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dormilazzo — Condividi Gallerie</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0d0b;
+      --surface: #141210;
+      --surface2: #1a1815;
+      --surface3: #222019;
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(201,169,110,0.25);
+      --text: #e8e4dc;
+      --text-muted: #7a7568;
+      --text-dim: #4a4840;
+      --accent: #c9a96e;
+      --accent-dim: rgba(201,169,110,0.1);
+      --accent-glow: rgba(201,169,110,0.06);
+      --green: #6eb88a;
+      --green-dim: rgba(110,184,138,0.12);
+      --radius: 6px;
+      --t: 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px,4vw,56px);
+      height: 68px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(14,13,11,0.94);
+      backdrop-filter: blur(16px);
+    }
+
+    .logo img { height: 34px; width: auto; opacity: 0.85; }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .back-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color var(--t);
+    }
+    .back-link:hover { color: var(--accent); }
+    .back-link svg { width: 14px; height: 14px; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: clamp(48px,7vw,96px) clamp(20px,4vw,56px) clamp(32px,4vw,56px);
+      max-width: 680px;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px,5vw,58px);
+      font-weight: 300;
+      line-height: 1.08;
+      margin-bottom: 20px;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+
+    .hero-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      max-width: 480px;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      padding: 0 clamp(20px,4vw,56px) clamp(64px,8vw,120px);
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    /* ── PROPERTY SECTION ── */
+    .property-section {}
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 4px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+
+    .section-count {
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── ROOM CARDS ── */
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 2px;
+      margin-top: 2px;
+    }
+
+    .room-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      transition: border-color var(--t), background var(--t);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .room-card:hover {
+      border-color: var(--border-hover);
+      background: var(--surface2);
+    }
+
+    .room-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .room-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+    }
+
+    .room-preview-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: color var(--t);
+      padding: 4px 0;
+    }
+    .room-preview-link:hover { color: var(--accent); }
+    .room-preview-link svg { width: 12px; height: 12px; }
+
+    .room-url {
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+      font-family: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: text;
+      user-select: all;
+    }
+
+    /* ── ACTION BUTTONS ── */
+    .room-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 14px;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      transition: all var(--t);
+      white-space: nowrap;
+    }
+    .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .btn-copy:hover {
+      background: var(--accent-dim);
+      border-color: rgba(201,169,110,0.3);
+      color: var(--accent);
+    }
+
+    .btn-copy.copied {
+      background: var(--green-dim);
+      border-color: rgba(110,184,138,0.3);
+      color: var(--green);
+    }
+
+    .btn-share:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.15);
+      color: var(--text);
+    }
+
+    /* share not available fallback */
+    .btn-share.hidden { display: none; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      background: var(--surface3);
+      border: 1px solid rgba(110,184,138,0.3);
+      color: var(--green);
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      padding: 10px 20px;
+      border-radius: 100px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 200;
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px clamp(20px,4vw,56px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .footer-text { font-size: 11px; color: var(--text-dim); letter-spacing: 0.08em; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .rooms-grid { grid-template-columns: 1fr; }
+      .hero { padding: 36px 16px 24px; }
+      .content { padding: 0 16px 64px; gap: 40px; }
+      header { padding: 0 16px; }
+      footer { padding: 16px; }
+      .room-actions { flex-direction: column; }
+      .btn { flex: unset; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="https://www.dropbox.com/scl/fi/twyc4rahl03g0u8v1dyqa/logosample3.png?rlkey=tna8wqno4asvowhzla0oaklon&st=6zpq9nc3&raw=1" alt="Logo Dormilazzo">
+  </div>
+  <div class="header-right">
+    <span class="header-label">Gestione</span>
+    <a href="index.html" class="back-link">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+      Home
+    </a>
+  </div>
+</header>
+
+<section class="hero">
+  <p class="hero-eyebrow">Link gallerie</p>
+  <h1>Condividi le <em>foto</em><br>con gli ospiti</h1>
+  <p class="hero-desc">Ogni link mostra solo le foto della camera o dell'appartamento selezionato. Copia il link o condividilo direttamente.</p>
+</section>
+
+<main class="content" id="main"></main>
+
+<div class="toast" id="toast">Link copiato</div>
+
+<footer>
+  <span class="footer-text">© Dormilazzo — Pagina di gestione interna</span>
+  <span class="footer-text">noindex · nofollow</span>
+</footer>
+
+<script>
+  // ── DATA ──
+  const BASE = 'https://dormilazzo.netlify.app/';
+
+  const PROPERTIES = [
+    {
+      name: 'Via Nazionale',
+      page: 'via_nazionale_camere.html',
+      param: 'camera',
+      rooms: [
+        { id: '101', label: 'Camera 101' },
+        { id: '102', label: 'Camera 102' },
+        { id: '103', label: 'Camera 103' },
+        { id: '104', label: 'Camera 104' },
+        { id: '105', label: 'Camera 105' },
+        { id: 'breakfast', label: 'Sala colazione' },
+      ]
+    },
+    {
+      name: 'Via Nazionale Suites',
+      page: 'via_nazionale_suites_camere.html',
+      param: 'suite',
+      rooms: [
+        { id: '201', label: 'Suite 201' },
+        { id: '202', label: 'Suite 202' },
+        { id: '203', label: 'Suite 203' },
+      ]
+    },
+    {
+      name: 'MiPA',
+      page: 'mipa_appartamenti.html',
+      param: 'apt',
+      rooms: [
+        { id: 'MiPA1', label: 'Appartamento MiPA 1' },
+        { id: 'MiPA2', label: 'Appartamento MiPA 2' },
+        { id: 'MiPA3', label: 'Appartamento MiPA 3' },
+        { id: 'MiPA4', label: 'Appartamento MiPA 4' },
+      ]
+    }
+  ];
+
+  // ── BUILD UI ──
+  const main  = document.getElementById('main');
+  const toast = document.getElementById('toast');
+  const canShare = !!navigator.share;
+
+  PROPERTIES.forEach(prop => {
+    const section = document.createElement('section');
+    section.className = 'property-section';
+
+    section.innerHTML = `
+      <div class="section-header">
+        <span class="section-name">${prop.name}</span>
+        <span class="section-count">${prop.rooms.length} ${prop.rooms.length === 1 ? 'spazio' : 'spazi'}</span>
+      </div>
+      <div class="rooms-grid" id="grid-${prop.name.replace(/\s+/g,'-')}"></div>`;
+
+    main.appendChild(section);
+
+    const grid = section.querySelector('.rooms-grid');
+
+    prop.rooms.forEach(room => {
+      const url = `${BASE}${prop.page}?${prop.param}=${room.id}`;
+
+      const card = document.createElement('div');
+      card.className = 'room-card';
+
+      card.innerHTML = `
+        <div class="room-card-top">
+          <span class="room-name">${room.label}</span>
+          <a href="${url}" target="_blank" rel="noopener" class="room-preview-link">
+            Anteprima
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+            </svg>
+          </a>
+        </div>
+        <div class="room-url" title="${url}">${url}</div>
+        <div class="room-actions">
+          <button class="btn btn-copy" data-url="${url}" aria-label="Copia link ${room.label}">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.476a60.108 60.108 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75"/>
+            </svg>
+            Copia link
+          </button>
+          <button class="btn btn-share ${canShare ? '' : 'hidden'}" data-url="${url}" data-title="${room.label} — Dormilazzo" aria-label="Condividi ${room.label}">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"/>
+            </svg>
+            Condividi
+          </button>
+        </div>`;
+
+      grid.appendChild(card);
+    });
+  });
+
+  // ── COPY ──
+  let toastTimer;
+
+  document.addEventListener('click', async e => {
+    const copyBtn = e.target.closest('.btn-copy');
+    if (copyBtn) {
+      const url = copyBtn.dataset.url;
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.cssText = 'position:fixed;opacity:0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      copyBtn.classList.add('copied');
+      copyBtn.innerHTML = `
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+        </svg>
+        Copiato`;
+
+      showToast('Link copiato negli appunti');
+
+      setTimeout(() => {
+        copyBtn.classList.remove('copied');
+        copyBtn.innerHTML = `
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.476a60.108 60.108 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75"/>
+          </svg>
+          Copia link`;
+      }, 2500);
+    }
+
+    // ── SHARE ──
+    const shareBtn = e.target.closest('.btn-share');
+    if (shareBtn) {
+      try {
+        await navigator.share({
+          title: shareBtn.dataset.title,
+          url:   shareBtn.dataset.url
+        });
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          // fallback: copy to clipboard
+          await navigator.clipboard.writeText(shareBtn.dataset.url);
+          showToast('Link copiato negli appunti');
+        }
+      }
+    }
+  });
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+</script>
+</body>
+</html>

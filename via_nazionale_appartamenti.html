@@ -28,7 +28,6 @@
       min-height: 100vh;
     }
 
-    /* ── HEADER ── */
     header {
       position: sticky;
       top: 0;
@@ -64,13 +63,8 @@
       text-transform: uppercase;
     }
 
-    .header-logo img {
-      height: 36px;
-      width: auto;
-      opacity: 0.9;
-    }
+    .header-logo img { height: 36px; width: auto; opacity: 0.9; }
 
-    /* ── HERO ── */
     .hero {
       padding: clamp(40px,6vw,80px) clamp(20px,4vw,48px) clamp(24px,4vw,48px);
       max-width: 900px;
@@ -92,57 +86,12 @@
       margin-bottom: 16px;
     }
     .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-sub { font-size: 14px; color: var(--text-muted); }
 
-    .hero-sub {
-      font-size: 14px;
-      color: var(--text-muted);
-      letter-spacing: 0.03em;
-    }
-
-    /* ── TABS ── */
-    .tabs-wrap {
-      padding: 0 clamp(20px,4vw,48px);
-      margin-bottom: 28px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .tabs-wrap::-webkit-scrollbar { display: none; }
-
-    .tab-btn {
-      flex-shrink: 0;
-      padding: 8px 20px;
-      border-radius: 100px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-muted);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 300;
-      letter-spacing: 0.06em;
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-    .tab-btn:hover { border-color: rgba(201,169,110,0.3); color: var(--text); }
-    .tab-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #0e0d0b;
-      font-weight: 500;
-    }
-
-    .count-badge {
-      margin-left: auto;
-      flex-shrink: 0;
-      font-size: 12px;
-      color: var(--text-muted);
-      letter-spacing: 0.06em;
-    }
+    .gallery-meta { padding: 0 clamp(20px,4vw,48px) 28px; }
+    .count-badge { font-size: 12px; color: var(--text-muted); letter-spacing: 0.06em; }
     .count-badge span { color: var(--accent); font-weight: 500; }
 
-    /* ── GALLERY ── */
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -156,9 +105,7 @@
       overflow: hidden;
       cursor: pointer;
       background: var(--surface2);
-      display: none;
     }
-    .thumb-wrap.visible { display: block; }
 
     .thumb-wrap img {
       width: 100%; height: 100%;
@@ -180,26 +127,17 @@
       transition: opacity var(--transition);
       display: flex;
       align-items: flex-end;
+      justify-content: flex-end;
       padding: 14px;
     }
     .thumb-wrap:hover .thumb-overlay { opacity: 1; }
-
-    .suite-tag {
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      color: rgba(232,228,220,0.7);
-      text-transform: uppercase;
-    }
 
     .thumb-icon {
       width: 32px; height: 32px;
       border-radius: 50%;
       background: rgba(201,169,110,0.2);
       border: 1px solid rgba(201,169,110,0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: auto;
+      display: flex; align-items: center; justify-content: center;
     }
     .thumb-icon svg { width: 14px; height: 14px; stroke: var(--accent); }
 
@@ -210,7 +148,6 @@
     }
     .thumb-wrap.loading img { opacity: 0; }
 
-    /* ── MODAL ── */
     .modal {
       display: none;
       position: fixed;
@@ -265,18 +202,7 @@
       background: linear-gradient(to bottom, rgba(8,7,6,0.85), transparent);
     }
 
-    .modal-info { display: flex; flex-direction: column; gap: 2px; }
-    .modal-suite {
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-    .modal-counter {
-      font-size: 12px;
-      color: var(--text-muted);
-      letter-spacing: 0.06em;
-    }
+    .modal-counter { font-size: 13px; color: var(--text-muted); letter-spacing: 0.06em; }
 
     .modal-close {
       width: 40px; height: 40px;
@@ -284,9 +210,7 @@
       border: 1px solid var(--border);
       background: rgba(255,255,255,0.04);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       transition: background var(--transition);
     }
     .modal-close:hover { background: rgba(255,255,255,0.1); }
@@ -309,9 +233,7 @@
       border: 1px solid var(--border);
       background: rgba(14,13,11,0.7);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       transition: background var(--transition), border-color var(--transition);
     }
     .nav-btn:hover {
@@ -320,7 +242,6 @@
     }
     .nav-btn svg { width: 20px; height: 20px; stroke: var(--text); }
 
-    /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--border);
       padding: 24px clamp(20px,4vw,48px);
@@ -335,7 +256,7 @@
     @media (max-width: 600px) {
       .gallery { grid-template-columns: repeat(2,1fr); gap: 2px; padding: 0 12px 40px; }
       .hero { padding: 32px 16px 20px; }
-      .tabs-wrap { padding: 0 12px; margin-bottom: 20px; }
+      .gallery-meta { padding: 0 16px 20px; }
       footer { padding: 20px 16px; }
     }
   </style>
@@ -356,26 +277,18 @@
 <section class="hero">
   <p class="hero-label">Galleria fotografica</p>
   <h1>Via Nazionale<br><em>Suites</em></h1>
-  <p class="hero-sub">Seleziona una suite per filtrare le foto, oppure visualizza tutto insieme.</p>
+  <p class="hero-sub">Scorri per esplorare gli spazi. Clicca su una foto per vederla in grande.</p>
 </section>
 
-<div class="tabs-wrap">
-  <button class="tab-btn active" data-suite="all">Tutte</button>
-  <button class="tab-btn" data-suite="201">Suite 201</button>
-  <button class="tab-btn" data-suite="202">Suite 202</button>
-  <button class="tab-btn" data-suite="203">Suite 203</button>
-  <span class="count-badge">Visibili: <span id="visible-count">0</span></span>
+<div class="gallery-meta">
+  <p class="count-badge">Totale: <span id="total-count">0</span> foto</p>
 </div>
 
 <div class="gallery" id="gallery"></div>
 
-<!-- MODAL -->
 <div class="modal" id="modal" role="dialog" aria-modal="true">
   <div class="modal-bar">
-    <div class="modal-info">
-      <span class="modal-suite" id="modal-suite"></span>
-      <span class="modal-counter" id="modal-counter">1 / 1</span>
-    </div>
+    <span class="modal-counter" id="modal-counter">1 / 1</span>
     <button class="modal-close" id="close-btn" aria-label="Chiudi">
       <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
     </button>
@@ -403,22 +316,18 @@
   const THUMB = 'thumbnails/vianazionale_suites';
   const FULL  = 'vianazionale_suites';
 
-  // Thumbnails and full-res have slightly different file lists.
-  // For files without a thumbnail, we fall back to the full-res path.
+  // For files without a thumbnail, thumb === full (fallback to full-res in grid).
+  // Paths assigned directly to img.src — no encodeURIComponent needed.
   const SUITES = {
     '201': {
-      label: 'Suite 201',
-      // files with thumbnail available
       thumbFiles: [
         '_MG_0073.jpg','_MG_0074.jpg','_MG_0076.jpg','_MG_0078.jpg',
         '_MG_0079.jpg','_MG_0082.jpg','_MG_0083.jpg','_MG_0089.jpg',
         '_MG_0098.jpg','_MG_0099.jpg','_MG_0102.jpg','_MG_0105.jpg'
       ],
-      // full-res only (no thumbnail generated)
       fullOnly: ['_MG_0067.jpg']
     },
     '202': {
-      label: 'Suite 202',
       thumbFiles: [
         '_MG_0109.jpg','_MG_0115.jpg','_MG_0119.jpg','_MG_0121.jpg',
         '_MG_0124.jpg','_MG_0129.jpg','_MG_0138.jpg','_MG_0141.jpg',
@@ -427,7 +336,6 @@
       fullOnly: ['_MG_0107.jpg']
     },
     '203': {
-      label: 'Suite 203',
       thumbFiles: [
         '_MG_0149.jpg','_MG_0153.jpg','_MG_0157.jpg','_MG_0159.jpg',
         '_MG_0163.jpg','_MG_0173.jpg','_MG_0191.jpg','_MG_0197.jpg',
@@ -437,32 +345,25 @@
     }
   };
 
-  // Build flat image list
   const allImages = [];
   for (const [suite, data] of Object.entries(SUITES)) {
-    // Files with thumbnails
     for (const f of data.thumbFiles) {
       allImages.push({
-        suite,
-        label: data.label,
         thumb: `${THUMB}/${suite}/${f}`,
         full:  `${FULL}/${suite}/${f}`
       });
     }
-    // Files without thumbnail — use full-res for both
     for (const f of data.fullOnly) {
       allImages.push({
-        suite,
-        label: data.label,
         thumb: `${FULL}/${suite}/${f}`,
         full:  `${FULL}/${suite}/${f}`
       });
     }
   }
 
-  // ── BUILD GRID ──
-  const gallery        = document.getElementById('gallery');
-  const visibleCountEl = document.getElementById('visible-count');
+  document.getElementById('total-count').textContent = allImages.length;
+
+  const gallery = document.getElementById('gallery');
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -478,22 +379,17 @@
     });
   }, { rootMargin: '400px' });
 
-  const thumbWrapMap = [];
-
   allImages.forEach((item, idx) => {
     const wrap = document.createElement('div');
-    wrap.className = 'thumb-wrap visible loading';
-    wrap.dataset.suite = item.suite;
-    wrap.dataset.index = idx;
+    wrap.className = 'thumb-wrap loading';
 
     const img = document.createElement('img');
     img.dataset.src = item.thumb;
-    img.alt = `${item.label} — foto ${idx + 1}`;
+    img.alt = `Foto ${idx + 1}`;
 
     const overlay = document.createElement('div');
     overlay.className = 'thumb-overlay';
     overlay.innerHTML = `
-      <span class="suite-tag">${item.label}</span>
       <div class="thumb-icon">
         <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803M10.5 7.5v6m3-3h-6"/>
@@ -505,54 +401,19 @@
     wrap.addEventListener('click', () => openModal(idx));
     gallery.appendChild(wrap);
     observer.observe(wrap);
-    thumbWrapMap.push(wrap);
   });
 
-  updateCount();
+  const modal    = document.getElementById('modal');
+  const modalImg = document.getElementById('modal-img');
+  const spinner  = document.getElementById('spinner');
+  const counter  = document.getElementById('modal-counter');
+  let currentIdx = 0;
 
-  // ── TABS ──
-  let currentSuite = 'all';
-
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentSuite = btn.dataset.suite;
-      thumbWrapMap.forEach((wrap, idx) => {
-        const show = currentSuite === 'all' || allImages[idx].suite === currentSuite;
-        wrap.classList.toggle('visible', show);
-        if (show) observer.observe(wrap);
-      });
-      updateCount();
-    });
-  });
-
-  function updateCount() {
-    const n = currentSuite === 'all'
-      ? allImages.length
-      : allImages.filter(i => i.suite === currentSuite).length;
-    visibleCountEl.textContent = n;
-  }
-
-  // ── MODAL ──
-  const modal      = document.getElementById('modal');
-  const modalImg   = document.getElementById('modal-img');
-  const spinner    = document.getElementById('spinner');
-  const counter    = document.getElementById('modal-counter');
-  const suiteLabel = document.getElementById('modal-suite');
-  let currentGlobalIdx = 0;
-
-  function getVisible() {
-    return allImages
-      .map((img, i) => ({ img, i }))
-      .filter(({ img }) => currentSuite === 'all' || img.suite === currentSuite);
-  }
-
-  function openModal(globalIdx) {
-    currentGlobalIdx = globalIdx;
+  function openModal(idx) {
+    currentIdx = idx;
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
-    loadImage(globalIdx);
+    loadImage(idx);
   }
 
   function closeModal() {
@@ -561,30 +422,23 @@
     modalImg.classList.remove('loaded');
   }
 
-  function loadImage(globalIdx) {
-    const item    = allImages[globalIdx];
-    const visible = getVisible();
-    const pos     = visible.findIndex(v => v.i === globalIdx);
+  function loadImage(idx) {
     modalImg.classList.remove('loaded');
     spinner.classList.remove('hidden');
-    suiteLabel.textContent = item.label;
-    counter.textContent    = `${pos + 1} / ${visible.length}`;
+    counter.textContent = `${idx + 1} / ${allImages.length}`;
     modalImg.src = '';
-    modalImg.src = item.full;
+    modalImg.src = allImages[idx].full;
     modalImg.onload  = () => { spinner.classList.add('hidden'); modalImg.classList.add('loaded'); };
     modalImg.onerror = () => { spinner.classList.add('hidden'); };
     [-1, 1].forEach(d => {
-      const ni = pos + d;
-      if (ni >= 0 && ni < visible.length) { const p = new Image(); p.src = visible[ni].img.full; }
+      const ni = idx + d;
+      if (ni >= 0 && ni < allImages.length) { const p = new Image(); p.src = allImages[ni].full; }
     });
   }
 
   function navigate(dir) {
-    const visible = getVisible();
-    const pos  = visible.findIndex(v => v.i === currentGlobalIdx);
-    const next = (pos + dir + visible.length) % visible.length;
-    currentGlobalIdx = visible[next].i;
-    loadImage(currentGlobalIdx);
+    currentIdx = (currentIdx + dir + allImages.length) % allImages.length;
+    loadImage(currentIdx);
   }
 
   document.getElementById('close-btn').addEventListener('click', closeModal);

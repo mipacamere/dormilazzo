@@ -42,29 +42,6 @@
       height: 64px;
     }
 
-    .header-back {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 13px;
-      letter-spacing: 0.04em;
-      transition: color var(--transition);
-    }
-    .header-back:hover { color: var(--accent); }
-    .header-back svg { width: 16px; height: 16px; }
-
-    .header-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 17px;
-      font-weight: 300;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .header-logo img { height: 36px; width: auto; opacity: 0.9; }
-
     .hero {
       padding: clamp(40px,6vw,80px) clamp(20px,4vw,48px) clamp(24px,4vw,48px);
       max-width: 900px;
@@ -259,21 +236,28 @@
       .gallery-meta { padding: 0 16px 20px; }
       footer { padding: 20px 16px; }
     }
+
+    /* ── TOP BAR (logo only, no nav) ── */
+    .gallery-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px clamp(20px,4vw,48px) 0;
+    }
+    .gallery-topbar img {
+      height: 32px;
+      width: auto;
+      opacity: 0.8;
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <a href="index.html" class="header-back">
-    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
-    Home
-  </a>
-  <span class="header-title">MiPA</span>
-  <div class="header-logo">
-    <img src="https://www.dropbox.com/scl/fi/twyc4rahl03g0u8v1dyqa/logosample3.png?rlkey=tna8wqno4asvowhzla0oaklon&st=6zpq9nc3&raw=1" alt="Logo">
-  </div>
-</header>
 
+
+<div class="gallery-topbar">
+  <img src="https://www.dropbox.com/scl/fi/twyc4rahl03g0u8v1dyqa/logosample3.png?rlkey=tna8wqno4asvowhzla0oaklon&st=6zpq9nc3&raw=1" alt="Logo">
+</div>
 <section class="hero">
   <p class="hero-label">Galleria fotografica</p>
   <h1>MiPA<br><em>Foto degli appartamenti</em></h1>

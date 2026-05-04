@@ -1,28 +1,75 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Itinerario Turistico</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Itinerario Turistico — Dormilazzo</title>
+  <meta http-equiv="refresh" content="0; url=https://esploramilazzo.netlify.app/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0e0d0b;
+      --border: rgba(255,255,255,0.06);
+      --text: #e8e4dc;
+      --text-muted: #7a7568;
+      --accent: #c9a96e;
+      --t: 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .logo img { height: 34px; opacity: 0.8; }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px,4vw,42px);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+    p { font-size: 14px; color: var(--text-muted); }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 12px 28px;
+      border: 1px solid rgba(201,169,110,0.4);
+      border-radius: 4px;
+      background: rgba(201,169,110,0.08);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      transition: background var(--t), border-color var(--t);
+    }
+    .cta:hover { background: rgba(201,169,110,0.15); border-color: rgba(201,169,110,0.6); }
+    .cta svg { width: 16px; height: 16px; }
+    .note { font-size: 12px; color: var(--text-muted); opacity: 0.5; }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Itinerario Turistico</h1>
-    </header>
-
-    <nav>
-        <a href="index.html">Torna alla Home</a>
-    </nav>
-
-    <section>
-        <h2>Scopri il nostro itinerario turistico</h2>
-        <p>Visita i luoghi imperdibili della città con il nostro itinerario pensato appositamente per te.</p>
-        <a href="LINK_AL_TUO_ITINERARIO" target="_blank">Clicca qui per scaricare l'itinerario turistico</a>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 Tutti i diritti riservati.</p>
-    </footer>
+  <div class="logo">
+    <img src="https://www.dropbox.com/scl/fi/twyc4rahl03g0u8v1dyqa/logosample3.png?rlkey=tna8wqno4asvowhzla0oaklon&st=6zpq9nc3&raw=1" alt="Logo">
+  </div>
+  <h1>Itinerario <em>turistico</em></h1>
+  <p>Stai per essere reindirizzato a Esplora Milazzo…</p>
+  <a href="https://esploramilazzo.netlify.app/" class="cta">
+    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+    Vai a esploramilazzo.netlify.app
+  </a>
+  <p class="note">Se non vieni reindirizzato automaticamente, clicca il link sopra.</p>
 </body>
 </html>

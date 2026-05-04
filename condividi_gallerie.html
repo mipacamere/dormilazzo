@@ -392,7 +392,9 @@
   // ── BUILD UI ──
   const main  = document.getElementById('main');
   const toast = document.getElementById('toast');
-  const canShare = !!navigator.share;
+  // Share button always visible. On desktop browsers that block navigator.share,
+  // the click handler falls back to copying the link to clipboard.
+  const canShare = true;
 
   PROPERTIES.forEach(prop => {
     const section = document.createElement('section');
@@ -486,17 +488,29 @@
     // ── SHARE ──
     const shareBtn = e.target.closest('.btn-share');
     if (shareBtn) {
-      try {
-        await navigator.share({
-          title: shareBtn.dataset.title,
-          url:   shareBtn.dataset.url
-        });
-      } catch (err) {
-        if (err.name !== 'AbortError') {
-          // fallback: copy to clipboard
-          await navigator.clipboard.writeText(shareBtn.dataset.url);
-          showToast('Link copiato negli appunti');
+      const url   = shareBtn.dataset.url;
+      const title = shareBtn.dataset.title;
+      if (navigator.share) {
+        try {
+          await navigator.share({ title, url });
+        } catch (err) {
+          if (err.name !== 'AbortError') {
+            // share API exists but failed — copy instead
+            await navigator.clipboard.writeText(url);
+            showToast('Link copiato negli appunti');
+          }
         }
+      } else {
+        // No share API — copy to clipboard
+        try {
+          await navigator.clipboard.writeText(url);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = url; ta.style.cssText = 'position:fixed;opacity:0';
+          document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); document.body.removeChild(ta);
+        }
+        showToast('Link copiato negli appunti');
       }
     }
   });

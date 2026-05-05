@@ -361,8 +361,8 @@
 
   const ROOMS = {
     '101': {
-      label: 'Camera Via Nazionale',
-      desc: 'Galleria fotografica',
+      label: 'Camera 101',
+      desc: 'Galleria fotografica della camera 101.',
       files: [
         '20250110_112619.jpg','20250110_112718.jpg','20250110_112722.jpg','20250110_112728.jpg',
         '20250110_112756.jpg','20250110_112833.jpg','20250110_113757.jpg','20250110_114038.jpg',
@@ -458,16 +458,16 @@
         <p class="hero-eyebrow">Galleria fotografica</p>
         <h1>${room.label.includes('colazione')
           ? 'Sala <em>colazione</em>'
-          : `Camera <em>${roomKey}</em>`}
+          : 'Camera <em>Via Nazionale</em>'}
         </h1>
-        <p class="hero-desc">${room.desc}</p>
+        <p class="hero-desc">Galleria fotografica della struttura.</p>
       </section>
       <div class="gallery-meta">
         <p class="count-badge"><span>${images.length}</span> foto disponibili</p>
       </div>
       <div class="gallery" id="gallery"></div>
       <footer>
-        <span class="footer-text">Via Nazionale &mdash; ${room.label}</span>
+        <span class="footer-text">Via Nazionale</span>
         <span class="footer-text">© Dormilazzo</span>
       </footer>`;
 

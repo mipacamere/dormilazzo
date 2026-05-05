@@ -313,7 +313,7 @@
 
   const APTS = {
     MiPA1: {
-      label: 'MiPA 1',
+      label: 'MiPA Junior Suite',
       files: [
         '20250111_142153_result.jpg','20250111_142537_result.jpg','20250111_142554_result.jpg',
         '20250111_142557_result.jpg','20250111_142640_result.jpg','20250111_142748_result.jpg',
@@ -324,7 +324,7 @@
       ]
     },
     MiPA2: {
-      label: 'MiPA 2',
+      label: 'MiPA Junior Suite',
       files: [
         '20250111_151612_result.jpg','20250111_151622_result.jpg','20250111_151630_result.jpg',
         '20250111_151643_result.jpg','20250111_151659_result.jpg','20250111_151706_result.jpg',
@@ -337,7 +337,7 @@
       ]
     },
     MiPA3: {
-      label: 'MiPA 3',
+      label: 'MiPA Junior Suite',
       files: [
         '20250111_144901_result.jpg','20250111_144916_result.jpg','20250111_144927_result.jpg',
         '20250111_144942_result.jpg','20250111_144948_result.jpg','20250111_145014_result.jpg',
@@ -349,7 +349,7 @@
       ]
     },
     MiPA4: {
-      label: 'MiPA 4',
+      label: 'MiPA Suite',
       files: [
         'photo_2024-07-15_07-07-12.jpg',
         'photo_2024-07-15_07-07-12 (2).jpg','photo_2024-07-15_07-07-12 (3).jpg',
@@ -391,15 +391,15 @@
       </header>
       <section class="hero">
         <p class="hero-eyebrow">Galleria fotografica</p>
-        <h1>Appartamento <em>${apt.label.replace('MiPA ','')}</em></h1>
-        <p class="hero-desc">${apt.label} — galleria fotografica dell'appartamento.</p>
+        <h1>MiPA <em>${apt.label.replace('MiPA ','')}</em></h1>
+        <p class="hero-desc">Galleria fotografica della struttura.</p>
       </section>
       <div class="gallery-meta">
         <p class="count-badge"><span>${images.length}</span> foto disponibili</p>
       </div>
       <div class="gallery" id="gallery"></div>
       <footer>
-        <span class="footer-text">MiPA &mdash; ${apt.label}</span>
+        <span class="footer-text">MiPA</span>
         <span class="footer-text">© Dormilazzo</span>
       </footer>`;
 
@@ -424,7 +424,7 @@
 
       const img = document.createElement('img');
       img.dataset.src = item.thumb;
-      img.alt = `${apt.label} — foto ${idx + 1}`;
+      img.alt = `Foto ${idx + 1}`;
 
       const overlay = document.createElement('div');
       overlay.className = 'thumb-overlay';

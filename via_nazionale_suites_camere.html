@@ -333,7 +333,7 @@
   if (!suite) {
     app.innerHTML = `<div class="error-state"><p>Nessuna galleria disponibile.</p></div>`;
   } else {
-    document.title = `Via Nazionale Suites — ${suite.label}`;
+    document.title = `Via Nazionale Suites`;
 
     // Build image list: thumbnailed first, then full-only
     const images = [
@@ -359,15 +359,15 @@
       </header>
       <section class="hero">
         <p class="hero-eyebrow">Galleria fotografica</p>
-        <h1>Suite <em>${suiteKey}</em></h1>
-        <p class="hero-desc">${suite.label} — galleria fotografica della suite.</p>
+        <h1>Suite <em>Via Nazionale</em></h1>
+        <p class="hero-desc">Galleria fotografica della struttura.</p>
       </section>
       <div class="gallery-meta">
         <p class="count-badge"><span>${images.length}</span> foto disponibili</p>
       </div>
       <div class="gallery" id="gallery"></div>
       <footer>
-        <span class="footer-text">Via Nazionale Suites &mdash; ${suite.label}</span>
+        <span class="footer-text">Via Nazionale Suites</span>
         <span class="footer-text">© Dormilazzo</span>
       </footer>`;
 
@@ -391,7 +391,7 @@
 
       const img = document.createElement('img');
       img.dataset.src = item.thumb;
-      img.alt = `${suite.label} — foto ${idx + 1}`;
+      img.alt = `Foto ${idx + 1}`;
 
       const overlay = document.createElement('div');
       overlay.className = 'thumb-overlay';
